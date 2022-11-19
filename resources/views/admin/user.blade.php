@@ -29,13 +29,13 @@
                             @can('create user')
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus"></i> Tambah</a>
+                                    <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-tambah" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus"></i> Tambah</a>
                                 </h3>
                             </div>
                             @endcan
                             <!-- /.card-header -->
                             <div class="card-body table-responsive">
-                                <table class="table table-bordered table-hover datatable">
+                                <table class="table table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>#</th>

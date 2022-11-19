@@ -29,13 +29,13 @@
                             @can('create role')
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <button class="btn btn-sm btn-success" id="btn-tambah"><i class="fas fa-plus"></i> Tambah</button>
+                                    <button class="btn btn-sm btn-primary" id="btn-tambah"><i class="fas fa-plus"></i> Tambah</button>
                                 </h3>
                             </div>
                             @endcan
                             <!-- /.card-header -->
                             <div class="card-body table-responsive">
-                                <table class="table table-bordered table-hover datatable">
+                                <table class="table  table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
