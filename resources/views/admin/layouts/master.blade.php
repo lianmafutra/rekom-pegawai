@@ -23,6 +23,7 @@
         href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
 
     @stack('style')
 </head>
@@ -78,7 +79,29 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('template/admin/dist/js/adminlte.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        if (@json(Session::has('success'))) {
+            Toast.fire({
+                icon: 'success',
+                title: @json(Session::get('success'))
+            })
+        }
+        if (@json(Session::has('error'))) {
+            Toast.fire({
+                icon: 'error',
+                title: @json(Session::get('error'))
+            })
+        }
+    </script>
     @stack('script')
 </body>
 

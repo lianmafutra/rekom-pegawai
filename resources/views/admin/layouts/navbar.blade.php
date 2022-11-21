@@ -45,7 +45,7 @@
 
                 </a>
 
-                <a href="#" class="dropdown-item">
+                <a  data-toggle="modal" data-target="#modal-password" data-backdrop="static" data-keyboard="false" href="#" class="dropdown-item">
                     <i class="fas fa-users mr-2"></i>Ubah Password
                 </a>
 
@@ -59,3 +59,4 @@
 
     </ul>
 </nav>
+@include('auth.passwords.modal-ubah')
