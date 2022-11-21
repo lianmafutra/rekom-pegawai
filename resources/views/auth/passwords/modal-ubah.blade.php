@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('password.ubah') }}" method="POST" >
+                <form name="ubah-password" action="{{ route('password.ubah') }}" method="POST" >
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -18,15 +18,14 @@
                     </div>
                     <div class="form-group">
                         <label>Password Baru <span style="color: red"> *</span> </label>
-                        <input required name="password_baru" type="password" class="form-control" id=""
+                        <input id="password_baru" required name="password_baru" type="password" class="form-control" id=""
                             placeholder="Password Baru">
                     </div>
                     <div class="form-group">
                         <label>Password Konfirmasi <span style="color: red"> *</span> </label>
-                        <input required name="password_konfirmasi" type="password" class="form-control" id=""
+                        <input id="password_konfirmasi" required name="password_konfirmasi" type="password" class="form-control" id=""
                             placeholder="Password Konfirmasi">
                     </div>
-                    {{-- <p>APakah anda yakin akan keluar dari sistem?</p> --}}
 
             </div>
             <div class="modal-footer justify-content-between">
