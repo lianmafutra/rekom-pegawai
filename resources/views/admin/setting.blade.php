@@ -112,6 +112,8 @@
                 inputId = '#'+event.target.id;
                 window.open('/file-manager/fm-button', 'fm', 'width=800,height=600');
             });
+
+          
         });
     </script>
 @endsection

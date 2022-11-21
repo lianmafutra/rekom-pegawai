@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
     <img src="{{ asset(Setting::getValue('app_logo')) }}" alt="{{ Setting::getName('app_name') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -8,14 +8,14 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
             <img src="{{ asset('template/admin/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
             <a href="#" class="d-block">{{ Auth::user()->name }} <small></small></a>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -26,53 +26,8 @@
                         <p>Dashboard</p>
                     </a>
                 </li>@php $i = 1; @endphp
-                @foreach ($modulemenus as $menus)
-                    @if ($menus['menu_count'] == 1)
-                        @foreach ($menus['menus'] as $menu)
-                            @if ($i == 1)
-                                @php
-                                    $perm[] = $menu['permission'];
-                                @endphp
-                                @canany($perm)
-                                    <li class="nav-header ml-2">MASTER DATA</li>
-                                @endcanany
-                            @endif
-                            @can($menu['permission'])
-                                <li class="nav-item">
-                                    <a href="{{ route($menu['route']) }}" class="nav-link {{ request()->routeIs($menu['route']) == strtolower($menu['name']) ? 'active':'' }}">
-                                        <i class="nav-icon {{ $menu['icon'] }}"></i>
-                                        <p>{{ $menu['name'] }}</p>
-                                    </a>
-                                </li>
-                            @endcan
-                            @php $i++; @endphp
-                        @endforeach
-                    @endif
-                @endforeach
-                @foreach ($modulemenus as $menus)
-                    @if ($menus['menu_count'] > 1)
-                        @foreach ($menus['menus'] as $menu)
-                            @if (count($menus['menus']) > 1)
-                                @if ($loop->iteration == 1)
-                                    @php
-                                        $perm[] = $menu['permission'];
-                                    @endphp
-                                    @canany($perm)
-                                        <li class="nav-header ml-2">{{ strtoupper($menus['module']) }}</li>
-                                    @endcanany
-                                @endif
-                                @can($menu['permission'])
-                                    <li class="nav-item">
-                                        <a href="{{ route($menu['route']) }}" class="nav-link {{ request()->routeIs($menu['route']) == strtolower($menu['name']) ? 'active':'' }}">
-                                            <i class="nav-icon {{ $menu['icon'] }}"></i>
-                                            <p>{{ $menu['name'] }}</p>
-                                        </a>
-                                    </li>
-                                @endcan
-                            @endif
-                        @endforeach
-                    @endif
-                @endforeach
+               
+              
                 @canany(['read user', 'read role', 'read permission'])
                     <li class="nav-header ml-2">ACCESS</li>
                 @endcanany
@@ -118,13 +73,13 @@
                     </li>
                 @endcan
               
-                <li class="nav-header"></li>
+                {{-- <li class="nav-header"></li>
                 <li class="nav-item">
                 <a href="#" class="nav-link bg-danger" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false">
                     <i class="fas fa-sign-out-alt nav-icon"></i>
                     <p>KELUAR</p>
                 </a>
-                </li>
+                </li> --}}
                 <li class="nav-header"></li>
             </ul>
         </nav>

@@ -1,0 +1,181 @@
+li.nav-item {
+   font-size: 1rem !important;
+   font-weight: 400 !important;
+   line-height: 1.5 !important;
+   letter-spacing: 0.15px !important;
+   margin-top: 8px;
+   margin-left: 10px;
+}
+
+.sidebar-mini .main-sidebar .nav-child-indent.nav-legacy.nav-compact .nav-link, .sidebar-mini-md .main-sidebar .nav-child-indent.nav-legacy.nav-compact .nav-link, .sidebar-mini-xs .main-sidebar .nav-child-indent.nav-legacy.nav-compact .nav-link {
+   padding: 10px;
+   width: 214px;
+}
+
+.sidebar-dark-primary .nav-sidebar.nav-legacy>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar.nav-legacy>.nav-item>.nav-link.active {
+   border-radius: 10px;
+   background: blueviolet;
+   border:none;
+   box-shadow: 0px 4px 8px -4px rgba(58, 53, 65, 0.42);
+   background-image: linear-gradient(98deg, #C6A7FE, #9155FD 94%);
+}
+
+.layout-fixed .main-sidebar {
+   background: white;
+}
+
+[class*=sidebar-dark-] .sidebar a {
+   color: #565656 !important;
+   font-size: 14px !important;
+
+}
+
+[class*=sidebar-dark] .nav-legacy.nav-sidebar>.nav-item>.nav-link.active {
+   color: #fff !important;
+}
+
+[class*=sidebar-dark]  li.nav-item:hover {
+   border-radius: 10px;
+   background: rgba(223, 223, 223, 0.418);
+   border:none;
+   width: 214px;
+
+}
+.navbar-nav>.user-menu>.dropdown-menu {
+   border-top-left-radius: 0;
+   border-top-right-radius: 0;
+   padding: 0;
+   width: 204px;
+}
+
+.dropdown-menu.dropdown-menu-md.dropdown-menu-right.show {
+   margin-top: 14px;
+}
+
+a.dropdown-item {
+  padding-top: 10px;
+   padding-bottom: 10px;
+}
+
+span.brand-text.font-weight-light {
+   color: #565656;
+}
+
+.os-content-glue {
+   margin-top: 20px !important;
+}
+
+span.brand-text.font-weight-light {
+   color: #565656;
+   font-weight: 550 !important;
+   font-size: 25px;
+}
+
+
+.brand-link .brand-image {
+   float: left;
+   line-height: .8;
+   margin-left: .8rem;
+   margin-right: 1rem;
+   margin-top: 5px !important;
+   max-height: 33px;
+   width: auto;
+}
+
+[class*=sidebar-dark] .brand-link {
+   border-bottom: 1px solid #e7e7e7;
+}
+
+[class*=sidebar-dark-] .nav-header {
+   background-color: inherit;
+   color: #919499;
+}
+
+[class*=sidebar-dark-] .nav-header {
+   font-size: 0.7rem;
+   background-color: inherit;
+   color: #919499;
+}
+
+.layout-fixed .main-sidebar {
+   box-shadow: none !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+   color: rgb(0 0 0 / 75%);
+}
+
+nav.main-header.navbar.navbar-expand.navbar-dark {
+   background: white;
+}
+
+.navbar-dark {
+   background-color: #343a40;
+   border-color: #d1d1d159;
+}
+
+.card {
+   background-color: #FFF;
+   color: rgba(58, 53, 65, 0.87);
+   -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+   border-radius: 6px;
+   box-shadow: 0px 2px 1px -1px rgba(58, 53, 65, 0.2),0px 1px 1px 0px rgba(58, 53, 65, 0.14),0px 1px 3px 0px rgba(58, 53, 65, 0.12);
+   box-shadow: 0px 2px 10px 0px rgba(58, 53, 65, 0.1);
+  
+}
+
+.btn.btn-primary {
+   border: none;
+   background-color: rgb(128, 75, 223);
+   font-weight: 500;
+   border-radius: 5px;
+   line-height: 1.71;
+   letter-spacing: 0.3px;
+   box-shadow: rgba(58, 53, 65, 0.42) 0px 4px 8px -4px;
+}
+.content-wrapper {
+   padding: 25px;
+}
+
+.btn.btn-warning {
+   color: white;
+    border-color: #6933c9;
+   background-color: rgb(128, 75, 223);
+   font-weight: 500;
+   border-radius: 5px;
+   line-height: 1.71;
+   letter-spacing: 0.3px;
+   box-shadow: rgba(58, 53, 65, 0.42) 0px 4px 8px -4px;
+}
+
+
+.dropdown-menu.dropdown-menu-md.dropdown-menu-right.show {
+   background-color: #FFF;
+   color: rgba(58, 53, 65, 0.87);
+   -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+   border-radius: 6px;
+   box-shadow: 0px 2px 1px -1px rgba(58, 53, 65, 0.2),0px 1px 1px 0px rgba(58, 53, 65, 0.14),0px 1px 3px 0px rgba(58, 53, 65, 0.12);
+   box-shadow: 0px 2px 10px 0px rgba(58, 53, 65, 0.1);
+}
+
+.table thead th {
+   vertical-align: bottom;
+   border-bottom: none !important;
+}
+
+.table thead th {
+   vertical-align: bottom;
+   border-bottom: none !important;
+   background: #b1b3b521;
+}
+
+.navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
+   color: rgb(128, 75, 223);
+   
+}
+span.dropdown-item.dropdown-header {
+   padding-top: 20px !important;
+   padding-bottom: 20px !important;
+}
