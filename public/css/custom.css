@@ -26,6 +26,8 @@ li.nav-item {
 
 [class*=sidebar-dark-] .sidebar a {
    color: #565656 !important;
+   font-size: 14px !important;
+
 }
 
 [class*=sidebar-dark] .nav-legacy.nav-sidebar>.nav-item>.nav-link.active {
@@ -60,7 +62,7 @@ span.brand-text.font-weight-light {
    line-height: .8;
    margin-left: .8rem;
    margin-right: 1rem;
-   margin-top: 3px;
+   margin-top: 5px !important;
    max-height: 33px;
    width: auto;
 }
@@ -72,6 +74,8 @@ span.brand-text.font-weight-light {
 [class*=sidebar-dark-] .nav-header {
    background-color: inherit;
    color: #919499;
+  
+  
 }
 
 [class*=sidebar-dark-] .nav-header {
