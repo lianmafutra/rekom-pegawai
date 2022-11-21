@@ -1,9 +1,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-        <img src="{{ asset(Setting::getValue('app_logo')) }}" alt="{{ Setting::getName('app_name') }}"
-            class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">{{ Setting::getValue('app_short_name') }}</span>
+    <img src="{{ asset(Setting::getValue('app_logo')) }}" alt="{{ Setting::getName('app_name') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light">{{ Setting::getValue('app_short_name') }}</span>
     </a>
 
     <!-- Sidebar -->
@@ -11,21 +10,18 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset('template/admin/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
-                    alt="User Image">
+            <img src="{{ asset('template/admin/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Auth::user()->name }} <small></small></a>
+            <a href="#" class="d-block">{{ Auth::user()->name }} <small></small></a>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-legacy nav-compact"
-                data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-legacy nav-compact" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}"
-                        class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active':'' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
@@ -43,8 +39,7 @@
                             @endif
                             @can($menu['permission'])
                                 <li class="nav-item">
-                                    <a href="{{ route($menu['route']) }}"
-                                        class="nav-link {{ request()->routeIs($menu['route']) == strtolower($menu['name']) ? 'active' : '' }}">
+                                    <a href="{{ route($menu['route']) }}" class="nav-link {{ request()->routeIs($menu['route']) == strtolower($menu['name']) ? 'active':'' }}">
                                         <i class="nav-icon {{ $menu['icon'] }}"></i>
                                         <p>{{ $menu['name'] }}</p>
                                     </a>
@@ -68,8 +63,7 @@
                                 @endif
                                 @can($menu['permission'])
                                     <li class="nav-item">
-                                        <a href="{{ route($menu['route']) }}"
-                                            class="nav-link {{ request()->routeIs($menu['route']) == strtolower($menu['name']) ? 'active' : '' }}">
+                                        <a href="{{ route($menu['route']) }}" class="nav-link {{ request()->routeIs($menu['route']) == strtolower($menu['name']) ? 'active':'' }}">
                                             <i class="nav-icon {{ $menu['icon'] }}"></i>
                                             <p>{{ $menu['name'] }}</p>
                                         </a>
@@ -84,8 +78,7 @@
                 @endcanany
                 @can('read user')
                     <li class="nav-item">
-                        <a href="{{ route('user.index') }}"
-                            class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
+                        <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active':'' }}">
                             <i class="fas fa-user nav-icon"></i>
                             <p>User</p>
                         </a>
@@ -93,8 +86,7 @@
                 @endcan
                 @can('read role')
                     <li class="nav-item">
-                        <a href="{{ route('role.index') }}"
-                            class="nav-link {{ request()->routeIs('role.index') ? 'active' : '' }}">
+                        <a href="{{ route('role.index') }}" class="nav-link {{ request()->routeIs('role.index') ? 'active':'' }}">
                             <i class="fas fa-user-cog nav-icon"></i>
                             <p>Role</p>
                         </a>
@@ -102,8 +94,7 @@
                 @endcan
                 @can('read permission')
                     <li class="nav-item">
-                        <a href="{{ route('permission.index') }}"
-                            class="nav-link {{ request()->routeIs('permission.index') ? 'active' : '' }}">
+                        <a href="{{ route('permission.index') }}" class="nav-link {{ request()->routeIs('permission.index') ? 'active':'' }}">
                             <i class="fas fa-unlock nav-icon"></i>
                             <p>Permission</p>
                         </a>
@@ -112,8 +103,7 @@
                 <li class="nav-header ml-2">SETTINGS</li>
                 @can('read setting')
                     <li class="nav-item">
-                        <a href="{{ route('setting.index') }}"
-                            class="nav-link {{ request()->routeIs('setting.index') ? 'active' : '' }}">
+                        <a href="{{ route('setting.index') }}" class="nav-link {{ request()->routeIs('setting.index') ? 'active':'' }}">
                             <i class="fas fa-cog nav-icon"></i>
                             <p>Setting</p>
                         </a>
@@ -121,30 +111,20 @@
                 @endcan
                 @can('filemanager')
                     <li class="nav-item">
-                        <a href="{{ route('filemanager') }}"
-                            class="nav-link {{ request()->routeIs('filemanager') ? 'active' : '' }}">
+                        <a href="{{ route('filemanager') }}" class="nav-link {{ request()->routeIs('filemanager') ? 'active':'' }}">
                             <i class="nav-icon fas fa-folder"></i>
                             <p>File Manager</p>
                         </a>
                     </li>
                 @endcan
-                @can('pengajuan')
-                    <li class="nav-item">
-                        <a href="{{ route('filemanager') }}"
-                            class="nav-link {{ request()->routeIs('filemanager') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-folder"></i>
-                            <p>Pengajuan</p>
-                        </a>
-                    </li>
-                @endcan
-
-                {{-- <li class="nav-header"></li>
+              
+                <li class="nav-header"></li>
                 <li class="nav-item">
                 <a href="#" class="nav-link bg-danger" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false">
                     <i class="fas fa-sign-out-alt nav-icon"></i>
                     <p>KELUAR</p>
                 </a>
-                </li> --}}
+                </li>
                 <li class="nav-header"></li>
             </ul>
         </nav>

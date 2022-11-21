@@ -9,7 +9,6 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +62,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('permission/reload', 'reloadPermission')->middleware(['permission:create permission'])->name('permission.reload');
     });
 
-    Route::get('module', [ModuleController::class, 'index'])->middleware(['permission:read module'])->name('module.index');
 
     Route::get('filemanager', [FileManagerController::class, 'index'])->middleware(['permission:filemanager'])->name('filemanager');
 
