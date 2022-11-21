@@ -23,22 +23,39 @@
         </li>
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ asset('template/admin/dist/img/user2-160x160.jpg') }}" class="user-image img-circle elevation-2" alt="User Image">
-                <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                <img src="{{ asset('template/admin/dist/img/user2-160x160.jpg') }}"
+                    class="user-image img-circle elevation-2" alt="User Image">
+                {{-- <span class="d-none d-md-inline">{{ Auth::user()->name }}</span> --}}
             </a>
-            <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <li class="user-header bg-primary">
-                    <img src="{{ asset('template/admin/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
-                    <p>
-                        {{ Auth::user()->name }} - {{ implode(",", Auth::user()->getRoleNames()->toArray()) }}
-                        <small>Last updated {{ date('d-m-Y H:i:s', strtotime(Auth::user()->updated_at)) }}</small>
-                    </p>
-                </li>
-                <li class="user-footer">
-                    <a href="#" class="btn btn-default">Profile</a>
-                    <a href="#" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false" class="btn btn-danger float-right">Keluar</a>
-                </li>
-            </ul>
+
+            <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+
+                {{-- <li class="user-footer">
+                  <a href="#" class="btn btn-default">Profile</a>
+                  <a href="#" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false" class="btn btn-danger float-right">Keluar</a>
+              </li> --}}
+                <span 
+                    class="dropdown-item dropdown-header">
+                    <span  class="d-none d-md-inline">{{ Auth::user()->name }}</span></span>
+                <div class="dropdown-divider"></div>
+
+                {{-- <span class="dropdown-item dropdown-header">15 Notifications</span> --}}
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-envelope mr-2"></i>Profile
+
+                </a>
+
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-users mr-2"></i>Ubah Password
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a  data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false" style="padding-bottom: 15px" href="#" class="dropdown-item">
+                    <i class="fas fa-sign-out-alt  mr-2"></i> Logout
+                </a>
+
+            </div>
         </li>
+
     </ul>
 </nav>
