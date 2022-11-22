@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
 
     @stack('style')
+    @stack('css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
@@ -62,6 +63,7 @@
     <!-- jQuery -->
     <script src="{{ asset('template/admin/plugins/jquery/jquery.min.js') }}"></script>
     @yield('js')
+    @stack('js')
     @include('admin.layouts.script')
     <!-- jQuery UI 1.11.4 -->
     <script src="{{ asset('template/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
