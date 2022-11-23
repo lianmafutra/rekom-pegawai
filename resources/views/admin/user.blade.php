@@ -39,8 +39,8 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Username</th>
                                             <th>Name</th>
-                                            <th>Email</th>
                                             <th>Role</th>
                                             <th>Updated</th>
                                             @canany(['update user', 'delete user'])
@@ -52,8 +52,8 @@
                                         @foreach ($data as $i)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $i->username }}</td>
                                                 <td>{{ $i->name }}</td>
-                                                <td>{{ $i->email }}</td>
                                                 <td>{{ implode(",", $i->getRoleNames()->toArray()) }}</td>
                                                 <td>{{ $i->updated_at }}</td>
                                             @canany(['update user', 'delete user'])
@@ -139,10 +139,10 @@
                     <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group">
-                            <label>Name</label>
+                            <label>Username</label>
                             <div class="input-group">
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Name" name="name" value="{{ old('name') }}">
-                                @error('name')
+                                <input type="text" class="form-control @error('username') is-invalid @enderror" placeholder="Username" name="username" value="{{ old('username') }}">
+                                @error('username')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

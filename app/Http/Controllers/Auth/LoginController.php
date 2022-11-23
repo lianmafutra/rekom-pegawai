@@ -45,12 +45,12 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'username' => 'required',
             'password' => 'required',
             'g-recaptcha-response' => 'required'
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
         if (Auth::attempt($credentials, true)) {
             return to_route('dashboard');
         }

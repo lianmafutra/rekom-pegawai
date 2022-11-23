@@ -24,8 +24,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'      => ['required', 'string', 'max:255'],
-            'email'     => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username'     => ['required', 'string', 'max:255', 'unique:users'],
             'password'  => ['required', 'string'],
             'role'      => ['required']
         ]);
@@ -36,16 +35,16 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $user = User::create([
-                'name'      => $request->name,
-                'email'     => $request->email,
+                'username'      => $request->username,
                 'password'  => bcrypt($request->password)
             ]);
             $user->assignRole($request->role);
             DB::commit();
-            Alert::success('Pemberitahuan', 'Data <b>' . $user->name . '</b> berhasil dibuat')->toToast()->toHtml();
+            Alert::success('Pemberitahuan', 'Data <b>' . $user->username . '</b> berhasil dibuat')->toToast()->toHtml();
         } catch (\Throwable $th) {
             DB::rollback();
-            Alert::error('Pemberitahuan', 'Data <b>' . $user->name . '</b> gagal dibuat : ' . $th->getMessage())->toToast()->toHtml();
+            dd($th);
+            Alert::error('Pemberitahuan', 'Data <b>' . $request->username . '</b> gagal dibuat : ' )->toToast()->toHtml();
         }
         return back();
     }
@@ -63,7 +62,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'name'      => ['required', 'string', 'max:255'],
+            'username'      => ['required', 'string', 'max:255'],
             'password'  => ['nullable', 'string'],
             'role'      => ['required']
         ];

@@ -33,9 +33,9 @@ class PermissionController extends Controller
                 'name'          => $request->name,
                 'guard_name'    => $request->guard_name,
             ]);
-            Alert::success('Pemberitahuan', 'Data <b>' . $permission->name . '</b> berhasil dibuat')->toToast()->toHtml();
+            Alert::success('Pemberitahuan', 'Data <b></b> berhasil dibuat')->toToast()->toHtml();
         } catch (\Throwable $th) {
-            Alert::error('Pemberitahuan', 'Data <b>' . $permission->name . '</b> gagal dibuat : ' . $th->getMessage())->toToast()->toHtml();
+            Alert::error('Pemberitahuan', 'Data <b> </b> gagal dibuat : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
