@@ -21,6 +21,13 @@ class UserController extends Controller
         return view('admin.user', $x);
     }
 
+    public function profile()
+    {
+        $x['title']     = 'Profile';
+        $user = auth()->user();
+        return view('admin.profile.index', $x, compact('user'));
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

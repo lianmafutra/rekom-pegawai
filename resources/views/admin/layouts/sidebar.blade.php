@@ -73,15 +73,7 @@
                         </a>
                     </li>
                 @endcan
-                @can('pengajuan')
-                    <li class="nav-item">
-                        <a href="{{ route('pengajuan.index') }}"
-                            class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-folder"></i>
-                            <p>Pengajuan</p>
-                        </a>
-                    </li>
-                @endcan
+             
 
                 {{-- <li class="nav-header"></li>
                 <li class="nav-item">

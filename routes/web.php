@@ -9,6 +9,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    Route::controller(UserController::class)->group(function () {
       Route::get('user', 'index')->middleware(['permission:read user'])->name('user.index');
+      Route::get('user/profile', 'profile')->name('user.profile.index');
       Route::post('user', 'store')->middleware(['permission:create user'])->name('user.store');
       Route::post('user/show', 'show')->middleware(['permission:read user'])->name('user.show');
       Route::put('user', 'update')->middleware(['permission:update user'])->name('user.update');
@@ -75,4 +77,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::controller(AuthController::class)->group(function () {
       Route::put('password-ubah', 'ubahPassword')->name('password.ubah');
    });
+
+
+
+
 });
