@@ -39,23 +39,26 @@
                             @endcan
                             <div class="card-body">
                                 <div class="tab-content">
-                                    <center>
-                                        <h5>Anda Belum Memiliki Pengajuan Berkas</h5>
-                                    </center>
-                                    <div class="card-body table-responsive">
-                                        <table id="tabel-pengajuan" class="table  table-hover " style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>NIP</th>
-                                                    <th>Nama</th>
-                                                    <th>OPD Pemohon</th>
-                                                    <th>Tanggal</th>
-                                                    <th>#</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
+                                    @if ($data->count() == 0)
+                                        <center>
+                                            <h5>Anda Belum Memiliki Pengajuan Berkas</h5>
+                                        </center>
+                                    @else
+                                        <div class="card-body table-responsive">
+                                            <table id="tabel-pengajuan" class="table  table-hover " style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>NIP</th>
+                                                        <th>Nama</th>
+                                                        <th>OPD Pemohon</th>
+                                                        <th>Tanggal Kirim</th>
+                                                        <th>#Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -82,16 +85,16 @@
                     width: "40px"
                 },
                 {
-                    data: 'nama',
+                    data: 'nip',
                 },
                 {
-                    data: 'nip',
+                    data: 'nama',
                 },
                 {
                     data: 'pengirim_id',
                 },
                 {
-                    data: 'created_at',
+                    data: 'tgl_kirim',
                 },
                 {
                     data: "action",

@@ -6,21 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
 use App\Models\Pengajuan;
 use App\Utils\uploadFile;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\DataTables;
+use File;
 
 class PengajuanOPDController extends Controller
 {
 
    public function index()
    {
+      
       abort_if(Gate::denies('pengajuan'), 403);
 
       $x['title']     = 'Pengajuan OPD';
+      $data = Pengajuan::get();
       if (request()->ajax()) {
-         $data = Pengajuan::get();
          return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
@@ -29,7 +32,7 @@ class PengajuanOPDController extends Controller
             ->rawColumns(['action'])
             ->make(true);
       }
-      return view('pengajuan-opd.index', $x);
+      return view('pengajuan-opd.index', $x, compact('data'));
    }
 
 
@@ -72,6 +75,7 @@ class PengajuanOPDController extends Controller
    {
       $x['title']     = 'Ubah Pengajuan';
       abort_if(Gate::denies('pengajuan edit'), 403);
+      return view('pengajuan-opd.edit',$x, compact('pengajuan'));
    }
 
 
