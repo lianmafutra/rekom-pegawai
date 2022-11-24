@@ -1,4 +1,8 @@
 @extends('admin.layouts.master')
+@push('css')
+    <link href="{{ URL::asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
+@endpush
 @section('content')
     <div class="content-wrapper">
         <div class="content-header">
@@ -84,7 +88,8 @@
                                                 <label for="inputEmail" class="col-sm-2 col-form-label">Role</label>
                                                 <div class="col-sm-10">
                                                     <input disabled type="text" class="form-control" id="role"
-                                                        placeholder="Username" value="{{ $user->roles->pluck('name')[0] }}">
+                                                        placeholder="Username"
+                                                        value="{{ $user->roles->pluck('name')[0] }}">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -121,22 +126,53 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                  
+                    <div class="form-group ">
+
+                        <input required type="file" data-max-file-size="5 MB" class="filepond" accept="image/*"
+                            name="foto_profil">
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Lanjutkan</button>
                 </div>
-              
+
             </div>
             <!-- /.modal-content -->
         </div>
     </div>
 @endsection
 @push('js')
+    <script src="{{ URL::asset('plugins/filepond/filepond.js') }}"></script>
+    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
+    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
+    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
+    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
+
     <script>
         $(".btn_upload_foto").click(function() {
-           $('#modal_upload_foto').modal('show')
+            $('#modal_upload_foto').modal('show')
+        });
+
+        FilePond.registerPlugin(
+            FilePondPluginFileMetadata,
+            FilePondPluginFileEncode,
+            FilePondPluginImagePreview,
+            FilePondPluginFileValidateType,
+            FilePondPluginFileValidateSize);
+        const inputElements = document.querySelectorAll('input.filepond');
+        Array.from(inputElements).forEach(inputElement => {
+            FilePond.create(inputElement, {
+                storeAsFile: true,
+                labelIdle: `Upload File Foto <span class="filepond--label-action">Browse</span>`,
+                imageCropAspectRatio: '1:1',
+                allowImagePreview: true,
+                imagePreviewHeight: 300,
+                imagePreviewWidth: 300,
+
+
+            });
         });
     </script>
 @endpush
