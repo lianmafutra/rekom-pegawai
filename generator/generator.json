@@ -1,0 +1,32 @@
+{
+    "model": "Siswa",
+    "controller": "SiswaController",
+    "path": "resources/views/admin",
+    "form": [
+        {
+            "name": "nama",
+            "type": "text",
+            "required": true
+        },
+        {
+            "name": "alamat",
+            "type": "textarea",
+            "required": true
+        },
+        {
+            "name": "jenis_kelamin",
+            "type": "select2-single",
+            "required": true
+        },
+        {
+            "name": "tanggal_lahir",
+            "type": "date",
+            "required": true
+        },
+        {
+            "name": "foto",
+            "type": "image",
+            "required": true
+        }
+    ]
+}
