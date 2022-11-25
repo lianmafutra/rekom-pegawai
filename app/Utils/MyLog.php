@@ -2,12 +2,18 @@
 
 namespace App\Utils;
 
-class MyLog
+trait MyLog
 {
-   public function save($model, $request){
+   public function saveLog($request){
       activity()
-      ->causedBy($model)
-      ->useLog($request->route()->getActionMethod())
+      ->useLog(request()->route()->getActionMethod())
+      ->withProperties([
+         "user" => auth()->user()->username,
+         "role" => auth()->user()->roles->pluck('name')[0],
+         "method" => \Route::current()->methods()[0],
+         "file" => \Route::currentRouteAction(),
+         "ip" => request()->ip(),
+      ])
       ->event('verified')
       ->log('edited');
    }

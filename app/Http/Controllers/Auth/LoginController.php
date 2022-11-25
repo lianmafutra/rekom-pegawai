@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Utils\MyLog;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class LoginController extends Controller
    
 
    use AuthenticatesUsers;
+   use MyLog;
 
    /**
     * Where to redirect users after login.
@@ -44,7 +46,7 @@ class LoginController extends Controller
 
       $credentials = $request->only('username', 'password');
       if (Auth::attempt($credentials, true)) {
-         
+         $this->saveLog('',$request);
          return to_route('dashboard');
       }
       throw ValidationException::withMessages([
