@@ -21,21 +21,6 @@ class DashboardController extends Controller
       $x['role']          = Role::get();
       $x['permission']    = Permission::get();
 
-
-
-
-      // $pegawai = Cache::get('pegawai');
-      // if ($pegawai) {
-      //    return $pegawai->where('nama', 'M. AZMI YASIR YATOEB')->values()->all();
-      // } else {
-      //    $url = 'https://presensi.jambikota.go.id/api/Absen?ABSEN-API-KEY=kominfo';
-      //    $response = Http::withBasicAuth('absen', 'absen2022')->acceptJson()->get($url)->collect();
-      //    $pegawai = Cache::forever('pegawai', $response);
-      // }
-
-  
-
-
       return view('admin.dashboard', $x);
    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\pengajuan;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
+use App\Http\Services\Pegawai\PegawaiService;
 use App\Models\Pengajuan;
 use App\Utils\uploadFile;
 use Illuminate\Http\Request;
@@ -36,15 +37,14 @@ class PengajuanOPDController extends Controller
    }
 
 
-   public function create()
+   public function create(PegawaiService $pegawaiService)
    {
 
       abort_if(Gate::denies('pengajuan create'), 403);
 
       $x['title']     = 'Buat Pengajuan';
-      $pegawai = Cache::get('pegawai')->where('kunker', 4021000000)->values()->toArray();
-
-      return view('pengajuan-opd.create', $x, compact(['pegawai']));
+      $pegawai = $pegawaiService->filterByOPD(4021000000);
+      return view('pengajuan-opd.create', $x, compact('pegawai'));
    }
 
 

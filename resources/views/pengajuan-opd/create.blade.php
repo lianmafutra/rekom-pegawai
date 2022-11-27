@@ -10,6 +10,11 @@
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
+
+        .info-data-api {
+            font-size: 11px;
+            color: #9459fd;
+        }
     </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -90,9 +95,9 @@
                                                         name="file_sk_jabatan" placeholder="File SK Jabatan">
                                                 </div>
                                         </div>
-                                        <div style="margin-left: 10px; max-height: 430px" class="col-md-5 card ">
+                                        <div style="margin-left: 10px;" class="col-md-5 card ">
                                             <div class="card-header">
-                                               <h6>Detail Pegawai</h6> 
+                                                <h6>Detail Pegawai</h6>
                                             </div>
                                             <div class="card-body box-profile">
                                                 <img class="loading"
@@ -118,6 +123,9 @@
                                                             <b>Nama Lengkap : </b> <a class="float-right nama"></a>
                                                         </li>
                                                         <li class="list-group-item">
+                                                         <b>NIP : </b> <a class="float-right nip"></a>
+                                                     </li>
+                                                        <li class="list-group-item">
                                                             <b>Pangkat/Gol : </b> <a class="float-right pangkat"></a>
                                                         </li>
                                                         <li class="list-group-item">
@@ -126,6 +134,11 @@
                                                         <li class="list-group-item">
                                                             <b>OPD : </b> <a class="float-right opd"></a>
                                                         </li>
+                                                       
+                                                        <div class="info-data-api profile_data"
+                                                            style="display: none; font-style: italic; padding : 20px 0 0 0">
+                                                            <span>Data Sinkron dari Dinas BKPSDMD ( 10-12-2022 10:09 ), Apabila ada data pegawai yang tidak sesuai silahkan menghubungi Dinas Komunikasi & Informatika Kota Jambi</span>
+                                                        </div>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -185,12 +198,13 @@
                     retryLimit: 3,
                     success: function(json) {
                         $('.nama').html(json.nama)
+                        $('.nip').html(json.nipbaru)
                         $('.pangkat').html(json.pangkat)
                         $('.jabatan').html(json.njab)
                         $('.opd').html(json.nunker)
                         $(".loading").fadeOut(1000);
                         $(".profile_data").fadeIn(1100);
-                     
+
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
@@ -235,5 +249,40 @@
                 $(element).parents(".invalid-feedback").removeClass(errorClass).addClass(validClass);
             }
         });
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+        })
     </script>
 @endpush

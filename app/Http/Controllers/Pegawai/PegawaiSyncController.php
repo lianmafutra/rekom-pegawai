@@ -3,19 +3,12 @@
 namespace App\Http\Controllers\Pegawai;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
+use App\Http\Services\Pegawai\PegawaiService;
 
 class PegawaiSyncController extends Controller
 {
 
-
-   public function getApiFromBKD()
-   {
-      
-   }
-
-   public function getPegawaiByNip($nip){
-      $pegawai = Cache::get('pegawai')->where('nipbaru', $nip)->values();
-      return response()->json($pegawai[0]);
+   public function getPegawaiByNip($nip, PegawaiService $pegawaiService){
+      return $pegawaiService->filterByNIP($nip);
    }
 }
