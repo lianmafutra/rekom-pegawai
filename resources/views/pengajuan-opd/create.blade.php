@@ -5,8 +5,12 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endpush
-
 @section('content')
+    <style>
+        .filepond--drop-label.filepond--drop-label label {
+            font-weight: 200 !important;
+        }
+    </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -44,27 +48,23 @@
                                                     <label>Nama Pegawai<span style="color: red">*</span></label>
                                                     <select required type=""
                                                         class="select2-pegawai form-control select2bs4"
-                                                        data-placeholder="-- Pegawai --" style="width: 100%;">
+                                                        data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
                                                         <option></option>
-
                                                         @foreach ($pegawai as $item => $key)
                                                             <option value="{{ $key['nipbaru'] }}"> {{ $key['nama'] }} (
                                                                 {{ $key['nipbaru'] }} )</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-
                                                 <div class="form-group">
                                                     <label>Jenis Rekomendasi<span style="color: red">*</span></label>
                                                     <select required type=""
                                                         class="select2-jenis form-control select2bs4"
-                                                        data-placeholder="-- Jenis Rekomendasi --" style="width: 100%;">
+                                                        data-placeholder="-- Pilih Jenis Rekomendasi --"
+                                                        style="width: 100%;">
                                                         <option></option>
-
                                                         <option>Bebas Hukuman Disiplin</option>
                                                         <option>Bebas Temuan</option>
-
-
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -90,10 +90,9 @@
                                                         name="file_sk_jabatan" placeholder="File SK Jabatan">
                                                 </div>
                                         </div>
-
                                         <div style="margin-left: 10px; max-height: 430px" class="col-md-5 card ">
                                             <div class="card-header">
-                                                Detail Pegawai
+                                               <h6>Detail Pegawai</h6> 
                                             </div>
                                             <div class="card-body box-profile">
                                                 <img class="loading"
@@ -110,9 +109,9 @@
                                                         <img style="   border: 1px solid #adb5bd !important;
                                                         margin: 0 auto;
                                                         padding: 3px !important;
-                                                        width: 133px  !important;" class=" profile-user-img img-fluid img-circle"
-                                                            src="{{ asset('img/avatar.png') }}"
-                                                            alt="User profile picture">
+                                                        width: 133px  !important;"
+                                                            class=" profile-user-img img-fluid img-circle"
+                                                            src="{{ asset('img/avatar.png') }}" alt="User profile picture">
                                                     </div>
                                                     <ul class="list-group list-group-unbordered mb-3 mt-3">
                                                         <li class="list-group-item">
@@ -129,14 +128,9 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-
                                             </div>
-
-
                                         </div>
                                     </div>
-
-
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Submit Berkas</button>
                                     </div>
@@ -162,7 +156,6 @@
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -170,12 +163,10 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
                 allowClear: true
             })
-
             $('.select2-pegawai').change(function() {
                 $('.loading').css('display', 'block')
                 $('.profile_data').css('display', 'none')
@@ -193,39 +184,19 @@
                     tryCount: 0,
                     retryLimit: 3,
                     success: function(json) {
-
                         $('.nama').html(json.nama)
                         $('.pangkat').html(json.pangkat)
                         $('.jabatan').html(json.njab)
                         $('.opd').html(json.nunker)
-                        // $('.profile_data').css('display', 'block')
                         $(".loading").fadeOut(1000);
                         $(".profile_data").fadeIn(1100);
-                        // $('.loading').css('display', 'none')
-
+                     
                     },
                     error: function(xhr, textStatus, errorThrown) {
-                        if (textStatus == 'timeout') {
-                            this.tryCount++;
-                            if (this.tryCount <= this.retryLimit) {
-                                //try again
-                                $.ajax(this);
-                                return;
-                            }
-                            return;
-                        }
-                        if (xhr.status == 500) {
-                            //handle error
-                        } else {
-                            //handle error
-                        }
+                        alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
                     }
                 });
-
             });
-
-
-
             FilePond.registerPlugin(
                 FilePondPluginFileMetadata,
                 FilePondPluginFileEncode,
@@ -240,7 +211,6 @@
                 });
             });
         });
-
         $("form[name='pengajuan']").validate({
             rules: {
                 nama: "required",
@@ -248,17 +218,13 @@
                     required: true
                 },
                 file_sk_cpns: 'required'
-
             },
-
             messages: {
                 nama: "Nama Wajib Di isi",
                 nip: "NIP Pegawai Wajib di isi",
-
             },
             errorElement: 'div',
             errorClass: "invalid-feedback",
-
             errorPlacement: function(error, element) {
                 error.insertAfter(element);
             },
