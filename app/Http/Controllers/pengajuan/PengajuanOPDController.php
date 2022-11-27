@@ -6,12 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
 use App\Models\Pengajuan;
 use App\Utils\uploadFile;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\DataTables;
-use File;
 
 class PengajuanOPDController extends Controller
 {
@@ -20,6 +19,7 @@ class PengajuanOPDController extends Controller
    {
       
       abort_if(Gate::denies('pengajuan'), 403);
+      
 
       $x['title']     = 'Pengajuan OPD';
       $data = Pengajuan::get();
@@ -42,7 +42,9 @@ class PengajuanOPDController extends Controller
       abort_if(Gate::denies('pengajuan create'), 403);
 
       $x['title']     = 'Buat Pengajuan';
-      return view('pengajuan-opd.create', $x);
+      $pegawai = Cache::get('pegawai')->where('kunker', 4021000000)->values()->toArray();
+
+      return view('pengajuan-opd.create', $x, compact(['pegawai']));
    }
 
 

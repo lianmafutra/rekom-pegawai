@@ -6,14 +6,36 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use BayAreaWebPro\SimpleCsv\SimpleCsv;
+use Illuminate\Support\Facades\Storage;
+use EllGreen\LaravelLoadFile\Laravel\Facades\LoadFile;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request){
-        $x['title']         = 'Dashboard';
-        $x['user']          = User::get();
-        $x['role']          = Role::get();
-        $x['permission']    = Permission::get();
-        return view('admin.dashboard', $x);
-    }
+   public function index(Request $request)
+   {
+      $x['title']         = 'Dashboard';
+      $x['user']          = User::get();
+      $x['role']          = Role::get();
+      $x['permission']    = Permission::get();
+
+
+
+
+      // $pegawai = Cache::get('pegawai');
+      // if ($pegawai) {
+      //    return $pegawai->where('nama', 'M. AZMI YASIR YATOEB')->values()->all();
+      // } else {
+      //    $url = 'https://presensi.jambikota.go.id/api/Absen?ABSEN-API-KEY=kominfo';
+      //    $response = Http::withBasicAuth('absen', 'absen2022')->acceptJson()->get($url)->collect();
+      //    $pegawai = Cache::forever('pegawai', $response);
+      // }
+
+  
+
+
+      return view('admin.dashboard', $x);
+   }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8fd796f91da6581373675d0d65fdbc0",
+    "content-hash": "696d83a55177da5c7f1f7c35db9d3a9b",
     "packages": [
         {
             "name": "alexusmai/laravel-file-manager",
@@ -65,6 +65,62 @@
                 "source": "https://github.com/alexusmai/laravel-file-manager/tree/v3.0.3"
             },
             "time": "2022-07-15T12:31:26+00:00"
+        },
+        {
+            "name": "bayareawebpro/laravel-simple-csv",
+            "version": "v2.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bayareawebpro/laravel-simple-csv.git",
+                "reference": "e1f3e9f8d88ac209a850281d636e1a0baf95d640"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bayareawebpro/laravel-simple-csv/zipball/e1f3e9f8d88ac209a850281d636e1a0baf95d640",
+                "reference": "e1f3e9f8d88ac209a850281d636e1a0baf95d640",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "nunomaduro/larastan": "^0.6|^1.0",
+                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0",
+                "phpunit/phpunit": "^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BayAreaWebPro\\SimpleCsv\\SimpleCsvServiceProvider"
+                    ],
+                    "aliases": {
+                        "SimpleCsv": "BayAreaWebPro\\SimpleCsv\\SimpleCsvFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BayAreaWebPro\\SimpleCsv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Alvidrez",
+                    "email": "dan@bayareawebpro.com"
+                }
+            ],
+            "description": "A simple CSV importer/ exporter for Laravel.",
+            "support": {
+                "issues": "https://github.com/bayareawebpro/laravel-simple-csv/issues",
+                "source": "https://github.com/bayareawebpro/laravel-simple-csv/tree/v2.0.7"
+            },
+            "time": "2022-02-09T00:42:48+00:00"
         },
         {
             "name": "biscolab/laravel-recaptcha",
@@ -563,6 +619,63 @@
                 }
             ],
             "time": "2022-06-18T20:57:19+00:00"
+        },
+        {
+            "name": "ellgreen/laravel-loadfile",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ellgreen/laravel-loadfile.git",
+                "reference": "ed31a0cf068473dd548bf43d37ded68cb23094be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ellgreen/laravel-loadfile/zipball/ed31a0cf068473dd548bf43d37ded68cb23094be",
+                "reference": "ed31a0cf068473dd548bf43d37ded68cb23094be",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^8.0|^9.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0|^7.0",
+                "phpunit/phpunit": "^9",
+                "squizlabs/php_codesniffer": "^3.6",
+                "vimeo/psalm": "^4.7"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "EllGreen\\LaravelLoadFile\\Laravel\\Providers\\LaravelLoadFileServiceProvider"
+                    ],
+                    "aliases": {
+                        "LoadFile": "EllGreen\\LaravelLoadFile\\Laravel\\Facades\\LoadFile"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EllGreen\\LaravelLoadFile\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ellis Green",
+                    "email": "devellisper@outlook.com"
+                }
+            ],
+            "description": "A package to help with loading files into MySQL tables",
+            "support": {
+                "issues": "https://github.com/ellgreen/laravel-loadfile/issues",
+                "source": "https://github.com/ellgreen/laravel-loadfile/tree/2.0.0"
+            },
+            "time": "2022-02-16T17:31:21+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -8698,5 +8811,5 @@
         "php": "^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
