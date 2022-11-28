@@ -73,7 +73,7 @@
                         </a>
                     </li>
                 @endcan
-                @can('pengajuan')
+                @can('pengajuan menu')
                     <li class="nav-item">
                         <a href="{{ route('pengajuan.index') }}"
                             class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
@@ -82,6 +82,15 @@
                         </a>
                     </li>
                 @endcan
+                @can('profile menu')
+                <li class="nav-item">
+                    <a href="{{ route('profile.index') }}"
+                        class="nav-link {{ request()->routeIs('profil*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Profil</p>
+                    </a>
+                </li>
+            @endcan
 
                 {{-- <li class="nav-header"></li>
                 <li class="nav-item">

@@ -21,7 +21,7 @@ class PengajuanOPDController extends Controller
    public function index()
    {
       
-      abort_if(Gate::denies('pengajuan'), 403);
+      abort_if(Gate::denies('pengajuan index'), 403);
       
 
       $x['title']     = 'Pengajuan OPD';
