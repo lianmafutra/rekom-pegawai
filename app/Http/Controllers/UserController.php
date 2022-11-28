@@ -78,31 +78,7 @@ class UserController extends Controller
         return back();
     }
 
-      if ($validator->fails()) {
-         return back()->withErrors($validator)
-            ->withInput();
-      }
-      $data = [
-         'name'      => $request->name,
-         'email'     => $request->email,
-      ];
-      if (!empty($request->password)) {
-         $data['password']   = bcrypt($request->password);
-      }
-
-      DB::beginTransaction();
-      try {
-         $user = User::find($request->id);
-         $user->update($data);
-         $user->syncRoles($request->role);
-         DB::commit();
-         Alert::success('Pemberitahuan', 'Data <b>' . $user->name . '</b> berhasil disimpan')->toToast()->toHtml();
-      } catch (\Throwable $th) {
-         DB::rollback();
-         Alert::error('Pemberitahuan', 'Data <b>' . $user->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
-      }
-      return back();
-   }
+  
 
    public function destroy(Request $request)
    {
