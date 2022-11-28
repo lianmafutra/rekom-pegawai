@@ -16,10 +16,6 @@
             }
         });
 
-        $(function () {
-            $('.datatable').DataTable({
-                "stateSave": true
-            });
-        });
+       
     });
 </script>

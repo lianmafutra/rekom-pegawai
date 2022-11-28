@@ -11,10 +11,12 @@
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
+
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
+
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -26,6 +28,7 @@
             margin-right: auto;
             position: absolute
         }
+
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -34,6 +37,7 @@
             background-repeat: no-repeat;
             width: 250px;
         }
+
         .form-control {
             font-size: 14px !important;
         }
@@ -67,7 +71,7 @@
                                 <div class="tab-content">
                                     <div class="row">
                                         <div class="col-md-6 card-body">
-                                            <form name="pengajuan" action="{{ route('pengajuan.store') }}" method="POST"
+                                            <form id="form_pengajuan" action="{{ route('pengajuan.store') }}" method="POST"
                                                 autocomplete="off" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('POST')
@@ -84,12 +88,12 @@
                                                     </select>
                                                     <span class="error-pegawai"></span>
                                                 </div>
-                                               
+
                                                 <div class="form-group">
                                                     <label>Nomor Surat Pengantar</label>
                                                     <input type="text" class="form-control" name="nomor_pengantar"
                                                         placeholder="Nomor Surat Pengantar" value="">
-                                                        <div class="errors"></div>
+                                                    <div class="errors"></div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="bd-highlight">
@@ -149,7 +153,8 @@
                                                 <div class="form-group ">
                                                     <label>Konversi NIP (Optional)</label>
                                                     <input required type="file" data-max-file-size="5 MB"
-                                                        class="filepond" accept="{{ config('upload.pengajuan.filetype') }}"
+                                                        class="filepond"
+                                                        accept="{{ config('upload.pengajuan.filetype') }}"
                                                         name="file_sk_jabatan" placeholder="File SK Jabatan">
                                                 </div>
                                         </div>
@@ -193,7 +198,7 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">Submit Berkas</button>
+                                        <button type="submit" id="btn_submit" class="btn btn-primary">Submit Berkas</button>
                                     </div>
                                     </form>
                                 </div>
@@ -221,6 +226,10 @@
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(document).ready(function() {
+
+
+          
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -283,13 +292,13 @@
                 nomor_pengantar: "Nomor Pengantar Wajib Di isi",
                 rekomendasi: "Jenis RekomendasiNama Wajib Di isi",
             },
-            errorPlacement : 'div',
+            errorPlacement: 'div',
             errorClass: "invalid-feedback",
             errorPlacement: function(error, element) {
-               if(element.hasClass('select2') && element.next('.select2-container').length) {
-        error.insertAfter(element.next('.select2-container'));
-    }
-               error.insertAfter(element);
+                if (element.hasClass('select2') && element.next('.select2-container').length) {
+                    error.insertAfter(element.next('.select2-container'));
+                }
+                error.insertAfter(element);
             },
             highlight: function(element, errorClass, validClass) {
                 $(element).parents("div.control-group").addClass(errorClass).removeClass(validClass);
@@ -305,6 +314,22 @@
             allowInput: true,
             dateFormat: "d-m-Y",
             locale: "id",
+        });
+
+        $("#btn_submit").click(function() {
+         Swal.fire({
+                title: 'Apakah anda yakin ingin mengajukan permohonan ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Lanjutkan',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.value) {
+                    $(this).find('#form_pengajuan').submit();
+                }
+            })
         });
     </script>
 @endpush
