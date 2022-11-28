@@ -27,11 +27,10 @@
                         <div class="card card-primary card-outline">
                             <div class="card-body box-profile">
                                 <div class="text-center">
-                         
                                     <img class="profile-user-img img-fluid img-circle" src="{{ $user->foto_url }}"
                                         alt="User profile picture">
                                 </div>
-                                <h3 class="profile-username text-center">{{ $user->name }}</h3>
+                                <h3 class="profile-username text-center">{{ $user->username }}</h3>
                                 <p class="text-muted text-center">{{ $user->roles->pluck('name')[0] }}</p>
                                 <div class="form-group row">
                                     <div class="text-center col-sm-12">
@@ -59,17 +58,17 @@
                         <div class="card">
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
-                                    <li class="nav-item"><a class="nav-link active" href="#profile"
+                                    <li class="nav-item"><a class="nav-link active" href="#tab_profile"
                                             data-toggle="tab">Profile</a></li>
-                                    <li class="nav-item"><a class="nav-link " href="#settings"
-                                            data-toggle="tab">Settings</a></li>
+                                    <li class="nav-item"><a class="nav-link " href="#tab_password"
+                                            data-toggle="tab">Password</a></li>
                                     <li class="nav-item"><a class="nav-link " href="#settings"
                                             data-toggle="tab">Activity</a></li>
                                 </ul>
                             </div>
                             <div class="card-body">
                                 <div class="tab-content">
-                                    <div class="active tab-pane" id="profile">
+                                    <div class="active tab-pane" id="tab_profile">
                                         <form class="form-horizontal">
                                             <div class="form-group row">
                                                 <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
@@ -94,20 +93,57 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
+                                             <label for="inputEmail" class="col-sm-2 col-form-label">OPD</label>
+                                             <div class="col-sm-10">
+                                                 <input disabled type="text" class="form-control" id="role"
+                                                     placeholder="Username"
+                                                     value="{{ $user->getWithOpd()->nunker }}">
+                                             </div>
+                                         </div>
+                                            <div class="form-group row">
                                                 <label for="inputEmail" class="col-sm-2 col-form-label">Nomor HP</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="kontak"
-                                                        placeholder="Nomor Handphone" value="">
+                                                    <input type="text" name="kontak" class="form-control" id="kontak"
+                                                        placeholder="Nomor Handphone" value="{{ $user->kontak }}">
+                                                        <small class="text-muted">Nomor Kontak WhatsApp harap diisi untuk pengiriman Notifikasi pengajuan Berkas</small>
+                                                      
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
+                                            <div class="modal-footer justify-content-between">
+                                             
                                                 <div class="offset-sm-2 col-sm-10">
                                                     <button type="submit" class="btn btn-primary">Update Profile</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                    <div class=" tab-pane" id="activity">
+                                    <div class=" tab-pane" id="tab_password">
+                                       <div class="modal-body">
+                                          <form name="ubah-password" action="{{ route('password.ubah') }}" method="POST" >
+                                              @csrf
+                                              @method('PUT')
+                                              <div class="form-group">
+                                                  <label>Password Lama <span style="color: red"> *</span> </label>
+                                                  <input required name="password" type="password" class="form-control" id=""
+                                                      placeholder="Password Lama">
+                                              </div>
+                                              <div class="form-group">
+                                                  <label>Password Baru <span style="color: red"> *</span> </label>
+                                                  <input id="password_baru" required name="password_baru" type="password" class="form-control" id=""
+                                                      placeholder="Password Baru">
+                                              </div>
+                                              <div class="form-group">
+                                                  <label>Password Konfirmasi <span style="color: red"> *</span> </label>
+                                                  <input id="password_konfirmasi" required name="password_konfirmasi" type="password" class="form-control" id=""
+                                                      placeholder="Password Konfirmasi">
+                                              </div>
+                          
+                                      </div>
+                                      <div class="modal-footer justify-content-between">
+                                          {{-- <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button> --}}
+                                          <button type="submit" class="btn btn-primary">Ubah Password</button>
+                                      </div>
+                                      </form>
                                     </div>
                                 </div>
                             </div>

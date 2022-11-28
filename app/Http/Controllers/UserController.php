@@ -25,7 +25,7 @@ class UserController extends Controller
    {
       $x['title']     = 'Profile';
       $user = User::find(auth()->user()->id);
-      dd($user);
+  
       return view('admin.profile.index', $x, compact('user'));
    }
 
