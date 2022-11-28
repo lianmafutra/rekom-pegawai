@@ -147,15 +147,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="input-group">
-                            <label>Email</label>
-                            <div class="input-group">
-                                <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" name="email" value="{{ old('email') }}">
-                                @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+                      
                         <div class="input-group">
                             <label>Password</label>
                             <div class="input-group">
@@ -204,23 +196,15 @@
                         @csrf
                         @method("PUT")
                         <div class="input-group">
-                            <label>Name</label>
+                            <label>Username</label>
                             <div class="input-group">
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Name" name="name" id="name" value="{{ old('name') }}">
-                                @error('name')
+                                <input type="text" class="form-control @error('username') is-invalid @enderror" placeholder="Name" name="username" id="username" value="{{ old('username') }}">
+                                @error('username')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-                        <div class="input-group">
-                            <label>Email</label>
-                            <div class="input-group">
-                                <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" name="email" id="email" value="{{ old('email') }}">
-                                @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+                     
                         <div class="input-group">
                             <label>Password</label>
                             <div class="input-group">

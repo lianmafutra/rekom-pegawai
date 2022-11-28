@@ -59,7 +59,7 @@ class PengajuanOPDController extends Controller
       try {
          DB::beginTransaction();
          $input = $request->all();
-         dd($input);
+       
          $pengajuan = Pengajuan::create($input);
          $file_sk_pns = $request->file('file_sk_pns');
          $uploadFile->save($file_sk_pns, 'pengajuan');

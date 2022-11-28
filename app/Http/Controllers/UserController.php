@@ -66,22 +66,15 @@ class UserController extends Controller
             'password'  => ['nullable', 'string'],
             'role'      => ['required']
         ];
-
-        if ($request->email != $request->old_email) {
-            $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users'];
-            $validator = Validator::make($request->all(), $rules);
-        } else {
-            $rules['email'] = ['required', 'string', 'email', 'max:255'];
-            $validator = Validator::make($request->all(), $rules);
-        }
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)
                 ->withInput();
         }
         $data = [
-            'name'      => $request->name,
-            'email'     => $request->email,
+            'username'      => $request->username,
+          
         ];
         if (!empty($request->password)) {
             $data['password']   = bcrypt($request->password);
@@ -93,10 +86,10 @@ class UserController extends Controller
             $user->update($data);
             $user->syncRoles($request->role);
             DB::commit();
-            Alert::success('Pemberitahuan', 'Data <b>' . $user->name . '</b> berhasil disimpan')->toToast()->toHtml();
+            Alert::success('Pemberitahuan', 'Data <b>' . $user->username . '</b> berhasil disimpan')->toToast()->toHtml();
         } catch (\Throwable $th) {
             DB::rollback();
-            Alert::error('Pemberitahuan', 'Data <b>' . $user->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
+            Alert::error('Pemberitahuan', 'Data <b>' . $user->username . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
