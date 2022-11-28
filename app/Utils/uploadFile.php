@@ -14,14 +14,18 @@ class uploadFile
         
          $tahun = Carbon::now()->format('Y');
          $bulan = Carbon::now()->format('m');
-         $path = storage_path('app/public/'.$tahun.'/'.$bulan.'/'.$folder);
+         $custom_path = $tahun.'/'.$bulan.'/'.$folder;
+         $path = storage_path('app/public/'.$custom_path);
    
          if (!File::isDirectory($path)) {
              File::makeDirectory($path, 0777, true, true);
          }
 
          $file->storeAs('public/'.$tahun.'/'.$bulan.'/'.$folder, $name_uniqe);
-         
+         return collect([
+            'nama' => $name_uniqe,
+            'path' => $custom_path,
+        ]);
       } catch (\Throwable $th) {
          return redirect()->back()->with('error', 'Gagal' . $th, 400)->send();
       }

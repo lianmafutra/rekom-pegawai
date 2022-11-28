@@ -39,7 +39,8 @@ class User extends Authenticatable
    public function getFotoUrlAttribute()
    {
       if($this->foto){
-         return url('storage/profile/' . $this->foto);
+         return "http://".request()->getHttpHost(). "/storage/". $this->foto_path."/".$this->foto;
+       
       }else{
             return "http://".request()->getHttpHost()."/img/avatar.png";
       }

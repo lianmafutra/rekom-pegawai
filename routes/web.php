@@ -41,7 +41,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::controller(UserController::class)->group(function () {
       Route::get('user', 'index')->middleware(['permission:read user'])->name('user.index');
       Route::get('user/profile', 'profile')->name('profile.index');
-      Route::put('user/profile/foto', 'ubah_foto')->name('profile.foto');
+      Route::put('user/profile/foto', 'ubah_foto')->name('profile.foto.ubah');
       Route::post('user', 'store')->middleware(['permission:create user'])->name('user.store');
       Route::post('user/show', 'show')->middleware(['permission:read user'])->name('user.show');
       Route::put('user', 'update')->middleware(['permission:update user'])->name('user.update');

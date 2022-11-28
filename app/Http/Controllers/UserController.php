@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Utils\uploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use RealRashid\SweetAlert\Facades\Alert;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -29,10 +29,17 @@ class UserController extends Controller
       return view('admin.profile.index', $x, compact('user'));
    }
 
-   public function ubah_foto()
+   public function ubah_foto(Request $request, User $user, uploadFile $uploadFile)
    {
       try {
          $user = User::find(auth()->user()->id);
+         $files = $request->file('foto');
+         $foto =  $uploadFile->save($files, 'profile');
+         
+         User::where('id', auth()->user()->id)->update([
+            'foto' =>   $foto->get('nama'),
+            'foto_path' =>   $foto->get('path')
+         ]);
        
        
          DB::commit();
