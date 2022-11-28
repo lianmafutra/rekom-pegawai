@@ -4,6 +4,20 @@
     <link href="{{ URL::asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
 @endpush
 @section('content')
+<style>
+   .profile-user-img {
+    object-fit: cover;
+    border: 3px solid #adb5bd;
+    margin: 0 auto;
+    padding: 3px;
+    width: 130px;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: 130px;
+}
+</style>
     <div class="content-wrapper">
         <div class="content-header">
             <div class="container-fluid">

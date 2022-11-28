@@ -21,10 +21,10 @@
                 <i class="fas fa-globe"></i>
             </a>
         </li>
+     
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ asset('template/admin/dist/img/user2-160x160.jpg') }}"
-                    class="user-image img-circle elevation-2" alt="User Image">
+                <img src="{{ $user_data->foto_url }}" class="user-image img-circle elevation-2" alt="User Image">
                 {{-- <span class="d-none d-md-inline">{{ Auth::user()->name }}</span> --}}
             </a>
 
