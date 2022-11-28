@@ -7,6 +7,7 @@ use App\Http\Requests\PengajuanOPDStoreRequest;
 use App\Http\Services\Pegawai\PegawaiService;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
+use App\Models\User;
 use App\Utils\uploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -38,16 +39,14 @@ class PengajuanOPDController extends Controller
    }
 
 
-   public function create(PegawaiService $pegawaiService)
+   public function create(PegawaiService $pegawaiService, User $user)
    {
 
       abort_if(Gate::denies('pengajuan create'), 403);
 
       $x['title']     = 'Buat Pengajuan';
-      $pegawai = $pegawaiService->filterByOPD(4021000000);
+      $pegawai = $pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
-
-
       return view('pengajuan-opd.create', $x, compact('pegawai', 'keperluan'));
    }
 
