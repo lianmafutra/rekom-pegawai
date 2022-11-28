@@ -5,6 +5,7 @@ namespace App\Http\Controllers\pengajuan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
 use App\Http\Services\Pegawai\PegawaiService;
+use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Utils\uploadFile;
 use Illuminate\Http\Request;
@@ -44,7 +45,10 @@ class PengajuanOPDController extends Controller
 
       $x['title']     = 'Buat Pengajuan';
       $pegawai = $pegawaiService->filterByOPD(4021000000);
-      return view('pengajuan-opd.create', $x, compact('pegawai'));
+      $keperluan = Keperluan::get();
+
+
+      return view('pengajuan-opd.create', $x, compact('pegawai', 'keperluan'));
    }
 
 
@@ -55,6 +59,7 @@ class PengajuanOPDController extends Controller
       try {
          DB::beginTransaction();
          $input = $request->all();
+         dd($input);
          $pengajuan = Pengajuan::create($input);
          $file_sk_pns = $request->file('file_sk_pns');
          $uploadFile->save($file_sk_pns, 'pengajuan');

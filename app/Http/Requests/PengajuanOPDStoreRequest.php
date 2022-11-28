@@ -24,8 +24,7 @@ class PengajuanOPDStoreRequest extends FormRequest
     public function rules()
     {
       return [
-         'nama' => 'required',
-         'nip' => 'required',
+         'pegawai' => 'required',
      ];
     }
 }

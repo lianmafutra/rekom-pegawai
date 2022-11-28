@@ -11,12 +11,10 @@
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
-
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
-
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -28,16 +26,16 @@
             margin-right: auto;
             position: absolute
         }
-
-        .profile-custom  {
+        .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
-            border-radius: 10%;
+            border-radius: 5%;
             background-position: center center;
             background-repeat: no-repeat;
             width: 250px;
-            height: 250px;
-             !important;
+        }
+        .form-control {
+            font-size: 14px !important;
         }
     </style>
     <div class="content-wrapper">
@@ -84,11 +82,14 @@
                                                                 {{ $key['nipbaru'] }} )</option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="error-pegawai"></span>
                                                 </div>
+                                               
                                                 <div class="form-group">
                                                     <label>Nomor Surat Pengantar</label>
-                                                    <input type="text" class="form-control" name="nomor_surat"
+                                                    <input type="text" class="form-control" name="nomor_pengantar"
                                                         placeholder="Nomor Surat Pengantar" value="">
+                                                        <div class="errors"></div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="bd-highlight">
@@ -103,7 +104,6 @@
                                                                 <div class="input-group-text"><i class="fa fa-calendar"></i>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -114,8 +114,20 @@
                                                         data-placeholder="-- Pilih Jenis Rekomendasi --"
                                                         style="width: 100%;">
                                                         <option></option>
-                                                        <option>Bebas Hukuman Disiplin</option>
-                                                        <option>Bebas Temuan</option>
+                                                        <option value="disiplin">Bebas Hukuman Disiplin</option>
+                                                        <option value="temuan">Bebas Temuan</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
+                                                    <select name="keperluan" required type=""
+                                                        class="select2-jenis form-control select2bs4"
+                                                        data-placeholder="-- Pilih Jenis Keperluan --" style="width: 100%;">
+                                                        <option></option>
+                                                        @foreach ($keperluan as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->nama }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -169,7 +181,6 @@
                                                         <li class="list-group-item">
                                                             <b>OPD : </b> <a class="float-right opd"></a>
                                                         </li>
-
                                                         <div class="info-data-api profile_data"
                                                             style="display: none; font-style: italic; padding : 20px 0 0 0">
                                                             <span>Data Sinkron dari Dinas BKPSDMD ( 10-12-2022 10:09 ),
@@ -222,7 +233,6 @@
             $('.select2-pegawai').change(function() {
                 $('.loading').css('display', 'block')
                 $('.profile_data').css('display', 'none')
-
                 let nip = $(this).val();
                 $.ajax({
                     url: `{{ url('admin/pegawai/${nip}') }}`,
@@ -239,7 +249,6 @@
                         $('.opd').html(json.nunker)
                         $(".loading").fadeOut(1000);
                         $(".profile_data").fadeIn(1100);
-
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
@@ -264,30 +273,38 @@
             rules: {
                 pegawai: "required",
                 rekomendasi: "required",
+                nomor_pengantar: "required",
+                keperluan: "required",
                 file_sk_cpns: 'required'
             },
             messages: {
-                pegawai: "Nama Wajib Di isi",
+                pegawai: "Pejabat Belum dipilih",
+                keperluan: "Keperluan Rekomendasi Wajib Di isi",
+                nomor_pengantar: "Nomor Pengantar Wajib Di isi",
                 rekomendasi: "Jenis RekomendasiNama Wajib Di isi",
             },
-            errorElement: 'div',
+            errorPlacement : 'div',
             errorClass: "invalid-feedback",
             errorPlacement: function(error, element) {
-                error.insertAfter(element);
+               if(element.hasClass('select2') && element.next('.select2-container').length) {
+        error.insertAfter(element.next('.select2-container'));
+    }
+               error.insertAfter(element);
             },
             highlight: function(element, errorClass, validClass) {
                 $(element).parents("div.control-group").addClass(errorClass).removeClass(validClass);
             },
             unhighlight: function(element, errorClass, validClass) {
                 $(element).parents(".invalid-feedback").removeClass(errorClass).addClass(validClass);
+            },
+            submitHandler: function(form) {
+                form.submit();
             }
         });
-
         flatpickr(".tanggal", {
             allowInput: true,
             dateFormat: "d-m-Y",
             locale: "id",
-
         });
     </script>
 @endpush
