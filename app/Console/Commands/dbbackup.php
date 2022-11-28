@@ -41,7 +41,7 @@ class dbbackup extends Command
 
       $return_var = NULL;
       $output = NULL;
-      $command = "cd C:\laragon\bin\mysql\mysql-5.7.24-winx64\bin && mysqldump -u root -h 127.0.0.1 -paptika112277 db_capilapp > ".database_path() . $ds . 'backup/db.sql';
+      $command = "cd C:\laragon\bin\mysql\mysql-5.7.24-winx64\bin && mysqldump -u root -h 127.0.0.1 -paptika112277 db_rekom_pegawai > ".database_path() . $ds . 'backup/db.sql';
       exec($command, $output, $return_var);
       $this->info("Mysql Dump Success");
       

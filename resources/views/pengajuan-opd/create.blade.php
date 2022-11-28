@@ -4,6 +4,7 @@
     <link href="{{ URL::asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
 @endpush
 @section('content')
     <style>
@@ -14,6 +15,29 @@
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
+        }
+
+        .loading-custom {
+            display: none;
+            z-index: 9999999;
+            left: 0;
+            width: 120px;
+            right: 0;
+            top: 130px;
+            margin-left: auto;
+            margin-right: auto;
+            position: absolute
+        }
+
+        .profile-custom  {
+            border: 1px solid #adb5bd !important;
+            margin: 0 auto;
+            border-radius: 10%;
+            background-position: center center;
+            background-repeat: no-repeat;
+            width: 250px;
+            height: 250px;
+             !important;
         }
     </style>
     <div class="content-wrapper">
@@ -51,7 +75,7 @@
                                                 @method('POST')
                                                 <div class="form-group">
                                                     <label>Nama Pegawai<span style="color: red">*</span></label>
-                                                    <select required type=""
+                                                    <select name="pegawai" required type=""
                                                         class="select2-pegawai form-control select2bs4"
                                                         data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
                                                         <option></option>
@@ -62,8 +86,30 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label>Nomor Surat Pengantar</label>
+                                                    <input type="text" class="form-control" name="nomor_surat"
+                                                        placeholder="Nomor Surat Pengantar" value="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="bd-highlight">
+                                                        <label>Tanggal Surat Pengantar <span
+                                                                style="color: red">*</span></label>
+                                                        <div style="padding: 0 !important; width: 100%"
+                                                            class="input-group ">
+                                                            <input required autocomplete="off" name="tgl_pengantar"
+                                                                class="form-control tanggal" type="text"
+                                                                placeholder="Hari/Bulan/Tahun" data-input>
+                                                            <div class="input-group-append">
+                                                                <div class="input-group-text"><i class="fa fa-calendar"></i>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label>Jenis Rekomendasi<span style="color: red">*</span></label>
-                                                    <select required type=""
+                                                    <select name="rekomendasi" required type=""
                                                         class="select2-jenis form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Rekomendasi --"
                                                         style="width: 100%;">
@@ -100,31 +146,20 @@
                                                 <h6>Detail Pegawai</h6>
                                             </div>
                                             <div class="card-body box-profile">
-                                                <img class="loading"
-                                                    style="display: none; z-index: 9999999;  left: 0; 
-                                                width: 120px;
-                                                right: 0; 
-                                                top: 130px;
-                                                margin-left: auto; 
-                                                margin-right: auto; 
-                                                position: absolute"
-                                                    src="{{ asset('img/loading.gif') }}">
+                                                <img class="loading loading-custom" src="{{ asset('img/loading.gif') }}">
                                                 <div class="profile_data">
                                                     <div class="text-center">
-                                                        <img style="   border: 1px solid #adb5bd !important;
-                                                        margin: 0 auto;
-                                                        padding: 3px !important;
-                                                        width: 133px  !important;"
-                                                            class=" profile-user-img img-fluid img-circle"
-                                                            src="{{ asset('img/avatar.png') }}" alt="User profile picture">
+                                                        <img class="profile-user-img profile-custom  img-fluid img-circle"
+                                                            src="{{ asset('img/avatar.png') }}"
+                                                            alt="User profile picture">
                                                     </div>
                                                     <ul class="list-group list-group-unbordered mb-3 mt-3">
                                                         <li class="list-group-item">
                                                             <b>Nama Lengkap : </b> <a class="float-right nama"></a>
                                                         </li>
                                                         <li class="list-group-item">
-                                                         <b>NIP : </b> <a class="float-right nip"></a>
-                                                     </li>
+                                                            <b>NIP : </b> <a class="float-right nip"></a>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <b>Pangkat/Gol : </b> <a class="float-right pangkat"></a>
                                                         </li>
@@ -134,10 +169,12 @@
                                                         <li class="list-group-item">
                                                             <b>OPD : </b> <a class="float-right opd"></a>
                                                         </li>
-                                                       
+
                                                         <div class="info-data-api profile_data"
                                                             style="display: none; font-style: italic; padding : 20px 0 0 0">
-                                                            <span>Data Sinkron dari Dinas BKPSDMD ( 10-12-2022 10:09 ), Apabila ada data pegawai yang tidak sesuai silahkan menghubungi Dinas Komunikasi & Informatika Kota Jambi</span>
+                                                            <span>Data Sinkron dari Dinas BKPSDMD ( 10-12-2022 10:09 ),
+                                                                Apabila ada data pegawai yang tidak sesuai silahkan
+                                                                menghubungi Dinas Komunikasi & Informatika Kota Jambi</span>
                                                         </div>
                                                     </ul>
                                                 </div>
@@ -161,6 +198,8 @@
     @include('pengajuan-opd.modal-view-file')
 @endsection
 @push('js')
+    <script src="{{ asset('plugins/flatpicker/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
@@ -183,13 +222,7 @@
             $('.select2-pegawai').change(function() {
                 $('.loading').css('display', 'block')
                 $('.profile_data').css('display', 'none')
-                $.ajax({
-                    url: 'https://randomuser.me/api/',
-                    dataType: 'json',
-                    success: function(data) {
-                        $('.profile-user-img').attr("src", data.results[0].picture.large);
-                    }
-                });
+
                 let nip = $(this).val();
                 $.ajax({
                     url: `{{ url('admin/pegawai/${nip}') }}`,
@@ -197,7 +230,9 @@
                     tryCount: 0,
                     retryLimit: 3,
                     success: function(json) {
-                        $('.nama').html(json.nama)
+                        $('.profile-user-img').attr("src",
+                            "https://bkd.jambikota.go.id/simpeg/photo/" + json.photo);
+                        $('.nama').html(json.nama ? json.nama : '-')
                         $('.nip').html(json.nipbaru)
                         $('.pangkat').html(json.pangkat)
                         $('.jabatan').html(json.njab)
@@ -227,15 +262,13 @@
         });
         $("form[name='pengajuan']").validate({
             rules: {
-                nama: "required",
-                nip: {
-                    required: true
-                },
+                pegawai: "required",
+                rekomendasi: "required",
                 file_sk_cpns: 'required'
             },
             messages: {
-                nama: "Nama Wajib Di isi",
-                nip: "NIP Pegawai Wajib di isi",
+                pegawai: "Nama Wajib Di isi",
+                rekomendasi: "Jenis RekomendasiNama Wajib Di isi",
             },
             errorElement: 'div',
             errorClass: "invalid-feedback",
@@ -250,39 +283,11 @@
             }
         });
 
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        })
+        flatpickr(".tanggal", {
+            allowInput: true,
+            dateFormat: "d-m-Y",
+            locale: "id",
 
-        swalWithBootstrapButtons.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                swalWithBootstrapButtons.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Cancelled',
-                    'Your imaginary file is safe :)',
-                    'error'
-                )
-            }
-        })
+        });
     </script>
 @endpush

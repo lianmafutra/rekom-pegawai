@@ -3,6 +3,7 @@
 namespace App\Http\Services\Pegawai;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 
 class PegawaiService
 {
@@ -24,7 +25,6 @@ class PegawaiService
 
    public function filterByOPD($kunker)
    {
-      // sample kominfo
       $pegawai = Cache::get('pegawai')->where('kunker', $kunker)->values()->toArray();
       return $pegawai;
    }
