@@ -36,7 +36,7 @@
             background-position: center center;
             background-repeat: no-repeat;
             width: 250px;
-            object-fit:  cover;
+            object-fit: cover;
             height: 300px;
         }
 
@@ -200,7 +200,8 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" id="btn_submit" class="btn btn-primary">Submit Berkas</button>
+                                        <button type="submit" id="btn_submit" class="btn btn-primary">Submit
+                                            Berkas</button>
                                     </div>
                                     </form>
                                 </div>
@@ -226,11 +227,36 @@
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
     <script>
         $(document).ready(function() {
 
-
-          
+            $("#btn_submit").click(function() {
+                bootbox.confirm({
+                    title: 'Konfirmasi Pengajuan',
+                    message: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
+                    centerVertical: true,
+                    buttons: {
+                        confirm: {
+                            label: 'Ya, Lanjutkan',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Batal',
+                            className: 'btn-secondary'
+                        }
+                    },
+                    callback: function(result) {
+                        let dialog = bootbox.dialog({
+                            message: '<p class="text-center mb-0"><i class="fas fa-spin fa-cog"></i> Mohon Tunggu, sedang mengupload berkas...</p>',
+                            closeButton: false,
+                            centerVertical: true,
+                        });
+                        dialog.modal('hide');
+                        console.log('This was logged in the callback: ' + result);
+                    }
+                });
+            });
 
             $.ajaxSetup({
                 headers: {
@@ -242,7 +268,7 @@
                 allowClear: true
             })
             $('.select2-pegawai').change(function() {
-               $('.profile-user-img').attr("src","");
+                $('.profile-user-img').attr("src", "");
                 $('.loading').css('display', 'block')
                 $('.profile_data').css('display', 'none')
                 let nip = $(this).val();
@@ -252,8 +278,8 @@
                     tryCount: 0,
                     retryLimit: 3,
                     success: function(json) {
-                    
-                     $(".profile_data").fadeIn(1100);
+
+                        $(".profile_data").fadeIn(1100);
                         $('.profile-user-img').attr("src",
                             "https://bkd.jambikota.go.id/simpeg/photo/" + json.photo);
                         $('.nama').html(json.nama ? json.nama : '-')
@@ -262,7 +288,7 @@
                         $('.jabatan').html(json.njab)
                         $('.opd').html(json.nunker)
                         $(".loading").fadeOut(1000);
-                      
+
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
@@ -283,58 +309,11 @@
                 });
             });
         });
-        $("form[name='pengajuan']").validate({
-            rules: {
-                pegawai: "required",
-                rekomendasi: "required",
-                nomor_pengantar: "required",
-                keperluan: "required",
-                file_sk_cpns: 'required'
-            },
-            messages: {
-                pegawai: "Pejabat Belum dipilih",
-                keperluan: "Keperluan Rekomendasi Wajib Di isi",
-                nomor_pengantar: "Nomor Pengantar Wajib Di isi",
-                rekomendasi: "Jenis RekomendasiNama Wajib Di isi",
-            },
-            errorPlacement: 'div',
-            errorClass: "invalid-feedback",
-            errorPlacement: function(error, element) {
-                if (element.hasClass('select2') && element.next('.select2-container').length) {
-                    error.insertAfter(element.next('.select2-container'));
-                }
-                error.insertAfter(element);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).parents("div.control-group").addClass(errorClass).removeClass(validClass);
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).parents(".invalid-feedback").removeClass(errorClass).addClass(validClass);
-            },
-            submitHandler: function(form) {
-                form.submit();
-            }
-        });
+
         flatpickr(".tanggal", {
             allowInput: true,
             dateFormat: "d-m-Y",
             locale: "id",
-        });
-
-        $("#btn_submit").click(function() {
-         Swal.fire({
-                title: 'Apakah anda yakin ingin mengajukan permohonan ?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Lanjutkan',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.value) {
-                    $(this).find('#form_pengajuan').submit();
-                }
-            })
         });
     </script>
 @endpush
