@@ -36,6 +36,8 @@
             background-position: center center;
             background-repeat: no-repeat;
             width: 250px;
+            object-fit:  cover;
+            height: 300px;
         }
 
         .form-control {
@@ -167,7 +169,7 @@
                                                 <div class="profile_data">
                                                     <div class="text-center">
                                                         <img class="profile-user-img profile-custom  img-fluid img-circle"
-                                                            src="{{ asset('img/avatar.png') }}"
+                                                            src="{{ asset('img/avatar2.png') }}"
                                                             alt="User profile picture">
                                                     </div>
                                                     <ul class="list-group list-group-unbordered mb-3 mt-3">
@@ -240,6 +242,7 @@
                 allowClear: true
             })
             $('.select2-pegawai').change(function() {
+               $('.profile-user-img').attr("src","");
                 $('.loading').css('display', 'block')
                 $('.profile_data').css('display', 'none')
                 let nip = $(this).val();
@@ -249,6 +252,8 @@
                     tryCount: 0,
                     retryLimit: 3,
                     success: function(json) {
+                    
+                     $(".profile_data").fadeIn(1100);
                         $('.profile-user-img').attr("src",
                             "https://bkd.jambikota.go.id/simpeg/photo/" + json.photo);
                         $('.nama').html(json.nama ? json.nama : '-')
@@ -257,7 +262,7 @@
                         $('.jabatan').html(json.njab)
                         $('.opd').html(json.nunker)
                         $(".loading").fadeOut(1000);
-                        $(".profile_data").fadeIn(1100);
+                      
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
