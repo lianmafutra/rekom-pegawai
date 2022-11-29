@@ -110,7 +110,10 @@
                     source: "/uploads/"
                 }
             );
+
+            
         });
+     
 
         function myFunction() {
             $('body').on('click', '.filepond--item', function(e) {

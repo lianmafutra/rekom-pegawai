@@ -11,12 +11,10 @@
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
-
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
-
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -28,7 +26,6 @@
             margin-right: auto;
             position: absolute
         }
-
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -39,12 +36,10 @@
             object-fit: cover;
             height: 300px;
         }
-
         .form-control {
             font-size: 14px !important;
         }
-
-        div.errorq {
+        div# {
             position: relative;
             margin-top: -10px;
         }
@@ -95,7 +90,6 @@
                                                     </select>
                                                     <span class="error-pegawai"></span>
                                                 </div>
-
                                                 <div class="form-group">
                                                     <label>Nomor Surat Pengantar</label>
                                                     <input id="nomor_pengantar" type="text" class="form-control"
@@ -151,9 +145,8 @@
                                                 <input id="file_sk" type="file" data-max-file-size="5 MB"
                                                     class="filepond " accept="{{ config('upload.pengajuan.filetype') }}"
                                                     name="file_sk" placeholder="File SK PNS">
-                                                <div class="errorq" id="error_sk"></div>
+                                                <div id="error_sk"></div>
                                                 <div class="form-group ">
-
                                                 </div>
                                                 <div class="form-group ">
                                                     <label>File Surat Pengantar kepala OPD </label>
@@ -161,7 +154,7 @@
                                                         data-max-file-size="5 MB" class="filepond"
                                                         accept="{{ config('upload.pengajuan.filetype') }}"
                                                         name="file_pengantar_opd" placeholder="File Pengantar OPD">
-                                                    <div class="errorq" id="error_pengantar"></div>
+                                                    <div id="error_pengantar"></div>
                                                 </div>
                                                 <div class="form-group ">
                                                     <label>Konversi NIP (Optional)</label>
@@ -170,7 +163,6 @@
                                                         accept="{{ config('upload.pengajuan.filetype') }}"
                                                         name="file_konversi_nip" placeholder="File Konversi NIP">
                                                     <div class="errorq" id="error_konversi"></div>
-
                                                 </div>
                                         </div>
                                         <div style="margin-left: 10px;" class="col-md-5 card ">
@@ -244,98 +236,64 @@
     <script src="https://unpkg.com/just-validate@3.8.1/dist/just-validate.production.min.js"></script>
     <script>
         $(document).ready(function() {
-
-            const validation = new JustValidate('#form_pengajuan');
-
-            validation
-                .addField('#pegawai', [{
-                        rule: 'required',
-                        errorMessage: 'Nama Pegawai Wajib dipilih',
-                    },
-
-                ]).addField('#nomor_pengantar', [{
-                        rule: 'required',
-                        errorMessage: 'Nomor Pengantar Surat Wajib di isi',
-                    },
-
-                ]).addField('#tgl_pengantar', [{
-                        rule: 'required',
-                        errorMessage: 'Tanggal Pengantar Surat Wajib di isi',
-                    },
-
-                ]).addField('#rekomendasi', [{
-                        rule: 'required',
-                        errorMessage: 'Jenis Rekomendasi Wajib di isi',
-                    },
-
-                ]).addField('#keperluan', [{
-                    rule: 'required',
-                    errorMessage: 'Jenis Keperluan Wajib di isi',
-                }, ]).addField(
-                    '#file_sk',
-                    [{
-                        rule: 'minFilesCount',
-                        value: 1,
-                        errorMessage: 'File Wajib Di isi',
-                    }, ], {
-                        errorsContainer: '#error_sk',
-                    }
-                ).addField(
-                    '#file_pengantar_opd',
-                    [{
-                        rule: 'minFilesCount',
-                        value: 1,
-                        errorMessage: 'File Wajib Di isi',
-                    }, ], {
-                        errorsContainer: '#error_pengantar',
-                    }
-                ).addField(
-                    '#file_konversi_nip',
-                    [{
-                        rule: 'minFilesCount',
-                        value: 1,
-                        errorMessage: 'File Wajib Di isi',
-                    }, ], {
-                        errorsContainer: '#error_konversi',
-                    }
-                )
-
-
-
-
-
-            //   $("#btn_submit").click(function() {
-            //       bootbox.confirm({
-            //           title: 'Konfirmasi Pengajuan',
-            //           message: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
-            //           centerVertical: true,
-            //           buttons: {
-            //               confirm: {
-            //                   label: 'Ya, Lanjutkan',
-            //                   className: 'btn-success'
-            //               },
-            //               cancel: {
-            //                   label: 'Batal',
-            //                   className: 'btn-secondary'
-            //               }
-            //           },
-            //           callback: function(result) {
-            //               let dialog = bootbox.dialog({
-            //                   message: '<p class="text-center mb-0"><i class="fas fa-spin fa-cog"></i> Mohon Tunggu, sedang mengupload berkas...</p>',
-            //                   closeButton: false,
-            //                   centerVertical: true,
-            //               });
-            //               dialog.modal('hide');
-            //               console.log('This was logged in the callback: ' + result);
-            //           }
-            //       });
-            //   });
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            const validation = new JustValidate('#form_pengajuan');
+            validation
+                .addField('#pegawai', [{
+                    rule: 'required',
+                    errorMessage: 'Nama Pegawai Wajib dipilih',
+                }, ]).addField('#nomor_pengantar', [{
+                    rule: 'required',
+                    errorMessage: 'Nomor Pengantar Surat Wajib di isi',
+                }, ]).addField('#tgl_pengantar', [{
+                    rule: 'required',
+                    errorMessage: 'Tanggal Pengantar Surat Wajib di isi',
+                }, ]).addField('#rekomendasi', [{
+                    rule: 'required',
+                    errorMessage: 'Jenis Rekomendasi Wajib di isi',
+                }, ]).addField('#keperluan', [{
+                    rule: 'required',
+                    errorMessage: 'Jenis Keperluan Wajib di isi',
+                }]).onSuccess((event) => {
+                    if (file_sk.getFile() == null) {
+                        bootbox.alert({
+                            message: 'File Sk Pangkat Terakhir Wajib Di isi',
+                            size: 'small',
+                            centerVertical: true,
+                        });
+                    } else if (file_pengantar.getFile() == null) {
+                        bootbox.alert({
+                            message: 'File Pengantar Dari OPD  Wajib Di isi',
+                            size: 'small',
+                            centerVertical: true,
+                        });
+                    } else {
+                        bootbox.confirm({
+                            title: 'Konfirmasi Pengajuan',
+                            message: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
+                            centerVertical: true,
+                            buttons: {
+                                confirm: {
+                                    label: 'Ya, Lanjutkan',
+                                    className: 'btn-success'
+                                },
+                                cancel: {
+                                    label: 'Batal',
+                                    className: 'btn-secondary'
+                                }
+                            },
+                            callback: function(result) {
+                                if (result) {
+                                    $("#form_pengajuan").submit();
+                                }
+                            }
+                        });
+                    }
+                });
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
                 allowClear: true
@@ -351,7 +309,6 @@
                     tryCount: 0,
                     retryLimit: 3,
                     success: function(json) {
-
                         $(".profile_data").fadeIn(1100);
                         $('.profile-user-img').attr("src",
                             "https://bkd.jambikota.go.id/simpeg/photo/" + json.photo);
@@ -361,32 +318,34 @@
                         $('.jabatan').html(json.njab)
                         $('.opd').html(json.nunker)
                         $(".loading").fadeOut(1000);
-
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
                     }
                 });
             });
+            // Filepond
             FilePond.registerPlugin(
-                FilePondPluginFileMetadata,
                 FilePondPluginFileEncode,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize);
-            const inputElements = document.querySelectorAll('input.filepond');
-            Array.from(inputElements).forEach(inputElement => {
-                FilePond.create(inputElement, {
-                    storeAsFile: true,
-                    instantUpload: false,
-                    allowProcess: false
-                });
+            const file_sk = FilePond.create(document.querySelector('#file_sk'));
+            const file_pengantar = FilePond.create(document.querySelector('#file_pengantar_opd'));
+            const file_konversi_nip = FilePond.create(document.querySelector('#file_konversi_nip'));
+            file_sk.setOptions({
+                storeAsFile: true,
             });
-        });
-
-        flatpickr(".tanggal", {
-            allowInput: true,
-            dateFormat: "d-m-Y",
-            locale: "id",
+            file_pengantar.setOptions({
+                storeAsFile: true,
+            });
+            file_konversi_nip.setOptions({
+                storeAsFile: true,
+            });
+            flatpickr(".tanggal", {
+                allowInput: true,
+                dateFormat: "d-m-Y",
+                locale: "id",
+            });
         });
     </script>
 @endpush
