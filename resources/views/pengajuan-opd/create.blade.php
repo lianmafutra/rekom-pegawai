@@ -43,6 +43,11 @@
         .form-control {
             font-size: 14px !important;
         }
+
+        div.errorq {
+            position: relative;
+            margin-top: -10px;
+        }
     </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -79,7 +84,7 @@
                                                 @method('POST')
                                                 <div class="form-group">
                                                     <label>Nama Pegawai<span style="color: red">*</span></label>
-                                                    <select name="pegawai" required type=""
+                                                    <select id="pegawai" name="pegawai" required type=""
                                                         class="select2-pegawai form-control select2bs4"
                                                         data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
                                                         <option></option>
@@ -93,8 +98,9 @@
 
                                                 <div class="form-group">
                                                     <label>Nomor Surat Pengantar</label>
-                                                    <input type="text" class="form-control" name="nomor_pengantar"
-                                                        placeholder="Nomor Surat Pengantar" value="">
+                                                    <input id="nomor_pengantar" type="text" class="form-control"
+                                                        name="nomor_pengantar" placeholder="Nomor Surat Pengantar"
+                                                        value="">
                                                     <div class="errors"></div>
                                                 </div>
                                                 <div class="form-group">
@@ -103,7 +109,8 @@
                                                                 style="color: red">*</span></label>
                                                         <div style="padding: 0 !important; width: 100%"
                                                             class="input-group ">
-                                                            <input required autocomplete="off" name="tgl_pengantar"
+                                                            <input style="width: 90%" id="tgl_pengantar" required
+                                                                autocomplete="off" name="tgl_pengantar"
                                                                 class="form-control tanggal" type="text"
                                                                 placeholder="Hari/Bulan/Tahun" data-input>
                                                             <div class="input-group-append">
@@ -115,7 +122,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Jenis Rekomendasi<span style="color: red">*</span></label>
-                                                    <select name="rekomendasi" required type=""
+                                                    <select id="rekomendasi" name="rekomendasi" required type=""
                                                         class="select2-jenis form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Rekomendasi --"
                                                         style="width: 100%;">
@@ -126,7 +133,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
-                                                    <select name="keperluan" required type=""
+                                                    <select id="keperluan" name="keperluan" required type=""
                                                         class="select2-jenis form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Keperluan --" style="width: 100%;">
                                                         <option></option>
@@ -140,24 +147,30 @@
                                                     <label>Catatan Tambahan</label>
                                                     <textarea class="form-control" rows="3" placeholder="Tuliskan Catatan Tambahan (Opsional)"></textarea>
                                                 </div>
+                                                <label>File SK Pangkat Terakhir</label>
+                                                <input id="file_sk" type="file" data-max-file-size="5 MB"
+                                                    class="filepond " accept="{{ config('upload.pengajuan.filetype') }}"
+                                                    name="file_sk" placeholder="File SK PNS">
+                                                <div class="errorq" id="error_sk"></div>
                                                 <div class="form-group ">
-                                                    <label>File SK Pangkat Terakhir</label>
-                                                    <input required type="file" data-max-file-size="5 MB"
-                                                        class="filepond" accept="{{ config('upload.pengajuan.filetype') }}"
-                                                        name="file_sk_pns" placeholder="File SK PNS">
+
                                                 </div>
                                                 <div class="form-group ">
                                                     <label>File Surat Pengantar kepala OPD </label>
-                                                    <input required type="file" data-max-file-size="5 MB"
-                                                        class="filepond" accept="{{ config('upload.pengajuan.filetype') }}"
-                                                        name="file_sk_cpns" placeholder="File SK CPNS">
+                                                    <input id="file_pengantar_opd" type="file"
+                                                        data-max-file-size="5 MB" class="filepond"
+                                                        accept="{{ config('upload.pengajuan.filetype') }}"
+                                                        name="file_pengantar_opd" placeholder="File Pengantar OPD">
+                                                    <div class="errorq" id="error_pengantar"></div>
                                                 </div>
                                                 <div class="form-group ">
                                                     <label>Konversi NIP (Optional)</label>
-                                                    <input required type="file" data-max-file-size="5 MB"
-                                                        class="filepond"
+                                                    <input id="file_konversi_nip" required type="file"
+                                                        data-max-file-size="5 MB" class="filepond"
                                                         accept="{{ config('upload.pengajuan.filetype') }}"
-                                                        name="file_sk_jabatan" placeholder="File SK Jabatan">
+                                                        name="file_konversi_nip" placeholder="File Konversi NIP">
+                                                    <div class="errorq" id="error_konversi"></div>
+
                                                 </div>
                                         </div>
                                         <div style="margin-left: 10px;" class="col-md-5 card ">
@@ -228,35 +241,95 @@
     <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
+    <script src="https://unpkg.com/just-validate@3.8.1/dist/just-validate.production.min.js"></script>
     <script>
         $(document).ready(function() {
 
-            $("#btn_submit").click(function() {
-                bootbox.confirm({
-                    title: 'Konfirmasi Pengajuan',
-                    message: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
-                    centerVertical: true,
-                    buttons: {
-                        confirm: {
-                            label: 'Ya, Lanjutkan',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Batal',
-                            className: 'btn-secondary'
-                        }
+            const validation = new JustValidate('#form_pengajuan');
+
+            validation
+                .addField('#pegawai', [{
+                        rule: 'required',
+                        errorMessage: 'Nama Pegawai Wajib dipilih',
                     },
-                    callback: function(result) {
-                        let dialog = bootbox.dialog({
-                            message: '<p class="text-center mb-0"><i class="fas fa-spin fa-cog"></i> Mohon Tunggu, sedang mengupload berkas...</p>',
-                            closeButton: false,
-                            centerVertical: true,
-                        });
-                        dialog.modal('hide');
-                        console.log('This was logged in the callback: ' + result);
+
+                ]).addField('#nomor_pengantar', [{
+                        rule: 'required',
+                        errorMessage: 'Nomor Pengantar Surat Wajib di isi',
+                    },
+
+                ]).addField('#tgl_pengantar', [{
+                        rule: 'required',
+                        errorMessage: 'Tanggal Pengantar Surat Wajib di isi',
+                    },
+
+                ]).addField('#rekomendasi', [{
+                        rule: 'required',
+                        errorMessage: 'Jenis Rekomendasi Wajib di isi',
+                    },
+
+                ]).addField('#keperluan', [{
+                    rule: 'required',
+                    errorMessage: 'Jenis Keperluan Wajib di isi',
+                }, ]).addField(
+                    '#file_sk',
+                    [{
+                        rule: 'minFilesCount',
+                        value: 1,
+                        errorMessage: 'File Wajib Di isi',
+                    }, ], {
+                        errorsContainer: '#error_sk',
                     }
-                });
-            });
+                ).addField(
+                    '#file_pengantar_opd',
+                    [{
+                        rule: 'minFilesCount',
+                        value: 1,
+                        errorMessage: 'File Wajib Di isi',
+                    }, ], {
+                        errorsContainer: '#error_pengantar',
+                    }
+                ).addField(
+                    '#file_konversi_nip',
+                    [{
+                        rule: 'minFilesCount',
+                        value: 1,
+                        errorMessage: 'File Wajib Di isi',
+                    }, ], {
+                        errorsContainer: '#error_konversi',
+                    }
+                )
+
+
+
+
+
+            //   $("#btn_submit").click(function() {
+            //       bootbox.confirm({
+            //           title: 'Konfirmasi Pengajuan',
+            //           message: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
+            //           centerVertical: true,
+            //           buttons: {
+            //               confirm: {
+            //                   label: 'Ya, Lanjutkan',
+            //                   className: 'btn-success'
+            //               },
+            //               cancel: {
+            //                   label: 'Batal',
+            //                   className: 'btn-secondary'
+            //               }
+            //           },
+            //           callback: function(result) {
+            //               let dialog = bootbox.dialog({
+            //                   message: '<p class="text-center mb-0"><i class="fas fa-spin fa-cog"></i> Mohon Tunggu, sedang mengupload berkas...</p>',
+            //                   closeButton: false,
+            //                   centerVertical: true,
+            //               });
+            //               dialog.modal('hide');
+            //               console.log('This was logged in the callback: ' + result);
+            //           }
+            //       });
+            //   });
 
             $.ajaxSetup({
                 headers: {

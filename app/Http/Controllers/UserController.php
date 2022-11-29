@@ -29,18 +29,18 @@ class UserController extends Controller
       return view('admin.profile.index', $x, compact('user'));
    }
 
-   public function ubah_foto(Request $request, User $user, uploadFile $uploadFile)
+   public function ubah_foto(Request $request, uploadFile $uploadFile)
    {
       try {
          $user = User::find(auth()->user()->id);
          $files = $request->file('foto');
+   
          $foto =  $uploadFile->save($files, 'profile');
-         
+       
          User::where('id', auth()->user()->id)->update([
             'foto' =>   $foto->get('nama'),
             'foto_path' =>   $foto->get('path')
          ]);
-       
        
          DB::commit();
          Alert::success('Pemberitahuan', 'Data <b>' . $user->name . '</b> berhasil disimpan')->toToast()->toHtml();
