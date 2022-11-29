@@ -91,7 +91,7 @@
                                                     <span class="error-pegawai"></span>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Nomor Surat Pengantar</label>
+                                                    <label>Nomor Surat Pengantar <span style="color: red">*</span></label>
                                                     <input id="nomor_pengantar" type="text" class="form-control"
                                                         name="nomor_pengantar" placeholder="Nomor Surat Pengantar"
                                                         value="">
@@ -141,7 +141,7 @@
                                                     <label>Catatan Tambahan</label>
                                                     <textarea class="form-control" rows="3" placeholder="Tuliskan Catatan Tambahan (Opsional)"></textarea>
                                                 </div>
-                                                <label>File SK Pangkat Terakhir</label>
+                                                <label>File SK Pangkat Terakhir<span style="color: red">*</span></label>
                                                 <input id="file_sk" type="file" data-max-file-size="5 MB"
                                                     class="filepond " accept="{{ config('upload.pengajuan.filetype') }}"
                                                     name="file_sk" placeholder="File SK PNS">
@@ -149,7 +149,7 @@
                                                 <div class="form-group ">
                                                 </div>
                                                 <div class="form-group ">
-                                                    <label>File Surat Pengantar kepala OPD </label>
+                                                    <label>File Surat Pengantar kepala OPD <span style="color: red">*</span></label>
                                                     <input id="file_pengantar_opd" type="file"
                                                         data-max-file-size="5 MB" class="filepond"
                                                         accept="{{ config('upload.pengajuan.filetype') }}"
