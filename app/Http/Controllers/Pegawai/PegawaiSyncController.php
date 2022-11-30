@@ -9,6 +9,7 @@ class PegawaiSyncController extends Controller
 {
 
    public function getPegawaiByNip($nip, PegawaiService $pegawaiService){
-      return $pegawaiService->filterByNIP($nip);
+      
+      return response()->json($pegawaiService->filterByNIP($nip)[0]);
    }
 }

@@ -91,7 +91,7 @@
                     data: 'nama',
                 },
                 {
-                    data: 'pengirim_id',
+                    data: 'nunker',
                 },
                 {
                     data: 'tgl_kirim',

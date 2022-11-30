@@ -3,6 +3,7 @@
 namespace App\Http\Services\Pegawai;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
 class PegawaiService
@@ -11,7 +12,7 @@ class PegawaiService
    {
       $pegawai = Cache::get('pegawai');
       if (Cache::has('pegawai') == false || $pegawai== null) {
-         $url = 'https://presensi.jambikota.go.id/api/Absen?ABSEN-API-KEY=kominfo';
+         $url = Config::get('global.url.bkd.pegawai');
          $response = Http::withBasicAuth('absen', 'absen2022')->acceptJson()->get($url)->collect();
          $pegawai = Cache::forever('pegawai', $response);
       } 
@@ -20,7 +21,7 @@ class PegawaiService
    public function filterByNIP($nip)
    {
       $pegawai = Cache::get('pegawai')->where('nipbaru', $nip)->values()->toArray();
-      return response()->json($pegawai[0]);
+      return $pegawai;
    }
 
    public function filterByOPD($kunker)

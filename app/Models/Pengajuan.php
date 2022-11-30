@@ -20,5 +20,9 @@ class Pengajuan extends Model
    public function getFileUrlAttribute() {
       return url('storage/profile/'.$this->foto);
  }
+
+ public function file() { 
+   return $this->hasMany(File::class);
+ }
  
 }

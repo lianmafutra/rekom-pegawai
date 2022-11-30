@@ -121,18 +121,19 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Jenis Rekomendasi<span style="color: red">*</span></label>
-                                                    <select id="rekomendasi" name="rekomendasi" required type=""
+                                                    <select id="rekom_jenis" name="rekom_jenis" required type=""
                                                         class="select2 form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Rekomendasi --"
                                                         style="width: 100%;">
                                                         <option></option>
-                                                        <option value="disiplin">Bebas Hukuman Disiplin</option>
-                                                        <option value="temuan">Bebas Temuan</option>
+                                                        @foreach ($rekom_jenis as $key => $item)
+                                                        <option value="{{ $key }}">{{ $item }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
-                                                    <select id="keperluan" name="keperluan" required type=""
+                                                    <select id="rekom_keperluan_id" name="rekom_keperluan_id" required type=""
                                                         class="select2 form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Keperluan --" style="width: 100%;">
                                                         <option></option>
@@ -144,7 +145,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Catatan Tambahan</label>
-                                                    <textarea class="form-control" rows="3" placeholder="Tuliskan Catatan Tambahan (Opsional)"></textarea>
+                                                    <textarea name="catatan" class="form-control" rows="3" placeholder="Tuliskan Catatan Tambahan (Opsional)"></textarea>
                                                 </div>
                                                 <label>File SK Pangkat Terakhir<span style="color: red">*</span></label>
                                                 <input id="file_sk" type="file" data-max-file-size="5 MB"
@@ -258,10 +259,10 @@
                 }, ]).addField('#tgl_pengantar', [{
                     rule: 'required',
                     errorMessage: 'Tanggal Pengantar Surat Wajib di isi',
-                }, ]).addField('#rekomendasi', [{
+                }, ]).addField('#rekom_jenis', [{
                     rule: 'required',
                     errorMessage: 'Jenis Rekomendasi Wajib di isi',
-                }, ]).addField('#keperluan', [{
+                }, ]).addField('#rekom_keperluan_id', [{
                     rule: 'required',
                     errorMessage: 'Jenis Keperluan Wajib di isi',
                 }]).onSuccess((event) => {
@@ -304,11 +305,11 @@
             // select2
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
-                allowClear: true
+               //  allowClear: true
             })
             // select2 validation
             $('.select2').change(function() {
-               validation.revalidate().then(isValid => {})()
+               
                $(this).closest("div").find('.just-validate-error-label').remove() 
             })
 
@@ -325,7 +326,7 @@
                     success: function(json) {
                         $(".profile_data").fadeIn(1100);
                         $('.profile-user-img').attr("src",
-                            "https://bkd.jambikota.go.id/simpeg/photo/" + json.photo);
+                           @json($url_foto) + json.photo);
                         $('.nama').html(json.nama ? json.nama : '-')
                         $('.nip').html(json.nipbaru)
                         $('.pangkat').html(json.pangkat)
