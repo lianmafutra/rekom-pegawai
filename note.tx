@@ -1,0 +1,8 @@
+
+progress
+validasi form request pengajuan
+   validasi mime type file
+validasi authorized data cache sesuai opd
+data waktu sinkron terakhi tampil di form pengajuan opd
+
+pengirim/auth untuk pengajuan opd relasi, catat langsung
