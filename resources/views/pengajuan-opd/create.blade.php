@@ -11,10 +11,12 @@
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
+
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
+
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -26,6 +28,7 @@
             margin-right: auto;
             position: absolute
         }
+
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -36,9 +39,11 @@
             object-fit: cover;
             height: 300px;
         }
+
         .form-control {
             font-size: 14px !important;
         }
+
         div# {
             position: relative;
             margin-top: -10px;
@@ -80,7 +85,7 @@
                                                 <div class="form-group">
                                                     <label>Nama Pegawai<span style="color: red">*</span></label>
                                                     <select id="pegawai" name="pegawai" required type=""
-                                                        class="select2-pegawai form-control select2bs4"
+                                                        class="select2 select2-pegawai form-control select2bs4"
                                                         data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
                                                         <option></option>
                                                         @foreach ($pegawai as $item => $key)
@@ -117,7 +122,7 @@
                                                 <div class="form-group">
                                                     <label>Jenis Rekomendasi<span style="color: red">*</span></label>
                                                     <select id="rekomendasi" name="rekomendasi" required type=""
-                                                        class="select2-jenis form-control select2bs4"
+                                                        class="select2 form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Rekomendasi --"
                                                         style="width: 100%;">
                                                         <option></option>
@@ -128,7 +133,7 @@
                                                 <div class="form-group">
                                                     <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
                                                     <select id="keperluan" name="keperluan" required type=""
-                                                        class="select2-jenis form-control select2bs4"
+                                                        class="select2 form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Keperluan --" style="width: 100%;">
                                                         <option></option>
                                                         @foreach ($keperluan as $item)
@@ -149,7 +154,8 @@
                                                 <div class="form-group ">
                                                 </div>
                                                 <div class="form-group ">
-                                                    <label>File Surat Pengantar kepala OPD <span style="color: red">*</span></label>
+                                                    <label>File Surat Pengantar kepala OPD <span
+                                                            style="color: red">*</span></label>
                                                     <input id="file_pengantar_opd" type="file"
                                                         data-max-file-size="5 MB" class="filepond"
                                                         accept="{{ config('upload.pengajuan.filetype') }}"
@@ -294,10 +300,18 @@
                         });
                     }
                 });
+
+            // select2
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
                 allowClear: true
             })
+            // select2 validation
+            $('.select2').change(function() {
+               validation.revalidate().then(isValid => {})()
+               $(this).closest("div").find('.just-validate-error-label').remove() 
+            })
+
             $('.select2-pegawai').change(function() {
                 $('.profile-user-img').attr("src", "");
                 $('.loading').css('display', 'block')
