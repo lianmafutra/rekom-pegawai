@@ -69,6 +69,36 @@ LOCK TABLES `failed_jobs` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `file`
+--
+
+DROP TABLE IF EXISTS `file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `file` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` varchar(500) DEFAULT NULL,
+  `name_origin` text,
+  `name_random` text,
+  `path` varchar(500) DEFAULT NULL,
+  `size` varchar(500) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `file`
+--
+
+LOCK TABLES `file` WRITE;
+/*!40000 ALTER TABLE `file` DISABLE KEYS */;
+INSERT INTO `file` VALUES (21,'8b90e5ab-237b-4d7b-bc7b-0138af1a3d54','banner_jelajah.png','banner_jelajah-1669796041.png','2022/11/pengajuan','314976','2022-11-30 08:14:01','2022-11-30 08:14:01'),(22,'ed8fd7ec-5728-4670-8a80-778abe61ba8b','IC.png','IC-1669796041.png','2022/11/pengajuan','44281','2022-11-30 08:14:01','2022-11-30 08:14:01'),(23,'d1095a5a-7c44-477e-9269-8e34123ee3f4','icon_sipraktis.jpg','icon_sipraktis-1669796180.jpg','2022/11/pengajuan','39537','2022-11-30 08:16:20','2022-11-30 08:16:20'),(24,'09d96f99-34c7-4ea5-9982-0c8e5d089c8a','pembayaran.png','pembayaran-1669796180.png','2022/11/pengajuan','52962','2022-11-30 08:16:20','2022-11-30 08:16:20'),(29,'74919b08-7d2d-46b2-a09c-ba2331b808d8','banner_jelajah 1.png','banner_jelajah 1-1669798850.png','2022/11/pengajuan','843357','2022-11-30 09:00:50','2022-11-30 09:00:50'),(30,'32caa797-63d1-4c40-aa15-4bf66d28791a','6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669798850.jpg','2022/11/pengajuan','152075','2022-11-30 09:00:50','2022-11-30 09:00:50'),(31,'503d1982-360a-4820-9a67-b7975b6b349a','Untitled.png','Untitled-1669798980.png','2022/11/pengajuan','50715','2022-11-30 09:03:00','2022-11-30 09:03:00'),(32,'a52dc97a-2250-40c8-a062-3304406679b7','6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669798980.jpg','2022/11/pengajuan','152075','2022-11-30 09:03:00','2022-11-30 09:03:00'),(33,'8dbe4dbb-c9a5-4775-8379-ee45865fd2f2','6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669799009.jpg','2022/11/pengajuan','152075','2022-11-30 09:03:29','2022-11-30 09:03:29'),(34,'187cd320-6c4d-4ed2-8636-568023b393a4','6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669799009.jpg','2022/11/pengajuan','152075','2022-11-30 09:03:29','2022-11-30 09:03:29'),(35,'fd8512d9-88b7-426b-a07c-422c3abb2264','6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669799009.jpg','2022/11/pengajuan','152075','2022-11-30 09:03:29','2022-11-30 09:03:29'),(40,'c8e1df32-350d-4836-a591-8fe515386989','317381086_8557266410980669_2210976243878724629_n.jpg','317381086_8557266410980669_2210976243878724629_n-1669799530.jpg','2022/11/pengajuan','61314','2022-11-30 09:12:10','2022-11-30 09:12:10'),(41,'63ef18fc-e243-4330-a886-705c439c0b39','icon_sipraktis.jpg','icon_sipraktis-1669799530.jpg','2022/11/pengajuan','39537','2022-11-30 09:12:10','2022-11-30 09:12:10'),(42,'9dcee0b1-49e2-4de7-ae64-3b8419c94cbe','banner_jelajah 1.png','banner_jelajah 1-1669799652.png','2022/11/pengajuan','843357','2022-11-30 09:14:12','2022-11-30 09:14:12'),(43,'4f57d315-692a-4bf0-b1e7-2ed7aeb09475','pembayaran.png','pembayaran-1669799652.png','2022/11/pengajuan','52962','2022-11-30 09:14:12','2022-11-30 09:14:12'),(44,'f5be5884-8acb-407e-8c86-7202137449b2','banner_jelajah.png','banner_jelajah-1669800005.png','2022/11/pengajuan','314976','2022-11-30 09:20:05','2022-11-30 09:20:05'),(45,'8a40e92c-e042-444d-a340-f6d5aa7f080e','IC.png','IC-1669800005.png','2022/11/pengajuan','44281','2022-11-30 09:20:05','2022-11-30 09:20:05');
+/*!40000 ALTER TABLE `file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `keperluan`
 --
 
@@ -232,14 +262,25 @@ DROP TABLE IF EXISTS `pengajuan`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pengajuan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nip` varchar(16) DEFAULT NULL,
+  `nip` varchar(20) DEFAULT NULL,
+  `gldepan` varchar(500) DEFAULT NULL,
+  `glblk` varchar(500) DEFAULT NULL,
   `nama` varchar(500) DEFAULT NULL,
-  `pangkat` varchar(500) DEFAULT NULL,
   `jabatan` varchar(500) DEFAULT NULL,
-  `opd_nama` varchar(500) DEFAULT NULL,
+  `kunker` varchar(500) DEFAULT NULL,
+  `nunker` varchar(500) DEFAULT NULL,
+  `kjab` varchar(500) DEFAULT NULL,
+  `njab` varchar(500) DEFAULT NULL,
+  `keselon` varchar(500) DEFAULT NULL,
+  `neselon` varchar(500) DEFAULT NULL,
+  `kgolru` varchar(500) DEFAULT NULL,
+  `ngolru` varchar(500) DEFAULT NULL,
+  `pangkat` varchar(500) DEFAULT NULL,
+  `photo` varchar(500) DEFAULT NULL,
   `opd_id` varchar(500) DEFAULT NULL,
-  `no_surat_pengantar` varchar(500) DEFAULT NULL,
-  `tgl_surat_pengantar` varchar(500) DEFAULT NULL,
+  `opd_nama` varchar(500) DEFAULT NULL,
+  `nomor_pengantar` varchar(500) DEFAULT NULL,
+  `tgl_surat_pengantar` date DEFAULT NULL,
   `rekom_jenis` enum('DISIPLIN','TEMUAN') DEFAULT NULL,
   `rekom_keperluan_id` int(11) DEFAULT NULL,
   `pengirim_id` int(11) DEFAULT NULL,
@@ -249,7 +290,7 @@ CREATE TABLE `pengajuan` (
   `file_pengantar` varchar(500) DEFAULT NULL,
   `file_konversi_nip` varchar(500) DEFAULT NULL,
   `catatan` text,
-  `uuid` int(11) NOT NULL DEFAULT '0',
+  `uuid` varchar(500) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -258,7 +299,7 @@ CREATE TABLE `pengajuan` (
   KEY `fk_pengajuan_users` (`pengirim_id`),
   CONSTRAINT `fk_pengajuan_opd` FOREIGN KEY (`pengirim_opd_id`) REFERENCES `opd` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pengajuan_opd_0` FOREIGN KEY (`penerima_opd_id`) REFERENCES `opd` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,6 +308,7 @@ CREATE TABLE `pengajuan` (
 
 LOCK TABLES `pengajuan` WRITE;
 /*!40000 ALTER TABLE `pengajuan` DISABLE KEYS */;
+INSERT INTO `pengajuan` VALUES (21,'197010041998032005','','S.T.P, ME','LIANA ANDRIANI',NULL,'4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','40070','KEPALA BADAN','22','II.B','142','IV/b','PEMBINA TK. I','010262026.jpg',NULL,NULL,'12313',NULL,'DISIPLIN',1,NULL,NULL,NULL,'8b90e5ab-237b-4d7b-bc7b-0138af1a3d54','ed8fd7ec-5728-4670-8a80-778abe61ba8b','','ini catatan','0','2022-11-30 08:14:01','2022-11-30 08:14:01'),(22,'196810241989021001','','S.Sos','SUSANTO',NULL,'4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','400702','KABID. PENGADAAN, PEMBERHENTIAN & INFORMASI  ','32','III.B','134','III/d','PENATA TK. I','196810241989021001.jpg',NULL,NULL,'12313',NULL,'TEMUAN',9,NULL,NULL,NULL,'d1095a5a-7c44-477e-9269-8e34123ee3f4','09d96f99-34c7-4ea5-9982-0c8e5d089c8a','','ini catatan','0','2022-11-30 08:16:20','2022-11-30 08:16:20'),(23,'196902201991031005','','SH','UMAR DANI',NULL,'4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','400703','KABID. MUTASI & PROMOSI','32','III.B','134','III/d','PENATA TK. I','196902201991031005.jpg',NULL,NULL,'12313',NULL,'DISIPLIN',1,NULL,NULL,NULL,'74919b08-7d2d-46b2-a09c-ba2331b808d8','32caa797-63d1-4c40-aa15-4bf66d28791a',NULL,'ini catatan','0','2022-11-30 09:00:50','2022-11-30 09:00:50'),(24,'198103272009031005','','SP, ME','ROBBY ISKANDAR PUTRA',NULL,'4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','400704','KABID. PENGEMBANGAN KOMPETENSI APARATUR','32','III.B','134','III/d','PENATA TK. I','198103272009031005.jpg',NULL,NULL,'12313',NULL,'DISIPLIN',1,NULL,NULL,NULL,'503d1982-360a-4820-9a67-b7975b6b349a','a52dc97a-2250-40c8-a062-3304406679b7',NULL,'ini catatan','0','2022-11-30 09:03:00','2022-11-30 09:03:00'),(25,'198001312009032004','','SH, MH','YENI',NULL,'4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','400705','KABID. PENILAIAN KINERJA APARATUR & PENGHARGAAN ','41','IV.A','133','III/c','PENATA','198001312009032004.jpg',NULL,NULL,'12313',NULL,'DISIPLIN',1,NULL,NULL,NULL,'8dbe4dbb-c9a5-4775-8379-ee45865fd2f2','187cd320-6c4d-4ed2-8636-568023b393a4','fd8512d9-88b7-426b-a07c-422c3abb2264','ini catatan','0','2022-11-30 09:03:29','2022-11-30 09:03:29'),(26,'197010041998032005','','S.T.P, ME','LIANA ANDRIANI',NULL,'4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','40070','KEPALA BADAN','22','II.B','142','IV/b','PEMBINA TK. I','010262026.jpg',NULL,NULL,'12313',NULL,'DISIPLIN',1,NULL,NULL,NULL,'c8e1df32-350d-4836-a591-8fe515386989','63ef18fc-e243-4330-a886-705c439c0b39',NULL,'ini catatan','9bf30bef-8b36-4220-ade8-2eada2ac02c5','2022-11-30 09:12:10','2022-11-30 09:12:10'),(27,'197010041998032005','','S.T.P, ME','LIANA ANDRIANI',NULL,'4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','40070','KEPALA BADAN','22','II.B','142','IV/b','PEMBINA TK. I','010262026.jpg',NULL,NULL,'12313',NULL,'DISIPLIN',1,1,NULL,NULL,'9dcee0b1-49e2-4de7-ae64-3b8419c94cbe','4f57d315-692a-4bf0-b1e7-2ed7aeb09475',NULL,'ini catatan','0b3336d9-b566-4ea3-a7e7-119b78680bd4','2022-11-30 09:14:12','2022-11-30 09:14:12'),(28,'197010041998032005','','S.T.P, ME','LIANA ANDRIANI',NULL,'4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','40070','KEPALA BADAN','22','II.B','142','IV/b','PEMBINA TK. I','010262026.jpg',NULL,NULL,'12313','2022-11-02','DISIPLIN',1,1,NULL,NULL,'f5be5884-8acb-407e-8c86-7202137449b2','8a40e92c-e042-444d-a340-f6d5aa7f080e',NULL,'ini catatan','2b66e2de-984f-4802-bc08-2438530db7ed','2022-11-30 09:20:05','2022-11-30 09:20:05');
 /*!40000 ALTER TABLE `pengajuan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,7 +447,7 @@ CREATE TABLE `roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -473,7 +515,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -495,4 +537,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-29 16:27:45
+-- Dump completed on 2022-11-30 16:24:39
