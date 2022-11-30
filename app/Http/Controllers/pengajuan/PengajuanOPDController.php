@@ -10,6 +10,7 @@ use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Models\User;
 use App\Utils\uploadFile;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -71,25 +72,25 @@ class PengajuanOPDController extends Controller
 
       
          $pegawai = Pengajuan::create([
-            'nip'             => $pegawai_cache['nipbaru'],
-            'gldepan'         => $pegawai_cache['gldepan'],
-            'glblk'           => $pegawai_cache['glblk'],
-            'nama'            => $pegawai_cache['nama'],
-            'kunker'          => $pegawai_cache['kunker'],
-            'nunker'          => $pegawai_cache['nunker'],
-            'kjab'            => $pegawai_cache['kjab'],
-            'njab'            => $pegawai_cache['njab'],
-            'keselon'         => $pegawai_cache['keselon'],
-            'neselon'         => $pegawai_cache['neselon'],
-            'kgolru'          => $pegawai_cache['kgolru'],
-            'ngolru'          => $pegawai_cache['ngolru'],
-            'pangkat'         => $pegawai_cache['pangkat'],
-            'photo'           => $pegawai_cache['photo'],
-            'nomor_pengantar' => $request->nomor_pengantar,
-            // 'tgl_surat_pengantar' => '',
-            'rekom_jenis'        => $request->rekom_jenis,
-            'rekom_keperluan_id' => $request->rekom_keperluan_id,
-            // 'pengirim_id'         => '',
+            'nip'                 => $pegawai_cache['nipbaru'],
+            'gldepan'             => $pegawai_cache['gldepan'],
+            'glblk'               => $pegawai_cache['glblk'],
+            'nama'                => $pegawai_cache['nama'],
+            'kunker'              => $pegawai_cache['kunker'],
+            'nunker'              => $pegawai_cache['nunker'],
+            'kjab'                => $pegawai_cache['kjab'],
+            'njab'                => $pegawai_cache['njab'],
+            'keselon'             => $pegawai_cache['keselon'],
+            'neselon'             => $pegawai_cache['neselon'],
+            'kgolru'              => $pegawai_cache['kgolru'],
+            'ngolru'              => $pegawai_cache['ngolru'],
+            'pangkat'             => $pegawai_cache['pangkat'],
+            'photo'               => $pegawai_cache['photo'],
+            'nomor_pengantar'     => $request->nomor_pengantar,
+            'tgl_surat_pengantar' =>$request->tgl_pengantar,
+            'rekom_jenis'         => $request->rekom_jenis,
+            'rekom_keperluan_id'  => $request->rekom_keperluan_id,
+            'pengirim_id'         => auth()->user()->id,
             // 'penerima_opd_id'     => '',
             // 'pengirim_opd_id'     => '',
             'file_sk_terakhir'  => $file_sk_terakhir->get('file_id') ,
