@@ -10,4 +10,8 @@ class Keperluan extends Model
     use HasFactory;
     protected $table = 'keperluan';
     protected $guarded = []; 
+
+    public function pengajuan(){
+      return $this->hasMany(Pengajuan::class);
+   }
 }

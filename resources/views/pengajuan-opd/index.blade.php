@@ -45,7 +45,7 @@
                                         </center>
                                     @else
                                         <div class="card-body table-responsive">
-                                            <table id="tabel-pengajuan" class="table  table-hover " style="width:100%">
+                                            <table id="tabel-pengajuan" class="table table-bordered  " style="width:100%">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -53,8 +53,9 @@
                                                         <th>Nama</th>
                                                         <th>Jenis Rekom</th>
                                                         <th>Keperluan</th>
-                                                        <th>Tanggal Kirim</th>
-                                                        <th>#Aksi</th>
+                                                        <th>Tgl Kirim</th>
+                                                        <th>Status</th>
+                                                        <th >#Aksi</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -83,7 +84,7 @@
                     data: "DT_RowIndex",
                     orderable: false,
                     searchable: false,
-                    width: "40px"
+                  
                 },
                 {
                     data: 'nip',
@@ -96,16 +97,19 @@
                     data: 'rekom_jenis_nama',
                 },
                 {
-                    data: 'rekom_keperluan_id',
+                    data: 'keperluan.nama',
                 },
                 {
                     data: 'tgl_kirim',
                 },
                 {
+                    data: 'status',
+                },
+                {
                     data: "action",
                     orderable: false,
                     searchable: false,
-                    width: "40px"
+                  
                 },
             ]
         });

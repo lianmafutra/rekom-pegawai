@@ -140,8 +140,8 @@ nav.main-header.navbar.navbar-expand.navbar-dark {
 
 .btn.btn-warning {
    color: white;
-    border-color: #6933c9;
-   background-color: rgb(128, 75, 223);
+   border: none;
+   background-color: rgb(223, 164, 75) !important;
    font-weight: 500;
    border-radius: 5px;
    line-height: 1.71;

@@ -43,4 +43,8 @@ class Pengajuan extends Model
    {
       return $this->hasMany(File::class);
    }
+
+   public function keperluan(){
+      return $this->belongsTo(Keperluan::class);
+   }
 }
