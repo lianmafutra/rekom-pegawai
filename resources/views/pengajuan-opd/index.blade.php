@@ -51,7 +51,8 @@
                                                         <th>#</th>
                                                         <th>NIP</th>
                                                         <th>Nama</th>
-                                                        <th>OPD Pemohon</th>
+                                                        <th>Jenis Rekom</th>
+                                                        <th>Keperluan</th>
                                                         <th>Tanggal Kirim</th>
                                                         <th>#Aksi</th>
                                                     </tr>
@@ -90,8 +91,12 @@
                 {
                     data: 'nama',
                 },
+               
                 {
-                    data: 'nunker',
+                    data: 'rekom_jenis_nama',
+                },
+                {
+                    data: 'rekom_keperluan_id',
                 },
                 {
                     data: 'tgl_kirim',

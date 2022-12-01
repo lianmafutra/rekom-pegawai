@@ -5,45 +5,70 @@ namespace App\Utils;
 use App\Models\File;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File as FacadesFile;
-use Illuminate\Support\Str;
+
 
 class uploadFile
 {
-   public function save($file, $folder, $saveDB = null)
+
+   protected $file;
+   protected $path;
+   protected $uuid;
+   protected $parent_id;
+
+   public function file($file){
+      $this->file =  $file;
+      return $this;
+   }
+
+   public function path(string $path){
+      $this->path =  $path;
+      return $this;
+   }
+
+   public function uuid(string $uuid){
+      $this->uuid =  $uuid;
+      return $this;
+   }
+
+   public function parent_id(string $parent_id){
+      $this->parent_id =  $parent_id;
+      return $this;
+   }
+
+   public function save()
    {
       $name_uniqe = null;
       $custom_path = null;
       $uuid = null;
       try {
-         if ($file) {
-            $name_ori = $file->getClientOriginalName();
-            $name_uniqe =  pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $file->getClientOriginalExtension();
+         if ($this->file) {
+            $name_ori = $this->file->getClientOriginalName();
+            $name_uniqe =  pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension();
             $tahun       = Carbon::now()->format('Y');
             $bulan       = Carbon::now()->format('m');
-            $custom_path = $tahun . '/' . $bulan . '/' . $folder;
+            $custom_path = $tahun . '/' . $bulan . '/' . $this->path;
             $path        = storage_path('app/public/' . $custom_path);
             if (!FacadesFile::isDirectory($path)) {
                FacadesFile::makeDirectory($path, 0777, true, true);
-            }
-            $uuid = Str::uuid()->toString();
-            if ($saveDB) {
+            }         
                File::create([
-                  'file_id'     => $uuid,
+                  'file_id'     => $this->uuid,
+                  'parent_file_id' => $this->parent_id,
                   'name_origin' => $name_ori,
                   'name_random' => $name_uniqe,
                   'path'        => $custom_path,
-                  'size'        => $file->getSize(),
+                  'size'        => $this->file->getSize(),
                ]);
-            }
-            $file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $folder, $name_uniqe);
+            
+            $this->file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $this->path, $name_uniqe);
          }
          return collect([
             'nama'    => $name_uniqe,
             'path'    => $custom_path,
-            'file_id' => $uuid,
+            'file_id' => $this->uuid,
          ]);
       } catch (\Throwable $th) {
-        
+
          return redirect()->back()->with('error', 'Gagal' . $th, 400)->send();
       }
    }

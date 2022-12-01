@@ -15,6 +15,7 @@ class UserController extends Controller
 {
    public function index()
    {
+      // 
       $x['title']     = 'User';
       $x['data']      = User::get();
       $x['role']      = Role::get();
@@ -49,6 +50,34 @@ class UserController extends Controller
          Alert::error('Pemberitahuan', 'Data <b>' . $user->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
       }
       return back();
+   }
+
+   public function store(Request $request)
+   {
+       $validator = Validator::make($request->all(), [
+           'username'     => ['required', 'string', 'max:255', 'unique:users'],
+           'password'  => ['required', 'string'],
+           'role'      => ['required']
+       ]);
+       if ($validator->fails()) {
+           return back()->withErrors($validator)
+               ->withInput();
+       }
+       DB::beginTransaction();
+       try {
+           $user = User::create([
+               'username'      => $request->username,
+               'password'  => bcrypt($request->password)
+           ]);
+           $user->assignRole($request->role);
+           DB::commit();
+           Alert::success('Pemberitahuan', 'Data <b>' . $user->username . '</b> berhasil dibuat')->toToast()->toHtml();
+       } catch (\Throwable $th) {
+           DB::rollback();
+           dd($th);
+           Alert::error('Pemberitahuan', 'Data <b>' . $request->username . '</b> gagal dibuat : ' )->toToast()->toHtml();
+       }
+       return back();
    }
 
     public function update(Request $request)

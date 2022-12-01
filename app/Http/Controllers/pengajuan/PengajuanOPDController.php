@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\pengajuan;
 
+use App\Config\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
 use App\Http\Services\Pegawai\PegawaiService;
-use App\Models\File;
+use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Models\User;
 use App\Utils\uploadFile;
-use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -26,12 +26,12 @@ class PengajuanOPDController extends Controller
 
       abort_if(Gate::denies('pengajuan index'), 403);
 
-
       $x['title']     = 'Pengajuan OPD';
-      $data = Pengajuan::get();
+      $data = Pengajuan::with('keperluan')->get();
       if (request()->ajax()) {
          return DataTables::of($data)
             ->addIndexColumn()
+            
             ->addColumn('action', function ($data) {
                return view('pengajuan-opd.action', compact('data'));
             })
@@ -49,7 +49,7 @@ class PengajuanOPDController extends Controller
       $x['title']     = 'Buat Pengajuan';
       $x['url_foto']     = Config::get('global.url.bkd.foto');
       $x['rekom_jenis']     = Config::get('global.rekom_jenis');
-      
+
       $pegawai = $pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
       return view('pengajuan-opd.create', $x, compact('pegawai', 'keperluan'));
@@ -62,16 +62,12 @@ class PengajuanOPDController extends Controller
 
       try {
          DB::beginTransaction();
-         // $input = $request->all();
 
+         // ambil data pegawai dari api cache BKD
          $pegawai_cache = $pegawaiService->filterByNIP($request->pegawai)[0];
+         $pengajuanService = new PengajuanService();
 
-         $file_sk_terakhir  = $uploadFile->save($request->file('file_sk'), 'pengajuan', true);
-         $file_pengantar    = $uploadFile->save($request->file('file_pengantar_opd'), 'pengajuan', true);
-         $file_konversi_nip = $uploadFile->save($request->file('file_konversi_nip'), 'pengajuan', true);
-
-      
-         $pegawai = Pengajuan::create([
+         $pengajuan = Pengajuan::create([
             'nip'                 => $pegawai_cache['nipbaru'],
             'gldepan'             => $pegawai_cache['gldepan'],
             'glblk'               => $pegawai_cache['glblk'],
@@ -87,20 +83,40 @@ class PengajuanOPDController extends Controller
             'pangkat'             => $pegawai_cache['pangkat'],
             'photo'               => $pegawai_cache['photo'],
             'nomor_pengantar'     => $request->nomor_pengantar,
-            'tgl_surat_pengantar' =>$request->tgl_pengantar,
+            'tgl_surat_pengantar' => $request->tgl_pengantar,
             'rekom_jenis'         => $request->rekom_jenis,
             'rekom_keperluan_id'  => $request->rekom_keperluan_id,
             'pengirim_id'         => auth()->user()->id,
-            // 'penerima_opd_id'     => '',
-            // 'pengirim_opd_id'     => '',
-            'file_sk_terakhir'  => $file_sk_terakhir->get('file_id') ,
-            'file_pengantar'    => $file_pengantar->get('file_id'),
-            'file_konversi_nip' => $file_konversi_nip->get('file_id'),
-            'catatan'           => $request->catatan,
+            'penerima_id'         => $pengajuanService->getPenerimaOpdId(),
+            'penerima_opd_id'     => $pengajuanService->getPenerimaOpdId(),
+            'file_sk_terakhir'    => Str::uuid()->toString(),
+            'file_pengantar'      => Str::uuid()->toString(),
+            'file_konversi_nip'   => Str::uuid()->toString(),
+            'catatan'             => $request->catatan,
          ]);
 
+         // upload file syarat pengajuan
 
-         // $pengajuan = Pengajuan::create($input);
+         $uploadFile
+            ->file($request->file('file_sk'))
+            ->path('pengajuan')
+            ->uuid($pengajuan->file_sk_terakhir)
+            ->parent_id($pengajuan->id)
+            ->save();
+
+         $uploadFile
+            ->file($request->file('file_pengantar_opd'))
+            ->path('pengajuan')
+            ->uuid($pengajuan->file_pengantar)
+            ->parent_id($pengajuan->id)
+            ->save();
+
+         $uploadFile
+            ->file($request->file('file_konversi_nip'))
+            ->path('pengajuan')
+            ->uuid($pengajuan->file_konversi_nip)
+            ->parent_id($pengajuan->id)
+            ->save();
 
          DB::commit();
          return redirect()->route('pengajuan.index')->with('success', 'Berhasil ', 200)->send();
@@ -117,7 +133,6 @@ class PengajuanOPDController extends Controller
       abort_if(Gate::denies('pengajuan show'), 403);
    }
 
-
    public function edit(Pengajuan $pengajuan)
    {
       $x['title']     = 'Ubah Pengajuan';
@@ -125,12 +140,10 @@ class PengajuanOPDController extends Controller
       return view('pengajuan-opd.edit', $x, compact('pengajuan'));
    }
 
-
    public function update(Request $request, Pengajuan $pengajuan)
    {
       abort_if(Gate::denies('pengajuan update'), 403);
    }
-
 
    public function destroy(Pengajuan $pengajuan)
    {

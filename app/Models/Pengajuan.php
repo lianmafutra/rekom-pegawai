@@ -13,7 +13,7 @@ class Pengajuan extends Model
    use AutoUUID;
    protected $table = 'pengajuan';
    protected $guarded = [];
-   protected $appends = ['tgl_kirim', 'file_url'];
+   protected $appends = ['tgl_kirim', 'file_url', 'rekom_jenis_nama'];
 
    public function getTglKirimAttribute()
    {
@@ -25,10 +25,18 @@ class Pengajuan extends Model
       $this->attributes['tgl_surat_pengantar'] = Carbon::createFromFormat('d-m-Y', $tgl_surat_pengantar)->format('Y-m-d');
    }
 
-
    public function getFileUrlAttribute()
    {
       return url('storage/profile/' . $this->foto);
+   }
+
+   public function getRekomJenisNamaAttribute()
+   {
+      if( $this->rekom_jenis == 'DISIPLIN'){
+         return config('global.rekom_jenis.DISIPLIN');
+      }else{
+         return config('global.rekom_jenis.TEMUAN');
+      }
    }
 
    public function file()

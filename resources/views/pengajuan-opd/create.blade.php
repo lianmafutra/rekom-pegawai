@@ -75,9 +75,11 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
+
                                 <div class="tab-content">
                                     <div class="row">
                                         <div class="col-md-6 card-body">
+
                                             <form id="form_pengajuan" action="{{ route('pengajuan.store') }}" method="POST"
                                                 autocomplete="off" enctype="multipart/form-data">
                                                 @csrf
@@ -127,14 +129,15 @@
                                                         style="width: 100%;">
                                                         <option></option>
                                                         @foreach ($rekom_jenis as $key => $item)
-                                                        <option value="{{ $key }}">{{ $item }}</option>
+                                                            <option value="{{ $key }}">{{ $item }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
-                                                    <select id="rekom_keperluan_id" name="rekom_keperluan_id" required type=""
-                                                        class="select2 form-control select2bs4"
+                                                    <select id="rekom_keperluan_id" name="rekom_keperluan_id" required
+                                                        type="" class="select2 form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Keperluan --" style="width: 100%;">
                                                         <option></option>
                                                         @foreach ($keperluan as $item)
@@ -305,12 +308,12 @@
             // select2
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
-               //  allowClear: true
+                //  allowClear: true
             })
             // select2 validation
             $('.select2').change(function() {
-               
-               $(this).closest("div").find('.just-validate-error-label').remove() 
+
+                $(this).closest("div").find('.just-validate-error-label').remove()
             })
 
             $('.select2-pegawai').change(function() {
@@ -326,7 +329,7 @@
                     success: function(json) {
                         $(".profile_data").fadeIn(1100);
                         $('.profile-user-img').attr("src",
-                           @json($url_foto) + json.photo);
+                            @json($url_foto) + json.photo);
                         $('.nama').html(json.nama ? json.nama : '-')
                         $('.nip').html(json.nipbaru)
                         $('.pangkat').html(json.pangkat)
