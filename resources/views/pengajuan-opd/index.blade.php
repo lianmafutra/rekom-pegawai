@@ -55,7 +55,7 @@
                                                         <th>Keperluan</th>
                                                         <th>Tgl Kirim</th>
                                                         <th>Status</th>
-                                                        <th >#Aksi</th>
+                                                        <th>#Aksi</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -71,7 +71,8 @@
         </section>
         <!-- /.content -->
     </div>
- @include('pengajuan-opd.modal-histori')   
+    @include('pengajuan-opd.modal-histori')
+    @include('pengajuan-opd.modal-show')
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -85,7 +86,7 @@
                     data: "DT_RowIndex",
                     orderable: false,
                     searchable: false,
-                  
+
                 },
                 {
                     data: 'nip',
@@ -93,12 +94,12 @@
                 {
                     data: 'nama',
                 },
-               
+
                 {
                     data: 'rekom_jenis_nama',
                 },
                 {
-                    data: 'keperluan.nama',
+                  data: 'rekom_jenis_nama',
                 },
                 {
                     data: 'tgl_kirim',
@@ -110,16 +111,44 @@
                     data: "action",
                     orderable: false,
                     searchable: false,
-                  
+
                 },
             ]
         });
 
         $('body').on('click', '.btn_lihat_histori', function(e) {
- 
-               $('#modal_lihat_histori').modal('show')
-            });
-    </script>
+            $('#modal_lihat_histori').modal('show')
+        });
 
-    
+        $('body').on('click', '.btn_detail_pengajuan', function(e) {
+            let url = $(this).attr('data-url');
+            $('#modal_detail_pengajuan').modal('show')
+            $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(json) {
+                        $("#nama").text(json.nama);
+                        $("#nip").text(json.nip);
+                        $("#pangkat").text(json.pangkat);
+                        $("#jabatan").text(json.njab);
+                        $("#opd").text(json.nunker);
+                        $("#no_pengantar").text(json.nomor_pengantar);
+                        $("#tgl_pengantar").text(json.tgl_surat_pengantar);
+                        $("#rekom_jenis").text(json.rekom_jenis_nama);
+                        $("#rekom_keperluan").text(json.keperluan.nama);
+
+                       
+                        $("#file_sk").html(`<a href="http://127.0.0.1:8000/storage/${json.file_sk[0].path+"/"+json.file_sk[0].name_random}" type="button" class="btn btn-primary btn-sm">Lihat File</a>`);
+                        $("#file_pengantar").text(json.file_pengantar[0].name_random);
+                        $("#file_konversi").text(json.file_konversi ? json.file_konversi[0].name_random : json.file_konversi);
+
+                        console.log(json)
+                        
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
+                    }
+                });
+        });
+    </script>
 @endpush

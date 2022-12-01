@@ -11,7 +11,7 @@
         <ul class="dropdown-menu">
             <li><a class="btn_lihat_histori dropdown-item" href="#">Lihat Histori </a> </li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="{{ route('pengajuan.edit', $data->id) }}">Detail</a></li>
+            <li><a data-url="{{ route('pengajuan.show', $data) }}" class="btn_detail_pengajuan dropdown-item" href="#">Detail</a></li>
         </ul>
     </div>
 </div>

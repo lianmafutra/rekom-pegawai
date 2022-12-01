@@ -20,6 +20,11 @@ class Pengajuan extends Model
       return  Carbon::parse($this->created_at)->translatedFormat('d-m-Y H:m:s');
    }
 
+   public function getTglSuratPengantarAttribute()
+   {
+      return Carbon::parse($this->attributes['tgl_surat_pengantar'])->format('d-m-Y'); 
+   }
+
    public function setTglSuratPengantarAttribute($tgl_surat_pengantar)
    {
       $this->attributes['tgl_surat_pengantar'] = Carbon::createFromFormat('d-m-Y', $tgl_surat_pengantar)->format('Y-m-d');
@@ -39,12 +44,24 @@ class Pengajuan extends Model
       }
    }
 
-   public function file()
+   public function file_sk()
    {
-      return $this->hasMany(File::class);
+      return $this->hasMany(File::class, 'file_id', 'file_sk_terakhir');
+   }
+
+   public function file_pengantar()
+   {
+      return $this->hasMany(File::class, 'file_id', 'file_pengantar');
+   }
+
+   public function file_konversi()
+   {
+      return $this->hasMany(File::class, 'file_id', 'file_konversi_nip');
    }
 
    public function keperluan(){
       return $this->belongsTo(Keperluan::class);
    }
+
+ 
 }

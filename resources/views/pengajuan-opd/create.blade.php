@@ -136,7 +136,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
-                                                    <select id="rekom_keperluan_id" name="rekom_keperluan_id" required
+                                                    <select id="keperluan_id" name="keperluan_id" required
                                                         type="" class="select2 form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Keperluan --" style="width: 100%;">
                                                         <option></option>
@@ -265,7 +265,7 @@
                 }, ]).addField('#rekom_jenis', [{
                     rule: 'required',
                     errorMessage: 'Jenis Rekomendasi Wajib di isi',
-                }, ]).addField('#rekom_keperluan_id', [{
+                }, ]).addField('#keperluan_id', [{
                     rule: 'required',
                     errorMessage: 'Jenis Keperluan Wajib di isi',
                 }]).onSuccess((event) => {

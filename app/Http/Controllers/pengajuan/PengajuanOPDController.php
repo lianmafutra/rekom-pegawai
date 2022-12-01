@@ -31,7 +31,6 @@ class PengajuanOPDController extends Controller
       if (request()->ajax()) {
          return DataTables::of($data)
             ->addIndexColumn()
-            
             ->addColumn('action', function ($data) {
                return view('pengajuan-opd.action', compact('data'));
             })
@@ -85,7 +84,7 @@ class PengajuanOPDController extends Controller
             'nomor_pengantar'     => $request->nomor_pengantar,
             'tgl_surat_pengantar' => $request->tgl_pengantar,
             'rekom_jenis'         => $request->rekom_jenis,
-            'rekom_keperluan_id'  => $request->rekom_keperluan_id,
+            'keperluan_id'  => $request->rekom_keperluan_id,
             'pengirim_id'         => auth()->user()->id,
             'penerima_id'         => $pengajuanService->getPenerimaOpdId(),
             'penerima_opd_id'     => $pengajuanService->getPenerimaOpdId(),
@@ -131,13 +130,19 @@ class PengajuanOPDController extends Controller
    public function show(Pengajuan $pengajuan)
    {
       abort_if(Gate::denies('pengajuan show'), 403);
+      $pengajuan = Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $pengajuan->uuid)->first();
+      return response()->json($pengajuan);
    }
 
-   public function edit(Pengajuan $pengajuan)
+   public function edit(Pengajuan $pengajuan, PegawaiService $pegawaiService, User $user)
    {
-      $x['title']     = 'Ubah Pengajuan';
       abort_if(Gate::denies('pengajuan edit'), 403);
-      return view('pengajuan-opd.edit', $x, compact('pengajuan'));
+      $x['title']       = 'Ubah Pengajuan';
+      $x['url_foto']    = Config::get('global.url.bkd.foto');
+      $x['rekom_jenis'] = Config::get('global.rekom_jenis');
+      $pegawai = $pegawaiService->filterByOPD($user->getWithOpd()->kunker);
+      $keperluan = Keperluan::get();
+      return view('pengajuan-opd.edit', $x, compact('pegawai', 'keperluan', 'pengajuan'));
    }
 
    public function update(Request $request, Pengajuan $pengajuan)

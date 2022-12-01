@@ -48,6 +48,7 @@ class uploadFile
             $bulan       = Carbon::now()->format('m');
             $custom_path = $tahun . '/' . $bulan . '/' . $this->path;
             $path        = storage_path('app/public/' . $custom_path);
+            
             if (!FacadesFile::isDirectory($path)) {
                FacadesFile::makeDirectory($path, 0777, true, true);
             }         
@@ -68,7 +69,7 @@ class uploadFile
             'file_id' => $this->uuid,
          ]);
       } catch (\Throwable $th) {
-
+         dd($th);
          return redirect()->back()->with('error', 'Gagal' . $th, 400)->send();
       }
    }
