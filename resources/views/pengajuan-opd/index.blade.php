@@ -71,6 +71,7 @@
         </section>
         <!-- /.content -->
     </div>
+ @include('pengajuan-opd.modal-histori')   
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -113,5 +114,12 @@
                 },
             ]
         });
+
+        $('body').on('click', '.btn_lihat_histori', function(e) {
+ 
+               $('#modal_lihat_histori').modal('show')
+            });
     </script>
+
+    
 @endpush
