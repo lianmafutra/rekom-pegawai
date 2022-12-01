@@ -43,6 +43,7 @@
                                             <div class="timeline-body">
                                                 <a href="#">Admin Inspektorat</a> Memproses Berkas
                                             </div>
+                                           
                                             <div class="dropdown-divider"></div>
                                             <div class="timeline-footer">
                                                 <span class="time"><i class="fas fa-clock"></i> 12:05</span>
@@ -50,24 +51,25 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <i class="fas fa-times bg-red" style="color: white !important"></i>
-                                        <div class="timeline-item">
-                                            <div class="timeline-body">
-                                                <a href="#">Admin Inspektorat</a> Menolak Berkas Pengajuan
-                                            </div>
-                                            <div class="dropdown-divider"></div>
-                                            <div class="timeline-body">
-                                                <span> "Mohon lengkapi berkas" </span>
-                                            </div>
-                                            <div class="dropdown-divider"></div>
-                                            <div class="timeline-footer">
-                                                <span class="time"><i class="fas fa-clock"></i> 12:05</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                       <i class="fas fa-times bg-red" style="color: white !important"></i>
+                                       <div class="timeline-item">
+                                           <div class="timeline-body">
+                                               <a href="#">Admin Inspektorat</a> Menolak Berkas Pengajuan
+                                           </div>
+                                           <div class="dropdown-divider"></div>
+                                           <div class="timeline-body">
+                                               <span> "Mohon lengkapi berkas" </span>
+                                           </div>
+                                           <div class="dropdown-divider"></div>
+                                           <div class="timeline-footer">
+                                               <span class="time"><i class="fas fa-clock"></i> 12:05</span>
+                                           </div>
+                                       </div>
+                                   </div>
                                     <div>
                                         <i class="fas fa-paste bg-yellow" style="color: white !important"></i>
                                         <div class="timeline-item">
+
                                             <div class="timeline-body">
                                                 <a href="#">Kasubag administrasi umum dan keuangan</a>
                                                 Verifikasi Berkas
@@ -93,6 +95,10 @@
                                     <div>
                                         <i class="fas fa-file-contract bg-blue"></i>
                                         <div class="timeline-item">
+<<<<<<< HEAD
+=======
+
+>>>>>>> 944ab6ef978c4b0bb378a803d9103693f77e3d7c
                                             <div class="timeline-body">
                                                 <a href="#">Admin Inspektorat</a> Menyiapkan Berkas
                                             </div>
@@ -105,9 +111,17 @@
                                     <div>
                                         <i class="far fa-check-circle bg-green"></i>
                                         <div class="timeline-item">
+<<<<<<< HEAD
                                             <div class="timeline-body">
                                                 <a href="#">Berkas Telah Selesai</a>
                                             </div>
+=======
+
+                                            <div class="timeline-body">
+                                                <a href="#">Berkas Telah Selesai</a>
+                                            </div>
+
+>>>>>>> 944ab6ef978c4b0bb378a803d9103693f77e3d7c
                                             <div class="dropdown-divider"></div>
                                             <div class="timeline-footer">
                                                 <span class="time"><i class="fas fa-clock"></i> 12:05</span>
