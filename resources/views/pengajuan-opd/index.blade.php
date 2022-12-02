@@ -123,7 +123,7 @@
             let url = $(this).attr('data-url');
             let host = $(this).attr('data-host');
             $('#modal_detail_pengajuan').modal('show')
-            $('.profile-user-img').attr("src", "");
+            $('.profile-user-img').attr("src", @json(asset('img/avatar2.png')));
             $.ajax({
                 url: url,
                 type: 'GET',

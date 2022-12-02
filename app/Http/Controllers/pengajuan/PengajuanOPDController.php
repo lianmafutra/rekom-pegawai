@@ -9,6 +9,7 @@ use App\Http\Services\Pegawai\PegawaiService;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
+use App\Models\PengajuanHistori;
 use App\Models\User;
 use App\Utils\UploadFile;
 use Illuminate\Support\Str;
@@ -160,5 +161,10 @@ class PengajuanOPDController extends Controller
    public function destroy(Pengajuan $pengajuan)
    {
       abort_if(Gate::denies('pengajuan destroy'), 403);
+   }
+
+   public function histori($uuid){
+     $pengajuan = Pengajuan::with(['histori.aksi'])->whereUuid($uuid)->get();
+     return $this->success($pengajuan, 'Histori Pengajuan');
    }
 }

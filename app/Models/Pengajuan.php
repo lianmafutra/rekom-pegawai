@@ -64,5 +64,9 @@ class Pengajuan extends Model
       return $this->belongsTo(Keperluan::class);
    }
 
+   public function histori(){
+      return $this->hasMany(PengajuanHistori::class);
+   }
+
  
 }
