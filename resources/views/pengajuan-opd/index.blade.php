@@ -22,7 +22,6 @@
             <!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -78,6 +77,11 @@
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $("#tabel-pengajuan").dataTable({
             serverSide: true,
             processing: true,
@@ -86,7 +90,6 @@
                     data: "DT_RowIndex",
                     orderable: false,
                     searchable: false,
-
                 },
                 {
                     data: 'nip',
@@ -94,12 +97,11 @@
                 {
                     data: 'nama',
                 },
-
                 {
                     data: 'rekom_jenis_nama',
                 },
                 {
-                  data: 'rekom_jenis_nama',
+                    data: 'rekom_jenis_nama',
                 },
                 {
                     data: 'tgl_kirim',
@@ -111,44 +113,60 @@
                     data: "action",
                     orderable: false,
                     searchable: false,
-
                 },
             ]
         });
-
         $('body').on('click', '.btn_lihat_histori', function(e) {
             $('#modal_lihat_histori').modal('show')
         });
-
         $('body').on('click', '.btn_detail_pengajuan', function(e) {
             let url = $(this).attr('data-url');
+            let host = $(this).attr('data-host');
             $('#modal_detail_pengajuan').modal('show')
             $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(json) {
-                        $("#nama").text(json.nama);
-                        $("#nip").text(json.nip);
-                        $("#pangkat").text(json.pangkat);
-                        $("#jabatan").text(json.njab);
-                        $("#opd").text(json.nunker);
-                        $("#no_pengantar").text(json.nomor_pengantar);
-                        $("#tgl_pengantar").text(json.tgl_surat_pengantar);
-                        $("#rekom_jenis").text(json.rekom_jenis_nama);
-                        $("#rekom_keperluan").text(json.keperluan.nama);
+                url: url,
+                type: 'GET',
+                success: function(json) {
+                    $("#nama").text(json.nama);
+                    $("#nip").text(json.nip);
+                    $("#pangkat").text(json.pangkat);
+                    $("#jabatan").text(json.njab);
+                    $("#opd").text(json.nunker);
+                    $("#no_pengantar").text(json.nomor_pengantar);
+                    $("#tgl_pengantar").text(json.tgl_surat_pengantar);
+                    $("#rekom_jenis").text(json.rekom_jenis_nama);
+                    $("#rekom_keperluan").text(json.keperluan.nama);
 
-                       
-                        $("#file_sk").html(`<a href="http://127.0.0.1:8000/storage/${json.file_sk[0].path+"/"+json.file_sk[0].name_random}" type="button" class="btn btn-primary btn-sm">Lihat File</a>`);
-                        $("#file_pengantar").text(json.file_pengantar[0].name_random);
-                        $("#file_konversi").text(json.file_konversi ? json.file_konversi[0].name_random : json.file_konversi);
+                    $("#file_sk").html(
+                        `<a onclick="openCenteredWindow('${host}/storage/${json.file_sk[0].path}/${json.file_sk[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
+                    );
+                    $("#file_pengantar").html(
+                     `<a onclick="openCenteredWindow('${host}/storage/${json.file_pengantar[0].path}/${json.file_pengantar[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
+                    );
+                    $("#file_konversi").html(
+                     `<a onclick="openCenteredWindow('${host}/storage/${json.file_konversi[0].path}/${json.file_konversi[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
+                    );
 
-                        console.log(json)
-                        
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
-                    }
-                });
+                 
+
+
+
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
+                }
+            });
         });
+
+        function openCenteredWindow(url) {
+            const width = 800
+            const height = 700
+            const pos = {
+                x: (screen.width / 2) - (width / 2),
+                y: (screen.height / 2) - (height / 2)
+            };
+            const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
+            return window.open(url, '_blank', features).focus();
+        }
     </script>
 @endpush

@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Utils\uploadFile;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -24,6 +25,7 @@ class PengajuanOPDController extends Controller
    public function index()
    {
 
+      $pegawai = Cache::get('pegawai');
       abort_if(Gate::denies('pengajuan index'), 403);
 
       $x['title']     = 'Pengajuan OPD';
@@ -84,7 +86,7 @@ class PengajuanOPDController extends Controller
             'nomor_pengantar'     => $request->nomor_pengantar,
             'tgl_surat_pengantar' => $request->tgl_pengantar,
             'rekom_jenis'         => $request->rekom_jenis,
-            'keperluan_id'  => $request->rekom_keperluan_id,
+            'keperluan_id'  => $request->keperluan_id,
             'pengirim_id'         => auth()->user()->id,
             'penerima_id'         => $pengajuanService->getPenerimaOpdId(),
             'penerima_opd_id'     => $pengajuanService->getPenerimaOpdId(),

@@ -70,6 +70,11 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <script>
+         $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',

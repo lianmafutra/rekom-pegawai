@@ -2,7 +2,6 @@
 
 namespace App\Http\Services\Pegawai;
 
-use App\Config\Role;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;

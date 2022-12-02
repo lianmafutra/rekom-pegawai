@@ -34,6 +34,7 @@ class Pengajuan extends Model
    {
       return url('storage/profile/' . $this->foto);
    }
+   
 
    public function getRekomJenisNamaAttribute()
    {
