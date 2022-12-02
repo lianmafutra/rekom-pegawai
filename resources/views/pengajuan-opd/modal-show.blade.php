@@ -24,6 +24,18 @@
         display: block;
         overflow: hidden;
     }
+
+    .profile-custom {
+    border: 1px solid #adb5bd !important;
+    margin: 0 auto;
+    border-radius: 5%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 174px;
+    object-fit: cover;
+    height: 196px;
+    margin-bottom: 20px;
+}+
 </style>
 <div class="modal fade" id="modal_detail_pengajuan">
     <div class="modal-dialog modal-md">
@@ -35,6 +47,11 @@
                 </button>
             </div>
             <div class="modal-body">
+               <div class="text-center">
+                  <img class="profile-user-img profile-custom  img-fluid img-circle"
+                      src="{{ asset('img/avatar2.png') }}"
+                      alt="User profile picture">
+              </div>
                 <table class="table ">
                     <tbody>
                         <tr>

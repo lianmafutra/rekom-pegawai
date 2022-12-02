@@ -25,11 +25,12 @@ class PengajuanOPDController extends Controller
    public function index()
    {
 
-      $pegawai = Cache::get('pegawai');
       abort_if(Gate::denies('pengajuan index'), 403);
 
-      $x['title']     = 'Pengajuan OPD';
-      $data = Pengajuan::with('keperluan')->get();
+      $x['title'] = 'Pengajuan OPD';
+         $data    = Pengajuan::with('keperluan')->latest()->get();
+         $pegawai = Cache::get('pegawai');
+
       if (request()->ajax()) {
          return DataTables::of($data)
             ->addIndexColumn()

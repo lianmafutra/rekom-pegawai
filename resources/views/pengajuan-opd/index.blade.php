@@ -123,6 +123,7 @@
             let url = $(this).attr('data-url');
             let host = $(this).attr('data-host');
             $('#modal_detail_pengajuan').modal('show')
+            $('.profile-user-img').attr("src", "");
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -137,17 +138,21 @@
                     $("#rekom_jenis").text(json.rekom_jenis_nama);
                     $("#rekom_keperluan").text(json.keperluan.nama);
 
+                   
+                    $('.profile-user-img').attr("src",
+                        @json(config('global.url.bkd.foto')) + json.photo);
+
                     $("#file_sk").html(
                         `<a onclick="openCenteredWindow('${host}/storage/${json.file_sk[0].path}/${json.file_sk[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
                     );
                     $("#file_pengantar").html(
-                     `<a onclick="openCenteredWindow('${host}/storage/${json.file_pengantar[0].path}/${json.file_pengantar[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
+                        `<a onclick="openCenteredWindow('${host}/storage/${json.file_pengantar[0].path}/${json.file_pengantar[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
                     );
                     $("#file_konversi").html(
-                     `<a onclick="openCenteredWindow('${host}/storage/${json.file_konversi[0].path}/${json.file_konversi[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
+                        `<a onclick="openCenteredWindow('${host}/storage/${json.file_konversi[0].path}/${json.file_konversi[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
                     );
 
-                 
+
 
 
 
