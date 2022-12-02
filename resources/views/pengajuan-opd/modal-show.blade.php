@@ -3,13 +3,11 @@
         color: #313131;
         font-weight: bold;
     }
-
     .column {
         width: 100%;
     }
-
     .ico {
-      color: orange;
+        color: orange;
         display: inline-block;
         float: left;
         width: 18px;
@@ -19,23 +17,22 @@
         background-position: 0 0;
         background-repeat: no-repeat;
     }
-
     .title {
         display: block;
         overflow: hidden;
     }
-
     .profile-custom {
-    border: 1px solid #adb5bd !important;
-    margin: 0 auto;
-    border-radius: 5%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    width: 174px;
-    object-fit: cover;
-    height: 196px;
-    margin-bottom: 20px;
-}+
+        border: 1px solid #adb5bd !important;
+        margin: 0 auto;
+        border-radius: 5%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width: 174px;
+        object-fit: cover;
+        height: 196px;
+        margin-bottom: 20px;
+    }
+    +
 </style>
 <div class="modal fade" id="modal_detail_pengajuan">
     <div class="modal-dialog modal-md">
@@ -47,11 +44,10 @@
                 </button>
             </div>
             <div class="modal-body">
-               <div class="text-center">
-                  <img class="profile-user-img profile-custom  img-fluid img-circle"
-                      src="{{ asset('img/avatar2.png') }}"
-                      alt="User profile picture">
-              </div>
+                <div class="text-center">
+                    <img class="profile-user-img profile-custom  img-fluid img-circle"
+                        src="{{ asset('img/avatar2.png') }}" alt="User profile picture">
+                </div>
                 <table class="table ">
                     <tbody>
                         <tr>
@@ -105,38 +101,36 @@
                             <td></td>
                         </tr>
                         <tr>
-                           <td>
-                              <div class="column">
-                                 <i class="ico fas fa-file"></i>
-                                 <span class="title">File Sk Terakhir</span>
-                             </div>
-                           </td>
-                          
+                            <td>
+                                <div class="column">
+                                    <i class="ico fas fa-file"></i>
+                                    <span class="title">File Sk Terakhir</span>
+                                </div>
+                            </td>
                             <td>:</td>
                             <td id="file_sk"></td>
                         </tr>
                         <tr>
-
                             <td>
                                 <div class="column">
                                     <i class="ico fas fa-file"></i>
                                     <span class="title">File Surat Pengantar kepala OPD</span>
                                 </div>
-
                             </td>
                             <td>:</td>
                             <td id="file_pengantar"></td>
                         </tr>
                         <tr>
-                            <td> <div class="column">
-                              <i class="ico fas fa-file"></i>
-                              <span class="title">File Konversi NIP</span>
-                          </div></td>
+                            <td>
+                                <div class="column">
+                                    <i class="ico fas fa-file"></i>
+                                    <span class="title">File Konversi NIP</span>
+                                </div>
+                            </td>
                             <td>:</td>
                             <td id="file_konversi"></td>
                         </tr>
                     </tbody>
-
                 </table>
             </div>
             <div class="modal-footer justify-content-between">

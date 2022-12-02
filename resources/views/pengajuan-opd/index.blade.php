@@ -116,9 +116,22 @@
                 },
             ]
         });
+
         $('body').on('click', '.btn_lihat_histori', function(e) {
             $('#modal_lihat_histori').modal('show')
-        });
+            let url = $(this).attr('data-url');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(json) {
+                    console.log(json)
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert("Gagal Mengambil data histori, silahkan coba lagi ...")
+                }
+            })
+        })
+
         $('body').on('click', '.btn_detail_pengajuan', function(e) {
             let url = $(this).attr('data-url');
             let host = $(this).attr('data-host');
@@ -137,11 +150,8 @@
                     $("#tgl_pengantar").text(json.tgl_surat_pengantar);
                     $("#rekom_jenis").text(json.rekom_jenis_nama);
                     $("#rekom_keperluan").text(json.keperluan.nama);
-
-                   
                     $('.profile-user-img').attr("src",
                         @json(config('global.url.bkd.foto')) + json.photo);
-
                     $("#file_sk").html(
                         `<a onclick="openCenteredWindow('${host}/storage/${json.file_sk[0].path}/${json.file_sk[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
                     );
@@ -151,11 +161,6 @@
                     $("#file_konversi").html(
                         `<a onclick="openCenteredWindow('${host}/storage/${json.file_konversi[0].path}/${json.file_konversi[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
                     );
-
-
-
-
-
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
