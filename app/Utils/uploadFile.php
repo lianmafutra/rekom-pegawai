@@ -15,22 +15,26 @@ class uploadFile
    protected $uuid;
    protected $parent_id;
 
-   public function file($file){
+   public function file($file)
+   {
       $this->file =  $file;
       return $this;
    }
 
-   public function path(string $path){
+   public function path(string $path)
+   {
       $this->path =  $path;
       return $this;
    }
 
-   public function uuid(string $uuid){
+   public function uuid(string $uuid)
+   {
       $this->uuid =  $uuid;
       return $this;
    }
 
-   public function parent_id(string $parent_id){
+   public function parent_id(string $parent_id)
+   {
       $this->parent_id =  $parent_id;
       return $this;
    }
@@ -48,29 +52,24 @@ class uploadFile
             $bulan       = Carbon::now()->format('m');
             $custom_path = $tahun . '/' . $bulan . '/' . $this->path;
             $path        = storage_path('app/public/' . $custom_path);
-            
+
             if (!FacadesFile::isDirectory($path)) {
                FacadesFile::makeDirectory($path, 0777, true, true);
-            }         
-               File::create([
-                  'file_id'     => $this->uuid,
-                  'parent_file_id' => $this->parent_id,
-                  'name_origin' => $name_ori,
-                  'name_random' => $name_uniqe,
-                  'path'        => $custom_path,
-                  'size'        => $this->file->getSize(),
-               ]);
-            
+            }
+            File::create([
+               'file_id'     => $this->uuid,
+               'parent_file_id' => $this->parent_id,
+               'name_origin' => $name_ori,
+               'name_random' => $name_uniqe,
+               'path'        => $custom_path,
+               'size'        => $this->file->getSize(),
+            ]);
+
             $this->file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $this->path, $name_uniqe);
          }
-         return collect([
-            'nama'    => $name_uniqe,
-            'path'    => $custom_path,
-            'file_id' => $this->uuid,
-         ]);
+         return true;
       } catch (\Throwable $th) {
-         dd($th);
-         return redirect()->back()->with('error', 'Gagal' . $th, 400)->send();
+         return false;
       }
    }
 }

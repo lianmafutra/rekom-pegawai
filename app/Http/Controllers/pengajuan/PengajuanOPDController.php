@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\pengajuan;
 
-use App\Config\Role;
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
 use App\Http\Services\Pegawai\PegawaiService;
@@ -10,7 +10,7 @@ use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Models\User;
-use App\Utils\uploadFile;
+use App\Utils\UploadFile;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -57,9 +57,11 @@ class PengajuanOPDController extends Controller
    }
 
 
-   public function store(PengajuanOPDStoreRequest $request, uploadFile $uploadFile, PegawaiService $pegawaiService)
+   public function store(PengajuanOPDStoreRequest $request, PegawaiService $pegawaiService)
    {
       abort_if(Gate::denies('pengajuan store'), 403);
+
+
 
       try {
          DB::beginTransaction();
@@ -86,7 +88,7 @@ class PengajuanOPDController extends Controller
             'nomor_pengantar'     => $request->nomor_pengantar,
             'tgl_surat_pengantar' => $request->tgl_pengantar,
             'rekom_jenis'         => $request->rekom_jenis,
-            'keperluan_id'  => $request->keperluan_id,
+            'keperluan_id'        => $request->keperluan_id,
             'pengirim_id'         => auth()->user()->id,
             'penerima_id'         => $pengajuanService->getPenerimaOpdId(),
             'penerima_opd_id'     => $pengajuanService->getPenerimaOpdId(),
@@ -97,34 +99,36 @@ class PengajuanOPDController extends Controller
          ]);
 
          // upload file syarat pengajuan
+         $upload_file_sk        = new UploadFile();
+         $upload_file_pengantar = new UploadFile();
+         $upload_file_konversi  = new UploadFile();
 
-         $uploadFile
-            ->file($request->file('file_sk'))
+         $upload_file_sk->file($request->file('file_sk'))
             ->path('pengajuan')
             ->uuid($pengajuan->file_sk_terakhir)
-            ->parent_id($pengajuan->id)
-            ->save();
-
-         $uploadFile
+            ->parent_id($pengajuan->id);
+            
+         $upload_file_pengantar
             ->file($request->file('file_pengantar_opd'))
             ->path('pengajuan')
             ->uuid($pengajuan->file_pengantar)
-            ->parent_id($pengajuan->id)
-            ->save();
+            ->parent_id($pengajuan->id);
 
-         $uploadFile
+         $upload_file_konversi
             ->file($request->file('file_konversi_nip'))
             ->path('pengajuan')
             ->uuid($pengajuan->file_konversi_nip)
-            ->parent_id($pengajuan->id)
-            ->save();
+            ->parent_id($pengajuan->id);
+
+         if(!$upload_file_sk->save() || !$upload_file_pengantar->save() || !$upload_file_konversi->save()){
+            throw new CustomException("Terjadi Kesalahan saat mengupload File");
+         }
 
          DB::commit();
          return redirect()->route('pengajuan.index')->with('success', 'Berhasil ', 200)->send();
       } catch (\Throwable $th) {
-         dd($th);
          DB::rollBack();
-         return redirect()->back()->with('error', 'Gagal' . $th, 400)->send();
+         return redirect()->back()->with('error', 'Gagal : ' . $th, 400)->send();
       }
    }
 
