@@ -26,7 +26,7 @@ class PengajuanOPDController extends Controller
    {
 
       abort_if(Gate::denies('pengajuan index'), 403);
-
+     
       $x['title'] = 'Pengajuan OPD';
       $data    = Pengajuan::with('keperluan')->latest()->get();
       $pegawai = Cache::get('pegawai');
@@ -45,7 +45,7 @@ class PengajuanOPDController extends Controller
 
    public function create(PegawaiService $pegawaiService, User $user)
    {
-
+      
       abort_if(Gate::denies('pengajuan create'), 403);
       $x['title']     = 'Buat Pengajuan';
       $x['url_foto']     = Config::get('global.url.bkd.foto');

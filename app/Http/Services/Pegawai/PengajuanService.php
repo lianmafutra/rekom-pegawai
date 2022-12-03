@@ -6,6 +6,7 @@ use App\Config\Role;
 use App\Exceptions\CustomException;
 use App\Models\Pengajuan;
 use App\Models\PengajuanHistori;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -42,7 +43,7 @@ class PengajuanService
       try {
          $pengajuan = Pengajuan::create([
             'nip'                 => $pegawai_cache['nipbaru'],
-            'gldespan'             => $pegawai_cache['gldepan'],
+            'gldepan'             => $pegawai_cache['gldepan'],
             'glblk'               => $pegawai_cache['glblk'],
             'nama'                => $pegawai_cache['nama'],
             'kunker'              => $pegawai_cache['kunker'],
@@ -60,7 +61,7 @@ class PengajuanService
             'rekom_jenis'         => $request->rekom_jenis,
             'keperluan_id'        => $request->keperluan_id,
             'pengirim_id'         => auth()->user()->id,
-            'penerima_id'         => $this->getPenerimaOpdId(),
+            'penerima_id'         => $this->getPenerimaId(),
             'penerima_opd_id'     => $this->getPenerimaOpdId(),
             'file_sk_terakhir'    => Str::uuid()->toString(),
             'file_pengantar'      => Str::uuid()->toString(),
@@ -75,17 +76,18 @@ class PengajuanService
 
    public function storeHistori($pengajuan_id, $aksi_id, $pesan=null){
       try {
+         $user = User::with('opd')->find(auth()->user()->id);
          $histori = PengajuanHistori::create([
             'pengajuan_id'      => $pengajuan_id,
-            'user_id'           => auth()->user()->id,
-            'user_nama'         =>  auth()->user()->name,
-            'opd'               => $pengajuan_id,
+            'user_id'           => $user->id,
+            'user_nama'         =>  $user->name,
+            'opd'               => $user->opd->nunker,
             'pengajuan_aksi_id' => $aksi_id,
             'pesan'             => $pesan,
             'tgl_kirim'         => Carbon::now(),
          ]);
       } catch (\Throwable $th) {
-         throw new CustomException("Terjadi Kesalahan saat Menginput Data Pengajuan"); 
+         throw new CustomException("Terjadi Kesalahan saat Menginput Data Histori"); 
       }
      
    }
