@@ -3,9 +3,11 @@
 namespace App\Http\Services\Pegawai;
 
 use App\Config\Role;
+use App\Exceptions\CustomException;
 use App\Models\Pengajuan;
+use App\Models\PengajuanHistori;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
@@ -40,7 +42,7 @@ class PengajuanService
       try {
          $pengajuan = Pengajuan::create([
             'nip'                 => $pegawai_cache['nipbaru'],
-            'gldepan'             => $pegawai_cache['gldepan'],
+            'gldespan'             => $pegawai_cache['gldepan'],
             'glblk'               => $pegawai_cache['glblk'],
             'nama'                => $pegawai_cache['nama'],
             'kunker'              => $pegawai_cache['kunker'],
@@ -67,7 +69,24 @@ class PengajuanService
          ]);
          return $pengajuan;
       } catch (\Throwable $th) {
-         return false;
+         throw new CustomException("Terjadi Kesalahan saat Menginput Data Pengajuan"); 
       }
+   }
+
+   public function storeHistori($pengajuan_id, $aksi_id, $pesan=null){
+      try {
+         $histori = PengajuanHistori::create([
+            'pengajuan_id'      => $pengajuan_id,
+            'user_id'           => auth()->user()->id,
+            'user_nama'         =>  auth()->user()->name,
+            'opd'               => $pengajuan_id,
+            'pengajuan_aksi_id' => $aksi_id,
+            'pesan'             => $pesan,
+            'tgl_kirim'         => Carbon::now(),
+         ]);
+      } catch (\Throwable $th) {
+         throw new CustomException("Terjadi Kesalahan saat Menginput Data Pengajuan"); 
+      }
+     
    }
 }

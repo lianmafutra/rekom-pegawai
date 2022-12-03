@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\pengajuan;
 
+use App\Config\PengajuanAksi;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
@@ -62,17 +63,16 @@ class PengajuanOPDController extends Controller
 
       try {
 
-         // Ambil data pegawai dari api cache BKD
+         // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $pegawaiService->filterByNIP($request->pegawai)[0];
 
          // Insert data pengajuan ke DB
          $pengajuanStore = $pengajuanService->storePengajuan($pegawai_cache, $request);
 
-         if (!$pengajuanStore) {
-            throw new CustomException("Terjadi Kesalahan Menginput Data Pengajuan");
-         }
+         // Insert histori pengajuan ke DB
+        $pengajuanService->storeHistori($pengajuanStore->id, PengajuanAksi::KIRIM);
 
-         // upload 3 file syarat pengajuan
+         // upload file syarat pengajuan
          $upload_file_sk        = new UploadFile();
          $upload_file_pengantar = new UploadFile();
          $upload_file_konversi  = new UploadFile();
@@ -88,7 +88,7 @@ class PengajuanOPDController extends Controller
             ->uuid($pengajuanStore->file_pengantar)
             ->parent_id($pengajuanStore->id);
 
-         $upload_file_konversi
+         $upload_file_konversi //optional
             ->file($request->file('file_konversi_nip'))
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_konversi_nip)

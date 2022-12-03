@@ -14,8 +14,6 @@ return [
       'TEMUAN'   => 'Bebas Temuan'
    ],
 
-
-  
    // ROLE USER
    'role'=> [
       'is_superadmin'        => 'superadmin',
