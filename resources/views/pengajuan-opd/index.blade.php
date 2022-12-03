@@ -101,7 +101,7 @@
                     data: 'rekom_jenis_nama',
                 },
                 {
-                    data: 'rekom_jenis_nama',
+                    data: 'keperluan.nama',
                 },
                 {
                     data: 'tgl_kirim',
