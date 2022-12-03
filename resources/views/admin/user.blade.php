@@ -103,8 +103,6 @@
                     success: function(data) {
                         var data = data.data;
                         $("#name").val(data.name);
-                        $("#email").val(data.email);
-                        $("#old_email").val(data.email);
                         $("#role").val(data.role);
                         $("#id").val(data.id);
                         $('#modal-loading').modal('hide');

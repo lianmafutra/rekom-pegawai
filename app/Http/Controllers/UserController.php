@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Utils\uploadFile;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
@@ -115,7 +116,15 @@ class UserController extends Controller
         return back();
     }
 
-  
+    public function show(Request $request)
+    {
+        $user = UserResource::collection(User::where(['id' => $request->id])->get());
+        return response()->json([
+            'status'    => Response::HTTP_OK,
+            'message'   => 'Data user by id',
+            'data'      => $user[0]
+        ], Response::HTTP_OK);
+    }
 
    public function destroy(Request $request)
    {
