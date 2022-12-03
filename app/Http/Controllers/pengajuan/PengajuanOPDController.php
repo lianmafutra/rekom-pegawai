@@ -164,7 +164,7 @@ class PengajuanOPDController extends Controller
    }
 
    public function histori($uuid){
-     $pengajuan = Pengajuan::with(['histori.aksi'])->whereUuid($uuid)->get();
+     $pengajuan = Pengajuan::with(['histori','histori.aksi'])->whereUuid($uuid)->first();
      return $this->success($pengajuan, 'Histori Pengajuan');
    }
 }
