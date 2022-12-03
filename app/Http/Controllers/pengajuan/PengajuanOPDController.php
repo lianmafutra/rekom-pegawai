@@ -35,12 +35,12 @@ class PengajuanOPDController extends Controller
          return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-               return view('pengajuan-opd.action', compact('data'));
+               return view('pengajuan.opd.action', compact('data'));
             })
             ->rawColumns(['action'])
             ->make(true);
       }
-      return view('pengajuan-opd.index', $x, compact('data'));
+      return view('pengajuan.opd.index', $x, compact('data'));
    }
 
    public function create(PegawaiService $pegawaiService, User $user)
@@ -53,7 +53,7 @@ class PengajuanOPDController extends Controller
 
       $pegawai = $pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
-      return view('pengajuan-opd.create', $x, compact('pegawai', 'keperluan'));
+      return view('pengajuan.opd.create', $x, compact('pegawai', 'keperluan'));
    }
 
 
@@ -121,7 +121,7 @@ class PengajuanOPDController extends Controller
       $x['rekom_jenis'] = Config::get('global.rekom_jenis');
       $pegawai = $pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
-      return view('pengajuan-opd.edit', $x, compact('pegawai', 'keperluan', 'pengajuan'));
+      return view('pengajuan.opd.edit', $x, compact('pegawai', 'keperluan', 'pengajuan'));
    }
 
    public function update(Request $request, Pengajuan $pengajuan)

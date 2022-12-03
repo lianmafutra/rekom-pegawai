@@ -229,7 +229,7 @@
         </section>
         <!-- /.content -->
     </div>
-    @include('pengajuan-opd.modal-view-file')
+    @include('pengajuan.modal-view-file')
 @endsection
 @push('js')
     <script src="{{ asset('plugins/flatpicker/flatpickr.min.js') }}"></script>

@@ -70,8 +70,8 @@
         </section>
         <!-- /.content -->
     </div>
-    @include('pengajuan-opd.modal-histori')
-    @include('pengajuan-opd.modal-show')
+    @include('pengajuan.modal-histori')
+    @include('pengajuan.modal-show')
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
