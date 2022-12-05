@@ -77,16 +77,16 @@ DROP TABLE IF EXISTS `file`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `file` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `file_id` varchar(500) DEFAULT NULL,
-  `parent_file_id` int(11) DEFAULT NULL,
-  `name_origin` text,
-  `name_random` text,
-  `path` varchar(500) DEFAULT NULL,
+  `file_id` varchar(500) NOT NULL,
+  `parent_file_id` int(11) NOT NULL,
+  `name_origin` text NOT NULL,
+  `name_random` text NOT NULL,
+  `path` varchar(500) NOT NULL,
   `size` varchar(500) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +95,7 @@ CREATE TABLE `file` (
 
 LOCK TABLES `file` WRITE;
 /*!40000 ALTER TABLE `file` DISABLE KEYS */;
-INSERT INTO `file` VALUES (21,'8b90e5ab-237b-4d7b-bc7b-0138af1a3d54',NULL,'banner_jelajah.png','banner_jelajah-1669796041.png','2022/11/pengajuan','314976','2022-11-30 08:14:01','2022-11-30 08:14:01'),(22,'ed8fd7ec-5728-4670-8a80-778abe61ba8b',NULL,'IC.png','IC-1669796041.png','2022/11/pengajuan','44281','2022-11-30 08:14:01','2022-11-30 08:14:01'),(23,'d1095a5a-7c44-477e-9269-8e34123ee3f4',NULL,'icon_sipraktis.jpg','icon_sipraktis-1669796180.jpg','2022/11/pengajuan','39537','2022-11-30 08:16:20','2022-11-30 08:16:20'),(24,'09d96f99-34c7-4ea5-9982-0c8e5d089c8a',NULL,'pembayaran.png','pembayaran-1669796180.png','2022/11/pengajuan','52962','2022-11-30 08:16:20','2022-11-30 08:16:20'),(29,'74919b08-7d2d-46b2-a09c-ba2331b808d8',NULL,'banner_jelajah 1.png','banner_jelajah 1-1669798850.png','2022/11/pengajuan','843357','2022-11-30 09:00:50','2022-11-30 09:00:50'),(30,'32caa797-63d1-4c40-aa15-4bf66d28791a',NULL,'6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669798850.jpg','2022/11/pengajuan','152075','2022-11-30 09:00:50','2022-11-30 09:00:50'),(31,'503d1982-360a-4820-9a67-b7975b6b349a',NULL,'Untitled.png','Untitled-1669798980.png','2022/11/pengajuan','50715','2022-11-30 09:03:00','2022-11-30 09:03:00'),(32,'a52dc97a-2250-40c8-a062-3304406679b7',NULL,'6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669798980.jpg','2022/11/pengajuan','152075','2022-11-30 09:03:00','2022-11-30 09:03:00'),(33,'8dbe4dbb-c9a5-4775-8379-ee45865fd2f2',NULL,'6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669799009.jpg','2022/11/pengajuan','152075','2022-11-30 09:03:29','2022-11-30 09:03:29'),(34,'187cd320-6c4d-4ed2-8636-568023b393a4',NULL,'6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669799009.jpg','2022/11/pengajuan','152075','2022-11-30 09:03:29','2022-11-30 09:03:29'),(35,'fd8512d9-88b7-426b-a07c-422c3abb2264',NULL,'6257797e6680c-1649899902.jpg','6257797e6680c-1649899902-1669799009.jpg','2022/11/pengajuan','152075','2022-11-30 09:03:29','2022-11-30 09:03:29'),(40,'c8e1df32-350d-4836-a591-8fe515386989',NULL,'317381086_8557266410980669_2210976243878724629_n.jpg','317381086_8557266410980669_2210976243878724629_n-1669799530.jpg','2022/11/pengajuan','61314','2022-11-30 09:12:10','2022-11-30 09:12:10'),(41,'63ef18fc-e243-4330-a886-705c439c0b39',NULL,'icon_sipraktis.jpg','icon_sipraktis-1669799530.jpg','2022/11/pengajuan','39537','2022-11-30 09:12:10','2022-11-30 09:12:10'),(42,'9dcee0b1-49e2-4de7-ae64-3b8419c94cbe',NULL,'banner_jelajah 1.png','banner_jelajah 1-1669799652.png','2022/11/pengajuan','843357','2022-11-30 09:14:12','2022-11-30 09:14:12'),(43,'4f57d315-692a-4bf0-b1e7-2ed7aeb09475',NULL,'pembayaran.png','pembayaran-1669799652.png','2022/11/pengajuan','52962','2022-11-30 09:14:12','2022-11-30 09:14:12'),(44,'f5be5884-8acb-407e-8c86-7202137449b2',NULL,'banner_jelajah.png','banner_jelajah-1669800005.png','2022/11/pengajuan','314976','2022-11-30 09:20:05','2022-11-30 09:20:05'),(45,'8a40e92c-e042-444d-a340-f6d5aa7f080e',NULL,'IC.png','IC-1669800005.png','2022/11/pengajuan','44281','2022-11-30 09:20:05','2022-11-30 09:20:05'),(46,'8b86ff50-9be1-48e6-8cb6-6188cc321a93',30,'bg_1.jpg','bg_1-1669875853.jpg','2022/12/pengajuan','69273','2022-12-01 06:24:13','2022-12-01 06:24:13'),(47,'6a01fe91-e806-4edd-adfe-7c9bdeeee892',30,'Screenshot_1.png','Screenshot_1-1669875853.png','2022/12/pengajuan','228989','2022-12-01 06:24:13','2022-12-01 06:24:13'),(48,'fe0dc031-a574-4ff7-9241-1ac6433e0f54',30,'277165784_362505522452676_1859360256922932257_n.jpg','277165784_362505522452676_1859360256922932257_n-1669875853.jpg','2022/12/pengajuan','88286','2022-12-01 06:24:13','2022-12-01 06:24:13'),(49,'8f63e730-f9aa-4280-97b8-92f5854e17c9',31,'281561397_5045029668951437_1423200621841694392_n.jpg','281561397_5045029668951437_1423200621841694392_n-1669875938.jpg','2022/12/pengajuan','168572','2022-12-01 06:25:38','2022-12-01 06:25:38'),(50,'518384e3-a076-49e8-a380-2936e710b576',31,'bg_1.jpg','bg_1-1669875938.jpg','2022/12/pengajuan','69273','2022-12-01 06:25:38','2022-12-01 06:25:38'),(51,'aad54863-8b90-4add-99e9-f208432c01dc',31,'bg_1.jpg','bg_1-1669875938.jpg','2022/12/pengajuan','69273','2022-12-01 06:25:38','2022-12-01 06:25:38'),(52,'af087d56-ffc8-4b78-8bc9-9e21c2b8ece4',32,'281561397_5045029668951437_1423200621841694392_n.jpg','281561397_5045029668951437_1423200621841694392_n-1669876825.jpg','2022/12/pengajuan','168572','2022-12-01 06:40:25','2022-12-01 06:40:25'),(53,'a6cdd4af-cde4-4700-927f-03515e1ff156',32,'imgnews.jfif','imgnews-1669876826.jfif','2022/12/pengajuan','657268','2022-12-01 06:40:26','2022-12-01 06:40:26'),(54,'b38c6490-78b4-42f4-8283-a7d69447203a',32,'Screenshot_1.png','Screenshot_1-1669876826.png','2022/12/pengajuan','228989','2022-12-01 06:40:26','2022-12-01 06:40:26');
+INSERT INTO `file` VALUES (62,'3fbb8b55-571a-4bce-bffb-1a1fbae74087',45,'bg_1.jpg','bg_1-1670056084.jpg','2022/12/pengajuan','69273','2022-12-03 08:28:04','2022-12-03 08:28:04'),(63,'ff1cd735-f10f-4bbf-883f-68fafdce4293',45,'bg_1.jpg','bg_1-1670056084.jpg','2022/12/pengajuan','69273','2022-12-03 08:28:04','2022-12-03 08:28:04'),(64,'53355919-8637-4834-bbe3-b1c63a9c0e93',46,'282124221_5051253424995728_4735598440694795636_n.jpg','282124221_5051253424995728_4735598440694795636_n-1670056893.jpg','2022/12/pengajuan','189496','2022-12-03 08:41:33','2022-12-03 08:41:33'),(65,'9625f9b8-6173-4a54-b17c-6b85fed49aea',46,'Screenshot_1.png','Screenshot_1-1670056894.png','2022/12/pengajuan','228989','2022-12-03 08:41:34','2022-12-03 08:41:34');
 /*!40000 ALTER TABLE `file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,7 +199,7 @@ CREATE TABLE `model_has_roles` (
 
 LOCK TABLES `model_has_roles` WRITE;
 /*!40000 ALTER TABLE `model_has_roles` DISABLE KEYS */;
-INSERT INTO `model_has_roles` VALUES (1,'App\\Models\\User',1),(3,'App\\Models\\User',2);
+INSERT INTO `model_has_roles` VALUES (1,'App\\Models\\User',1),(3,'App\\Models\\User',2),(2,'App\\Models\\User',3);
 /*!40000 ALTER TABLE `model_has_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,8 +286,8 @@ CREATE TABLE `pengajuan` (
   `pengirim_id` int(11) DEFAULT NULL,
   `penerima_id` int(11) DEFAULT NULL,
   `penerima_opd_id` int(11) DEFAULT NULL,
-  `file_sk_terakhir` varchar(500) DEFAULT NULL,
-  `file_pengantar` varchar(500) DEFAULT NULL,
+  `file_sk_terakhir` varchar(500) NOT NULL,
+  `file_pengantar` varchar(500) NOT NULL,
   `file_konversi_nip` varchar(500) DEFAULT NULL,
   `catatan` text,
   `uuid` varchar(500) NOT NULL,
@@ -297,7 +297,7 @@ CREATE TABLE `pengajuan` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_pengajuan_users` (`pengirim_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,8 +306,35 @@ CREATE TABLE `pengajuan` (
 
 LOCK TABLES `pengajuan` WRITE;
 /*!40000 ALTER TABLE `pengajuan` DISABLE KEYS */;
-INSERT INTO `pengajuan` VALUES (28,'197010041998032005','','S.T.P, ME','LIANA ANDRIANI','4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','40070','KEPALA BADAN','22','II.B','142','IV/b','PEMBINA TK. I','010262026.jpg',NULL,NULL,'12313','2022-11-02','DISIPLIN',1,1,NULL,NULL,'f5be5884-8acb-407e-8c86-7202137449b2','8a40e92c-e042-444d-a340-f6d5aa7f080e',NULL,'ini catatan','2b66e2de-984f-4802-bc08-2438530db7ed','UNREAD',NULL,'2022-11-30 09:20:05','2022-11-30 09:20:05'),(31,'198103272009031005','','SP, ME','ROBBY ISKANDAR PUTRA','4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','400704','KABID. PENGEMBANGAN KOMPETENSI APARATUR','32','III.B','134','III/d','PENATA TK. I','198103272009031005.jpg',NULL,NULL,'12313','2022-12-01','TEMUAN',6,1,36,36,'8f63e730-f9aa-4280-97b8-92f5854e17c9','518384e3-a076-49e8-a380-2936e710b576','aad54863-8b90-4add-99e9-f208432c01dc','dqwd','8187116a-dc7d-4daa-9c4f-294ca657f35f','UNREAD',NULL,'2022-12-01 06:25:38','2022-12-01 06:25:38'),(32,'199005312020121012','','SE.','ALIEF REZKI INDRA ','4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','',NULL,'',NULL,'',NULL,NULL,'199005312020121012.jpg',NULL,NULL,'123123','2022-12-29','DISIPLIN',3,1,36,36,'af087d56-ffc8-4b78-8bc9-9e21c2b8ece4','a6cdd4af-cde4-4700-927f-03515e1ff156','b38c6490-78b4-42f4-8283-a7d69447203a','132123','69967c28-8807-44cf-bbcd-21b622b692bc','UNREAD',NULL,'2022-12-01 06:40:25','2022-12-01 06:40:25');
+INSERT INTO `pengajuan` VALUES (45,'196810241989021001','','S.Sos','SUSANTO','4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','400702','KABID. PENGADAAN, PEMBERHENTIAN & INFORMASI  ','32','III.B','134','III/d','PENATA TK. I','196810241989021001.jpg',NULL,NULL,'123','2022-12-03','DISIPLIN',2,1,36,36,'3fbb8b55-571a-4bce-bffb-1a1fbae74087','ff1cd735-f10f-4bbf-883f-68fafdce4293','1ee7fb38-c1f5-43a3-9784-e91cf219bb3e','ok aja','ec0d0203-d314-4c89-bb33-4feaa6e65043','UNREAD',NULL,'2022-12-03 08:28:04','2022-12-03 08:28:04'),(46,'196608131985121001','','S.Sos','M. AZMI YASIR YATOEB','4007000000','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH','',NULL,'',NULL,'141','IV/a','PEMBINA','196608131985121001.jpg',NULL,NULL,'234','2022-12-29','TEMUAN',2,1,36,36,'53355919-8637-4834-bbe3-b1c63a9c0e93','9625f9b8-6173-4a54-b17c-6b85fed49aea','4e05fdd2-6e3d-4142-9a04-e669af042a30','2323','9eaafa00-1ae1-4014-a963-8b71cab02d87','UNREAD',NULL,'2022-12-03 08:41:33','2022-12-03 08:41:33');
 /*!40000 ALTER TABLE `pengajuan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pengajuan_aksi`
+--
+
+DROP TABLE IF EXISTS `pengajuan_aksi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pengajuan_aksi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pesan` varchar(500) NOT NULL,
+  `icon` char(50) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pengajuan_aksi`
+--
+
+LOCK TABLES `pengajuan_aksi` WRITE;
+/*!40000 ALTER TABLE `pengajuan_aksi` DISABLE KEYS */;
+INSERT INTO `pengajuan_aksi` VALUES (1,'Mengirim Pengajuan Berkas Rekomendasi','fas fa-file-import bg-blue','2022-12-02 04:58:57','2022-12-02 04:58:58'),(2,'Memproses Berkas','fas fa-sync-alt bg-yellow','2022-12-02 04:58:57','2022-12-02 04:58:58'),(3,'Menolak Berkas Pengajuan','fas fa-times bg-red','2022-12-02 04:58:57','2022-12-02 04:58:58'),(4,'Verifikasi Berkas','fas fa-paste bg-yellow','2022-12-02 04:58:57','2022-12-02 04:58:58'),(5,'Menyiapkan Berkas','fas fa-file-contract bg-blu','2022-12-02 04:58:57','2022-12-02 04:58:58'),(6,'Berkas Telah Selesai','far fa-check-circle bg-green','2022-12-02 04:58:57','2022-12-02 04:58:58');
+/*!40000 ALTER TABLE `pengajuan_aksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -320,18 +347,24 @@ DROP TABLE IF EXISTS `pengajuan_histori`;
 CREATE TABLE `pengajuan_histori` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pengajuan_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `user_nama` varchar(500) DEFAULT NULL,
+  `opd` varchar(500) DEFAULT NULL,
+  `pengajuan_aksi_id` int(11) NOT NULL,
+  `pesan` varchar(500) DEFAULT NULL,
   `tgl_kirim` timestamp NULL DEFAULT NULL,
   `tgl_baca` timestamp NULL DEFAULT NULL,
-  `penerima_opd_id` int(11) DEFAULT NULL,
-  `pengirim_opd_id` int(11) DEFAULT NULL,
-  `pengirim_id` int(11) DEFAULT NULL,
-  `status` enum('PROSES','TOLAK','SELESAI') DEFAULT NULL COMMENT 'dqwdqwdqwd',
+  `uuid` varchar(500) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_pengajuan_histori_pengajuan_0` (`pengajuan_id`),
-  CONSTRAINT `fk_pengajuan_histori_pengajuan_0` FOREIGN KEY (`pengajuan_id`) REFERENCES `pengajuan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Status pengajuan Berkas dari admin OPD ke inspektorat\n\nPROSES, TOLAK, SELESAI';
+  KEY `fk_pengajuan_histori_user` (`user_id`),
+  KEY `fk_pengajuan_histori_aksi` (`pengajuan_aksi_id`),
+  CONSTRAINT `fk_pengajuan_histori_aksi` FOREIGN KEY (`pengajuan_aksi_id`) REFERENCES `pengajuan_aksi` (`id`),
+  CONSTRAINT `fk_pengajuan_histori_pengajuan_0` FOREIGN KEY (`pengajuan_id`) REFERENCES `pengajuan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_pengajuan_histori_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='Status pengajuan Berkas dari admin OPD ke inspektorat\n\nPROSES, TOLAK, SELESAI';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,6 +373,7 @@ CREATE TABLE `pengajuan_histori` (
 
 LOCK TABLES `pengajuan_histori` WRITE;
 /*!40000 ALTER TABLE `pengajuan_histori` DISABLE KEYS */;
+INSERT INTO `pengajuan_histori` VALUES (3,45,1,'Lian Mafutra','45',1,NULL,'2022-12-03 08:28:04',NULL,'d495b943-68c1-4fba-a90c-e653a98aa490','2022-12-03 08:28:04','2022-12-03 08:28:04'),(4,46,1,'Lian Mafutra','BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH',1,NULL,'2022-12-03 08:41:33',NULL,'a06f4e56-73e8-4500-8ab8-f73918555286','2022-12-03 08:41:33','2022-12-03 08:41:33');
 /*!40000 ALTER TABLE `pengajuan_histori` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -358,7 +392,7 @@ CREATE TABLE `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -367,7 +401,7 @@ CREATE TABLE `permissions` (
 
 LOCK TABLES `permissions` WRITE;
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
-INSERT INTO `permissions` VALUES (1,'filemanager','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(2,'read module','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(3,'delete setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(4,'update setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(5,'read setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(6,'create setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(7,'delete user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(8,'update user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(9,'read user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(10,'create user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(11,'delete role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(12,'update role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(13,'read role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(14,'create role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(15,'delete permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(16,'update permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(17,'read permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(18,'create permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(19,'view_data_pegawai','web','2022-11-18 04:16:07','2022-11-18 04:16:07'),(20,'pengajuan menu','web','2022-11-18 04:41:26','2022-11-29 01:42:51'),(21,'pengajuan create','web','2022-11-22 02:08:40','2022-11-22 02:08:40'),(22,'pengajuan store','web','2022-11-22 07:59:32','2022-11-22 07:59:32'),(23,'pengajuan destroy','web','2022-11-22 07:59:43','2022-11-22 07:59:43'),(24,'pengajuan update','web','2022-11-22 07:59:50','2022-11-22 07:59:50'),(25,'profile menu','web','2022-11-29 01:43:03','2022-11-29 01:43:03'),(26,'pengajuan index','web','2022-11-29 01:43:44','2022-11-29 01:43:44');
+INSERT INTO `permissions` VALUES (1,'filemanager','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(2,'read module','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(3,'delete setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(4,'update setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(5,'read setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(6,'create setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(7,'delete user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(8,'update user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(9,'read user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(10,'create user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(11,'delete role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(12,'update role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(13,'read role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(14,'create role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(15,'delete permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(16,'update permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(17,'read permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(18,'create permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(19,'view_data_pegawai','web','2022-11-18 04:16:07','2022-11-18 04:16:07'),(20,'pengajuan menu','web','2022-11-18 04:41:26','2022-11-29 01:42:51'),(21,'pengajuan create','web','2022-11-22 02:08:40','2022-11-22 02:08:40'),(22,'pengajuan store','web','2022-11-22 07:59:32','2022-11-22 07:59:32'),(23,'pengajuan destroy','web','2022-11-22 07:59:43','2022-11-22 07:59:43'),(24,'pengajuan update','web','2022-11-22 07:59:50','2022-11-22 07:59:50'),(25,'profile menu','web','2022-11-29 01:43:03','2022-11-29 01:43:03'),(26,'pengajuan index','web','2022-11-29 01:43:44','2022-11-29 01:43:44'),(27,'pengajuan show','web','2022-12-03 09:27:42','2022-12-03 09:27:42');
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -426,7 +460,7 @@ CREATE TABLE `role_has_permissions` (
 
 LOCK TABLES `role_has_permissions` WRITE;
 /*!40000 ALTER TABLE `role_has_permissions` DISABLE KEYS */;
-INSERT INTO `role_has_permissions` VALUES (20,3),(21,3),(22,3),(23,3),(24,3),(25,3),(26,3);
+INSERT INTO `role_has_permissions` VALUES (20,2),(22,2),(23,2),(24,2),(25,2),(26,2),(27,2),(20,3),(21,3),(22,3),(23,3),(24,3),(25,3),(26,3);
 /*!40000 ALTER TABLE `role_has_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -502,18 +536,16 @@ CREATE TABLE `users` (
   `username` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opd_id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `kontak` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `foto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `foto_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -522,7 +554,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'superadmin',1,'Lian Mafutra',NULL,NULL,NULL,NULL,NULL,'$2a$12$cbboE8Ci243P4NqHRwbcTuNAgE.A4DrPKp7KkQtGzYZmTBNc0rpZ.','X0EAHnyOulDyN5DKcJ1HgfkjRGzSzqQrS8JXGgr0PeWNtHWT2bGuxrFnhrAV','2022-11-23 09:04:52','2022-12-01 06:35:20'),(2,'diskominfo',20,'Lian Mafutra',NULL,NULL,'New Project (7)-1669714010.png','2022/11/profile',NULL,'$2a$12$cbboE8Ci243P4NqHRwbcTuNAgE.A4DrPKp7KkQtGzYZmTBNc0rpZ.','UTvbWwiwQnyR8j1t9IMGJSxomxtTbRTHrodvSesJz8IIrnW1lPMC5GVoV0zi','2022-11-23 09:04:52','2022-11-29 09:26:50');
+INSERT INTO `users` VALUES (1,'superadmin',1,'Lian Mafutra',NULL,NULL,NULL,'$2a$12$cbboE8Ci243P4NqHRwbcTuNAgE.A4DrPKp7KkQtGzYZmTBNc0rpZ.','5VjZ6deLveJqxAFc0xnXnfeOcQCyhLqtSVZiN83s6SSUzAtGtxY0htrzM10t','2022-11-23 09:04:52','2022-12-01 06:35:20'),(2,'diskominfo',20,'Lian Mafutra',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2a$12$cbboE8Ci243P4NqHRwbcTuNAgE.A4DrPKp7KkQtGzYZmTBNc0rpZ.','OzoIMORHMKzCHJiQpGgUoJOZXpkgLstfPqwh8mjCy34j9dpWY29z2lvri2Mo','2022-11-23 09:04:52','2022-11-29 09:26:50'),(3,'admin_inspektorat',36,'Admin Inspektorat',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','2022-11-23 09:04:52','2022-12-03 08:57:08');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -535,4 +567,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-01 13:45:52
+-- Dump completed on 2022-12-05  7:32:35
