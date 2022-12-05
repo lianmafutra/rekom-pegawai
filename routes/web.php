@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 */
 
 Route::get('/', function () {
+  
    return view('welcome');
 })->name('index');
 
@@ -37,6 +38,9 @@ Route::middleware(['auth'])->get('/home', [DashboardController::class, 'index'])
 Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::get('/', [DashboardController::class, 'index'])->name('admin');
    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+ 
+  
 
    Route::controller(UserController::class)->group(function () {
       Route::get('user', 'index')->middleware(['permission:read user'])->name('user.index');
