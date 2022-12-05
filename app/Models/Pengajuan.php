@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Config\PengajuanKirim;
+use App\Config\Role;
 use App\Utils\AutoUUID;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,7 +24,7 @@ class Pengajuan extends Model
 
    public function getTglSuratPengantarAttribute()
    {
-      return Carbon::parse($this->attributes['tgl_surat_pengantar'])->format('d-m-Y'); 
+      return Carbon::parse($this->attributes['tgl_surat_pengantar'])->format('d-m-Y');
    }
 
    public function setTglSuratPengantarAttribute($tgl_surat_pengantar)
@@ -34,13 +36,13 @@ class Pengajuan extends Model
    {
       return url('storage/profile/' . $this->foto);
    }
-   
+
 
    public function getRekomJenisNamaAttribute()
    {
-      if( $this->rekom_jenis == 'DISIPLIN'){
+      if ($this->rekom_jenis == 'DISIPLIN') {
          return config('global.rekom_jenis.DISIPLIN');
-      }else{
+      } else {
          return config('global.rekom_jenis.TEMUAN');
       }
    }
@@ -60,13 +62,30 @@ class Pengajuan extends Model
       return $this->hasMany(File::class, 'file_id', 'file_konversi_nip');
    }
 
-   public function keperluan(){
+   public function keperluan()
+   {
       return $this->belongsTo(Keperluan::class);
    }
 
-   public function histori(){
+   public function histori()
+   {
       return $this->hasMany(PengajuanHistori::class);
    }
 
- 
+   public function getUserKirim()
+   {
+      $user = auth()->user()->getRoleNames()[0];
+      if ($user == Role::isAdminOpd) {
+         return User::where('id', PengajuanKirim::ADMIN_INSPEKTORAT)->get();
+      }
+      if ($user == Role::isAdminInspektorat) {
+         return User::where('id', PengajuanKirim::ADMIN_KASUBAG)->get();
+      }
+      if ($user == Role::isKasubag) {
+         return User::where('id', PengajuanKirim::INSPEKTUR)->get();
+      }
+      if ($user == Role::isInspektur) {
+         return User::where('id', PengajuanKirim::ADMIN_INSPEKTORAT)->get();
+      }
+   }
 }

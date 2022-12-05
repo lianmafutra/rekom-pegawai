@@ -188,39 +188,7 @@
                 }
             });
         });
-        $('body').on('click', '.btn_pengajuan_tolak', function(e) {
-         
-         let template = "<h1>a</h1>";
-                            
-                            bootbox.alert(template, function () {
-                                console.log('This was logged in the callback!');
-                            });
-
-            bootbox.prompt({
-                title: 'Konfirmasi Penolakan Berkas',
-                message: 'Berkas akan dikembalikan ke OPD Pengirim, Tuliskan Informasi Pesan Penolakan <br>',
-                inputType: 'textarea',
-                centerVertical: true,
-                buttons: {
-                    confirm: {
-                        label: 'Ok, Lanjutkan',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Batal',
-                        className: 'btn-secondary'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-                        $("#form_pengajuan").submit();
-                    }
-                    $('#modal_detail_pengajuan').css("z-index", "1050")
-                    $('.modal').css('overflow-y', 'auto');
-                }
-            });
-            $('#modal_detail_pengajuan').css("z-index", "1000")
-        });
+       
 
 
 

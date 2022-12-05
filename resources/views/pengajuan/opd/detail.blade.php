@@ -1,5 +1,7 @@
 @extends('admin.layouts.master')
 @push('css')
+<link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
+<link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endpush
 @section('content')
     <style>
@@ -7,11 +9,9 @@
             color: #313131;
             font-weight: bold;
         }
-
         .column {
             width: 100%;
         }
-
         .ico {
             color: orange;
             display: inline-block;
@@ -23,12 +23,10 @@
             background-position: 0 0;
             background-repeat: no-repeat;
         }
-
         .title {
             display: block;
             overflow: hidden;
         }
-
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -40,16 +38,13 @@
             height: 196px;
             margin-bottom: 20px;
         }
-
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
-
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
-
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -61,7 +56,6 @@
             margin-right: auto;
             position: absolute
         }
-
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -72,11 +66,9 @@
             object-fit: cover;
             height: 300px;
         }
-
         .form-control {
             font-size: 14px !important;
         }
-
         div# {
             position: relative;
             margin-top: -10px;
@@ -115,7 +107,6 @@
                                                 autocomplete="off" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('POST')
-
                                                 <table class="table ">
                                                     <tbody>
                                                         <div class="card-body box-profile">
@@ -127,7 +118,6 @@
                                                                         src="{{ config('global.url.bkd.foto') . $pengajuan->photo }}"
                                                                         alt="User profile picture">
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                         <tr>
@@ -176,8 +166,6 @@
                                                             <td>:</td>
                                                             <td id="rekom_keperluan">{{ $pengajuan->keperluan->nama }}</td>
                                                         </tr>
-
-
                                                         <tr>
                                                             <td style="color: grey; font-weight: bold">#Data File</td>
                                                             <td></td>
@@ -259,11 +247,10 @@
                                                     </tbody>
                                                 </table>
                                         </div>
-
                                     </div>
                                     <div class="card-footer">
-                                        <button id="btn_tolak" class="btn btn-danger">Tolak Berkas</button>
-                                        <button id="btn_teruskan" class="btn btn-primary">Teruskan</button>
+                                        <a id="btn_tolak" class="btn btn-danger">Tolak Berkas</a>
+                                        <a id="btn_teruskan" class="btn btn-primary">Teruskan</a>
                                     </div>
                                     </form>
                                 </div>
@@ -275,21 +262,21 @@
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
-
     </div>
     @include('pengajuan.modal-view-file')
+    @include('pengajuan.modal-teruskan')
 @endsection
 @push('js')
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
+    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+
     <script>
         $(document).ready(function() {
-
             $('.btn_view_file').click(function(e) {
                 e.preventDefault();
                 let url = $(this).attr('data-url');
                 viewFile(url);
             });
-
             function viewFile(url) {
                 const width = 800
                 const height = 700
@@ -306,9 +293,38 @@
                 }
             });
 
+            $( "#btn_teruskan" ).click(function() {
+                  $('#modal_teruskan').modal('show')
+            });
 
-
-
+            $( "#btn_tolak" ).click(function() {
+                bootbox.prompt({
+                    title: 'Konfirmasi Penolakan Berkas',
+                    message: 'Berkas akan dikembalikan ke OPD Pengirim, Tuliskan Informasi Pesan Penolakan <br>',
+                    inputType: 'textarea',
+                    centerVertical: true,
+                    buttons: {
+                        confirm: {
+                            label: 'Ok, Lanjutkan',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Batal',
+                            className: 'btn-secondary'
+                        }
+                    },
+                    callback: function(result) {
+                        if (result) {
+                            $("#form_pengajuan").submit();
+                        }
+                    }
+                });
+            });
         });
+
+        $('.select2bs4').select2({
+                theme: 'bootstrap4',
+                //  allowClear: true
+            })
     </script>
 @endpush

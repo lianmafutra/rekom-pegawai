@@ -55,7 +55,7 @@
                     <img class="profile-user-img profile-custom  img-fluid img-circle"
                         src="{{ asset('img/avatar2.png') }}" alt="User profile picture">
                 </div>
-                <table class="table ">
+                <table class="table">
                     <tbody>
                         <tr>
                             <td>NIP</td>

@@ -6,9 +6,9 @@ use Illuminate\Validation\Rules\Enum;
 
 class Role extends Enum
 {
-   const isAdminOpd         = 'adminopd';
-   const isAdminInspektorat = 'admininspektorat';
-   const isKasubag          = 'adminkasubag';
+   const isAdminOpd         = 'admin_opd';
+   const isAdminInspektorat = 'admin_inspektorat';
+   const isKasubag          = 'admin_kasubag';
    const isInspektur        = 'inspektur';
    const isSuperadmin       = 'superadmin';
 
