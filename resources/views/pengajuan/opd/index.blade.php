@@ -3,6 +3,10 @@
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 @endpush
 @section('content')
+    <style>
+
+
+    </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -70,12 +74,15 @@
         </section>
         <!-- /.content -->
     </div>
+
+    
     @include('pengajuan.modal-histori')
     @include('pengajuan.modal-show')
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers: {
@@ -116,17 +123,17 @@
                 },
             ]
         });
-
         $('body').on('click', '.btn_lihat_histori', function(e) {
             $('#modal_lihat_histori').modal('show')
+
+            $('#modal_lihat_histori').modal('show')
             $('.modal_content_histori').empty()
-            
             $.ajax({
                 url: $(this).attr('data-url'),
                 type: 'GET',
                 success: function(json) {
-                  json.data.histori.forEach($item => {
-                     $(".modal_content_histori").append(`<div>
+                    json.data.histori.forEach($item => {
+                        $(".modal_content_histori").append(`<div>
                         <i style="color: white !important" class="${$item.aksi.icon}"></i>
                         <div class="timeline-item">
                            <div class="timeline-body">
@@ -138,17 +145,17 @@
                            </div>
                         </div>
                      </div>`);
-                  });
+                    });
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     alert("Gagal Mengambil data histori, silahkan coba lagi ...")
                 }
             })
         })
-
         $('body').on('click', '.btn_detail_pengajuan', function(e) {
             let url = $(this).attr('data-url');
             let host = $(this).attr('data-host');
+
             $('#modal_detail_pengajuan').modal('show')
             $('.profile-user-img').attr("src", @json(asset('img/avatar2.png')));
             $.ajax({
@@ -181,6 +188,41 @@
                 }
             });
         });
+        $('body').on('click', '.btn_pengajuan_tolak', function(e) {
+         
+         let template = "<h1>a</h1>";
+                            
+                            bootbox.alert(template, function () {
+                                console.log('This was logged in the callback!');
+                            });
+
+            bootbox.prompt({
+                title: 'Konfirmasi Penolakan Berkas',
+                message: 'Berkas akan dikembalikan ke OPD Pengirim, Tuliskan Informasi Pesan Penolakan <br>',
+                inputType: 'textarea',
+                centerVertical: true,
+                buttons: {
+                    confirm: {
+                        label: 'Ok, Lanjutkan',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Batal',
+                        className: 'btn-secondary'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        $("#form_pengajuan").submit();
+                    }
+                    $('#modal_detail_pengajuan').css("z-index", "1050")
+                    $('.modal').css('overflow-y', 'auto');
+                }
+            });
+            $('#modal_detail_pengajuan').css("z-index", "1000")
+        });
+
+
 
         function openCenteredWindow(url) {
             const width = 800

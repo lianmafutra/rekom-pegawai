@@ -71,7 +71,6 @@
         <!-- /.content -->
     </div>
     @include('pengajuan.modal-histori')
-    @include('pengajuan.modal-show')
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -85,7 +84,7 @@
         $("#tabel-pengajuan").dataTable({
             serverSide: true,
             processing: true,
-            ajax: `{{ route('pengajuan.index') }}`,
+            ajax: `{{ route('pengajuan.verifikasi.index') }}`,
             columns: [{
                     data: "DT_RowIndex",
                     orderable: false,
@@ -146,42 +145,7 @@
             })
         })
 
-        $('body').on('click', '.btn_detail_pengajuan', function(e) {
-            let url = $(this).attr('data-url');
-            let host = $(this).attr('data-host');
-            $('#modal_detail_pengajuan').modal('show')
-            $('.profile-user-img').attr("src", @json(asset('img/avatar2.png')));
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(json) {
-                    $("#nama").text(json.nama);
-                    $("#nip").text(json.nip);
-                    $("#pangkat").text(json.pangkat);
-                    $("#jabatan").text(json.njab);
-                    $("#opd").text(json.nunker);
-                    $("#no_pengantar").text(json.nomor_pengantar);
-                    $("#tgl_pengantar").text(json.tgl_surat_pengantar);
-                    $("#rekom_jenis").text(json.rekom_jenis_nama);
-                    $("#rekom_keperluan").text(json.keperluan.nama);
-                    $('.profile-user-img').attr("src",
-                        @json(config('global.url.bkd.foto')) + json.photo);
-                    $("#file_sk").html(
-                        `<a onclick="openCenteredWindow('${host}/storage/${json.file_sk[0].path}/${json.file_sk[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
-                    );
-                    $("#file_pengantar").html(
-                        `<a onclick="openCenteredWindow('${host}/storage/${json.file_pengantar[0].path}/${json.file_pengantar[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
-                    );
-                    $("#file_konversi").html(
-                        `<a onclick="openCenteredWindow('${host}/storage/${json.file_konversi[0].path}/${json.file_konversi[0].name_random}')" href="#" type="button" class=" btn btn-primary btn-sm">Lihat File</a>`
-                    );
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
-                }
-            });
-        });
-
+     
         function openCenteredWindow(url) {
             const width = 800
             const height = 700

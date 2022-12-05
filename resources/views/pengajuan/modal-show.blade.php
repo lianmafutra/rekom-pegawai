@@ -3,9 +3,11 @@
         color: #313131;
         font-weight: bold;
     }
+
     .column {
         width: 100%;
     }
+
     .ico {
         color: orange;
         display: inline-block;
@@ -17,10 +19,12 @@
         background-position: 0 0;
         background-repeat: no-repeat;
     }
+
     .title {
         display: block;
         overflow: hidden;
     }
+
     .profile-custom {
         border: 1px solid #adb5bd !important;
         margin: 0 auto;
@@ -32,9 +36,12 @@
         height: 196px;
         margin-bottom: 20px;
     }
-    +
+    
+
+   
 </style>
-<div class="modal fade" id="modal_detail_pengajuan">
+
+<div style="z-index: 1041;" class="modal fade" id="modal_detail_pengajuan">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -133,8 +140,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <div class="modal-footer ">
+                @can('pengajuan verifikasi tolak')
+                    <a href="#" type="button" class="btn_pengajuan_tolak btn btn-danger">Tolak</a>
+                @endcan
+                @can('pengajuan verifikasi kirim')
+                    <a href="#" type="button" class="btn_pengajuan_kirim btn btn-success">Teruskan</a>
+                @endcan
+
             </div>
         </div>
     </div>

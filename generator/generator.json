@@ -2,6 +2,7 @@
     "model": "Siswa",
     "controller": "SiswaController",
     "path": "resources/views/admin",
+    
     "form": [
         {
             "name": "nama",

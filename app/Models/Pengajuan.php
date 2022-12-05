@@ -52,7 +52,7 @@ class Pengajuan extends Model
 
    public function file_pengantar()
    {
-      return $this->hasMany(File::class, 'file_id', 'file_pengantar');
+      return $this->hasMany(File::class, 'file_id', 'file_pengantar_opd');
    }
 
    public function file_konversi()

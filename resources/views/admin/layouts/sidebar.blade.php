@@ -75,22 +75,31 @@
                 @endcan
                 @can('pengajuan menu')
                     <li class="nav-item">
-                        <a href="{{ route('pengajuan.index') }}"
-                            class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-folder"></i>
-                            <p>Pengajuan</p>
-                        </a>
+                        @can('pengajuan verifikasi index')
+                            <a href="{{ route('pengajuan.verifikasi.index') }}"
+                                class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-folder"></i>
+                                <p>Pengajuan</p>
+                            </a>
+                        @endcan
+                        @role('pengajuan index')
+                            <a href="{{ route('pengajuan.index') }}"
+                                class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-folder"></i>
+                                <p>Pengajuan</p>
+                            </a>
+                        @endrole
                     </li>
                 @endcan
                 @can('profile menu')
-                <li class="nav-item">
-                    <a href="{{ route('profile.index') }}"
-                        class="nav-link {{ request()->routeIs('profil*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>Profil</p>
-                    </a>
-                </li>
-            @endcan
+                    <li class="nav-item">
+                        <a href="{{ route('profile.index') }}"
+                            class="nav-link {{ request()->routeIs('profil*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>Profil</p>
+                        </a>
+                    </li>
+                @endcan
 
                 {{-- <li class="nav-header"></li>
                 <li class="nav-item">
