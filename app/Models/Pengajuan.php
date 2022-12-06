@@ -67,6 +67,12 @@ class Pengajuan extends Model
       return $this->belongsTo(Keperluan::class);
    }
 
+
+   public function pengirim()
+   {
+      return $this->belongsTo(User::class, 'pengirim_id', 'id');
+   }
+
    public function histori()
    {
       return $this->hasMany(PengajuanHistori::class);

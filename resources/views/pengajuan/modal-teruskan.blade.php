@@ -31,6 +31,12 @@
                         <div class="form-group">
                             <label>Kepada :</label>
                             <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
+                            @if (auth()->user()->getRoleNames()[0] == "inspektur")
+                                 <input hidden name="aksi_id" value="5">
+                            @else
+                                 <input hidden name="aksi_id" value="4">
+                            @endif
+                          
                             <select name="penerima_uuid" class="select2 select2-pegawai form-control select2bs4" style="width: 100%;">
                                 @foreach ($user_kirim as $item)
                               

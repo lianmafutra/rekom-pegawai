@@ -79,19 +79,21 @@ class PengajuanService
       try {
          $user = User::with('opd')->find(auth()->user()->id);
 
-         $penerima_id = User::where('uuid', $penerima_uuid)->first()->id;
-         $pengajuan_uuid = Pengajuan::where('uuid', $pengajuan_uuid)->first();
+         $penerima_id    = User::where('uuid', $penerima_uuid)->first();
+         $pengajuan_id = Pengajuan::where('uuid', $pengajuan_uuid)->first()->id;
 
          PengajuanHistori::create([
-            'pengajuan_uuid'    => $pengajuan_uuid->id,
+            'pengajuan_id'      => $pengajuan_id,
             'user_id'           => $user->id,
-            'user_nama'         => $user->name,
-            'penerima_id'       => $penerima_id,
+            'user_nama'         => $penerima_id->name,
+            'penerima_id'       => $penerima_id->id,
+            'pengirim_id'       => $user->id,
             'opd'               => $user->opd->nunker,
             'pengajuan_aksi_id' => $aksi_id,
             'pesan'             => $pesan,
             'tgl_kirim'         => Carbon::now(),
          ]);
+
       } catch (\Throwable $th) {
          throw new CustomException("Terjadi Kesalahan saat Menginput Data Histori" + $th);
       }

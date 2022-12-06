@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\pengajuan;
 
 use App\Config\PengajuanAksi;
+use App\Config\Role;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
@@ -10,8 +11,10 @@ use App\Http\Services\Pegawai\PegawaiService;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
+use App\Models\PengajuanHistori;
 use App\Models\User;
 use App\Utils\UploadFile;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -26,10 +29,10 @@ class PengajuanOPDController extends Controller
    {
 
       abort_if(Gate::denies('pengajuan index'), 403);
-     
+
       $x['title'] = 'Pengajuan OPD';
-         $data    = Pengajuan::with('keperluan')->latest()->get();
-         $pegawai = Cache::get('pegawai');
+      $data    = Pengajuan::with('keperluan')->latest()->get();
+      $pegawai = Cache::get('pegawai');
 
       if (request()->ajax()) {
          return DataTables::of($data)
@@ -45,7 +48,7 @@ class PengajuanOPDController extends Controller
 
    public function create(PegawaiService $pegawaiService, User $user)
    {
-      
+
       abort_if(Gate::denies('pengajuan create'), 403);
       $x['title']     = 'Buat Pengajuan';
       $x['url_foto']     = Config::get('global.url.bkd.foto');
@@ -62,7 +65,7 @@ class PengajuanOPDController extends Controller
       abort_if(Gate::denies('pengajuan store'), 403);
 
       try {
-
+         DB::beginTransaction();
          // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $pegawaiService->filterByNIP($request->pegawai)[0];
 
@@ -70,7 +73,24 @@ class PengajuanOPDController extends Controller
          $pengajuanStore = $pengajuanService->storePengajuan($pegawai_cache, $request);
 
          // Insert histori pengajuan ke DB
-        $pengajuanService->storeHistori($pengajuanStore->id, PengajuanAksi::KIRIM);
+         //   $pengajuanService->storeHistori(
+         //    $pengajuanStore->uuid, 
+         //    PengajuanAksi::KIRIM,
+         //    $request->penerima_uuid);
+         $user = User::with('opd')->find(auth()->user()->id);
+
+         PengajuanHistori::create([
+            'pengajuan_id'      => $pengajuanStore->id,
+            'user_id'           => $user->id,
+            'user_nama'         => $user->name,
+            'penerima_id'       => 3,
+            'pengirim_id'       => $user->id,
+            'opd'               => $user->opd->nunker,
+            'pengajuan_aksi_id' => PengajuanAksi::KIRIM,
+            'pesan'             => '',
+            'tgl_kirim'         => Carbon::now(),
+         ]);
+
 
          // upload file syarat pengajuan
          $upload_file_sk        = new UploadFile();
@@ -85,7 +105,7 @@ class PengajuanOPDController extends Controller
          $upload_file_pengantar
             ->file($request->file('file_pengantar_opd'))
             ->path('pengajuan')
-            ->uuid($pengajuanStore->file_pengantar)
+            ->uuid($pengajuanStore->file_pengantar_opd)
             ->parent_id($pengajuanStore->id);
 
          $upload_file_konversi //optional

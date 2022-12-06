@@ -105,6 +105,10 @@
                                                     <div class="errors"></div>
                                                 </div>
                                                 <div class="form-group">
+                                                   <input hidden type="text" class="form-control"
+                                                       name="penerima_uuid" placeholder="Nomor Surat Pengantar" value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
+                                               </div>
+                                                <div class="form-group">
                                                     <div class="bd-highlight">
                                                         <label>Tanggal Surat Pengantar <span
                                                                 style="color: red">*</span></label>

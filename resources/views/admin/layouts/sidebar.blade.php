@@ -79,16 +79,16 @@
                             <a href="{{ route('pengajuan.verifikasi.index') }}"
                                 class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
-                                <p>Pengajuan</p>
+                                <p>Data Pengajuan</p>
                             </a>
                         @endcan
-                        @role('pengajuan index')
+                        @can('pengajuan index')
                             <a href="{{ route('pengajuan.index') }}"
                                 class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>Pengajuan</p>
                             </a>
-                        @endrole
+                        @endcan
                     </li>
                 @endcan
                 @can('profile menu')

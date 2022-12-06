@@ -12,6 +12,7 @@ use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Models\PengajuanHistori;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -46,11 +47,35 @@ class PengajuanAdminController extends Controller
    public function kirim(Request $request, PengajuanService $pengajuanService)
    {
       try {
-         $pengajuanService->storeHistori(
-            $request->pengajuan_uuid,
-            PengajuanAksi::VERIFIKASI,
-            $request->penerima_uuid
-         );
+         $user = User::with('opd')->find(auth()->user()->id);
+
+         $penerima_id    = Pengajuan::with('pengirim')
+         ->where('uuid', '=', $request->pengajuan_uuid)
+         ->first();
+
+      
+         $pengajuan_id = Pengajuan::where('uuid', $request->pengajuan_uuid)->first()->id;
+
+         if ($request->has('selesai')) {
+            PengajuanHistori::create([
+               'pengajuan_id'      => $pengajuan_id,
+               'user_id'           => $user->id,
+               'user_nama'         => $penerima_id->pengirim->name,
+               'penerima_id'       => $penerima_id->pengirim->id,
+               'pengirim_id'       => $user->id,
+               'opd'               => $user->opd->nunker,
+               'pengajuan_aksi_id' => PengajuanAksi::SELESAI,
+               'pesan'             => '',
+               'tgl_kirim'         => Carbon::now(),
+            ]);
+         } else {
+            $pengajuanService->storeHistori(
+               $request->pengajuan_uuid,
+               $request->aksi_id,
+               $request->penerima_uuid
+            );
+         }
+
 
          return redirect()->back()->with('success', 'Berhasil ', 200)->send();
       } catch (\Throwable $th) {
@@ -61,7 +86,7 @@ class PengajuanAdminController extends Controller
    public function detail($uuid, Pengajuan $pengajuan, PengajuanService $pengajuanService)
    {
       // abort_if(Gate::denies('pengajuan create'), 403);
-      
+
       $x['title']     = 'Buat Pengajuan';
       $x['url_foto']     = Config::get('global.url.bkd.foto');
       $x['rekom_jenis']     = Config::get('global.rekom_jenis');
@@ -73,8 +98,6 @@ class PengajuanAdminController extends Controller
 
       if ($histori == null && auth()->user()->getRoleNames()[0] == Role::isAdminInspektorat) {
          $pengajuanService->storeHistori($uuid, PengajuanAksi::PROSES, '26cabc5d-7c32-4e97-83f0-a02a226783c5');
-      }else{
-         dd("sudah ada");
       }
 
       $pengajuan  = Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $uuid)->first();

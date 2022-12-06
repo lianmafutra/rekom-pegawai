@@ -251,6 +251,10 @@
                                     <div class="card-footer">
                                         <a id="btn_tolak" class="btn btn-danger">Tolak Berkas</a>
                                         <a id="btn_teruskan" class="btn btn-primary">Teruskan</a>
+                                        @can('pengajuan selesai')
+                                        <a id="btn_selesai" class="btn btn-success">Berkas Selesai</a>
+                                        @endcan
+                                      
                                     </div>
                                     </form>
                                 </div>
@@ -265,6 +269,7 @@
     </div>
     @include('pengajuan.modal-view-file')
     @include('pengajuan.modal-teruskan')
+    @include('pengajuan.modal-selesai')
 @endsection
 @push('js')
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
@@ -295,6 +300,10 @@
 
             $( "#btn_teruskan" ).click(function() {
                   $('#modal_teruskan').modal('show')
+            });
+
+            $( "#btn_selesai" ).click(function() {
+                  $('#modal_selesai').modal('show')
             });
 
             $( "#btn_tolak" ).click(function() {
