@@ -1,6 +1,8 @@
 @extends('admin.layouts.master')
 @push('css')
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endpush
 @section('content')
     <div class="content-wrapper">
@@ -36,8 +38,8 @@
                                             id="btn-tambah"><i class="fas fa-plus"></i> Buat Pengajuan</a>
                                     @endcan
                                     @can('pengajuan filter')
-                                        <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-default"
-                                            id="btn_filter"><i class="fas fa-filter"></i> Filter Pengajuan</a>
+                                        <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
+                                                class="fas fa-filter"></i> Filter Pengajuan</a>
                                     @endcan
                                     @can('pengajuan cetak laporan')
                                         <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-default"
@@ -81,11 +83,14 @@
         <!-- /.content -->
     </div>
     @include('pengajuan.modal-histori')
+    @include('pengajuan.modal-filter')
 @endsection
 
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+
 
     <script>
         $.ajaxSetup({
@@ -93,6 +98,12 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $('.select2bs4').select2({
+                theme: 'bootstrap4',
+                //  allowClear: true
+            })
+            
         $("#tabel-pengajuan").dataTable({
             serverSide: true,
             processing: true,
@@ -128,7 +139,6 @@
             ]
         });
 
-
         function openCenteredWindow(url) {
             const width = 800
             const height = 700
@@ -139,6 +149,14 @@
             const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
             return window.open(url, '_blank', features).focus();
         }
+
+        $("#btn_filter").click(function() {
+            $('#modal_filter').modal('show')
+        });
+
+        $("#btn_laporan").click(function() {
+           
+        });
     </script>
     @include('pengajuan.get-data-histori')
 @endpush
