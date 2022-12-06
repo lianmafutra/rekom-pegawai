@@ -108,7 +108,6 @@ class PengajuanService
       return $status->first()->histori->last()->pengajuan_aksi_id;
    }
 
-
    function getViewAksiDetail($pengajuan_uuid)
    {
       $user = new User();
@@ -122,7 +121,7 @@ class PengajuanService
             break;
          case  Role::isAdminInspektorat:
             if ($status == PengajuanAksi::VERIFIKASI) $aksi = [];
-            elseif ($status == PengajuanAksi::SIAPKAN) $aksi = ['tolak','selesaikan'];
+            elseif ($status == PengajuanAksi::SIAPKAN) $aksi = ['tolak','selesaikan', 'file_rekom'];
             elseif ($status == PengajuanAksi::TOLAK) $aksi = [];
             elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             else $aksi = ['tolak', 'teruskan'];
@@ -162,5 +161,13 @@ class PengajuanService
          }
       } catch (\Throwable $th) {
       }
+   }
+
+   function generateFileRekom(){
+      // data user
+      // jenis rekom 
+      // jenis keperluan
+      //file TTD
+      // file barcode
    }
 }
