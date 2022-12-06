@@ -1,5 +1,3 @@
-
-
 @if(in_array("teruskan", $aksi))
     <button id="btn_teruskan" class="mt-1 btn btn-primary"><i class="fas fa-share"></i>Teruskan</button>
 @endisset

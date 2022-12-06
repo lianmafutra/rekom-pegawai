@@ -28,14 +28,24 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            @can('pengajuan create')
-                                <div class="card-header">
-                                    <h3 class="card-title">
+
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    @can('pengajuan create')
                                         <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-primary"
                                             id="btn-tambah"><i class="fas fa-plus"></i> Buat Pengajuan</a>
-                                    </h3>
-                                </div>
-                            @endcan
+                                    @endcan
+                                    @can('pengajuan filter')
+                                        <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-default"
+                                            id="btn_filter"><i class="fas fa-filter"></i> Filter Pengajuan</a>
+                                    @endcan
+                                    @can('pengajuan cetak laporan')
+                                        <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-default"
+                                            id="btn_laporan"><i class="fas fa-print"></i></i> Cetak Laporan</a>
+                                    @endcan
+                                </h3>
+                            </div>
+
                             <div class="card-body">
                                 <div class="tab-content">
                                     @if ($data->count() == 0)
@@ -71,13 +81,12 @@
         <!-- /.content -->
     </div>
     @include('pengajuan.modal-histori')
-   
 @endsection
 
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-   
+
     <script>
         $.ajaxSetup({
             headers: {
@@ -119,7 +128,7 @@
             ]
         });
 
-     
+
         function openCenteredWindow(url) {
             const width = 800
             const height = 700
@@ -131,5 +140,5 @@
             return window.open(url, '_blank', features).focus();
         }
     </script>
-@include('pengajuan.get-data-histori')
+    @include('pengajuan.get-data-histori')
 @endpush

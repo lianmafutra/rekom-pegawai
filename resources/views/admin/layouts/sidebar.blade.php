@@ -73,6 +73,35 @@
                         </a>
                     </li>
                 @endcan
+                {{-- <li class="nav-item">
+                    <a href="{{ route('pengajuan.verifikasi.index') }}"
+                        class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>Data Pengajuan</p>
+                        <i class="right fas fa-angle-left"></i>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="pages/charts/chartjs.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Proses</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pages/charts/flot.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Selesai</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pages/charts/flot.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tolak</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li> --}}
                 @can('pengajuan menu')
                     <li class="nav-item">
                         @can('pengajuan verifikasi index')
