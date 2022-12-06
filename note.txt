@@ -6,3 +6,7 @@ validasi authorized data cache sesuai opd
 data waktu sinkron terakhir tampil di form pengajuan opd
 
 pengirim/auth untuk pengajuan opd relasi, catat langsung
+
+Tolak berkas ke OPD + alasan
+pisahkan verifikasi proses + baru + selesai
+admin OPD revisi
