@@ -34,6 +34,10 @@ class User extends Authenticatable
       return $this->with('opd')->where('id', auth()->user()->id)->first()->opd;
     }
 
+    public function getRoleName(){
+      return auth()->user()->getRoleNames()[0];
+    }
+
    public function getFotoUrlAttribute()
    {
       if($this->foto){

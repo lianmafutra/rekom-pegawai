@@ -78,6 +78,10 @@ class Pengajuan extends Model
       return $this->hasMany(PengajuanHistori::class);
    }
 
+   public function getPengajuanWithData($pengajuan_uuid){
+     return Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $pengajuan_uuid)->first();
+   }
+
    public function getUserKirim()
    {
       $user = auth()->user()->getRoleNames()[0];

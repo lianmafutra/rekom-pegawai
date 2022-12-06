@@ -2,14 +2,15 @@
 
 namespace App\Http\Services\Pegawai;
 
-use App\Config\Role;
-use App\Exceptions\CustomException;
-use App\Models\Pengajuan;
-use App\Models\PengajuanHistori;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Config\Role;
+use App\Models\User;
+use App\Models\Pengajuan;
 use Illuminate\Support\Str;
+use App\Config\PengajuanAksi;
+use App\Models\PengajuanHistori;
+use App\Exceptions\CustomException;
+use Illuminate\Support\Facades\Auth;
 
 
 class PengajuanService
@@ -98,11 +99,68 @@ class PengajuanService
       }
    }
 
+
    function cekPengajuanStatus($pengajuan_uuid)
    {
       $status =  Pengajuan::with('histori')->whereHas('histori', function ($q) {
          $q->latest('id');
       })->where('uuid', $pengajuan_uuid);
       return $status->first()->histori->last()->pengajuan_aksi_id;
+   }
+
+
+   function getViewAksiDetail($pengajuan_uuid)
+   {
+      $user = new User();
+      $aksi = [];
+      $status = $this->cekPengajuanStatus($pengajuan_uuid);
+
+      switch ($user->getRoleName()) {
+
+         case  Role::isAdminOpd:
+            $aksi = [];
+            break;
+         case  Role::isAdminInspektorat:
+            if ($status == PengajuanAksi::VERIFIKASI) $aksi = [];
+            elseif ($status == PengajuanAksi::SIAPKAN) $aksi = ['tolak','selesaikan'];
+            elseif ($status == PengajuanAksi::TOLAK) $aksi = [];
+            elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
+            else $aksi = ['tolak', 'teruskan'];
+            break;
+         case  Role::isKasubag:
+            $aksi = ['teruskan'];
+            break;
+         case  Role::isInspektur:
+            $aksi = ['teruskan'];
+            break;
+         default:
+            $aksi = [];
+            break;
+      }
+
+      return view('pengajuan.detail-action', compact(['aksi']))->render();
+   }
+
+   /**
+    *@desc cek histori sudah dilihat(proses) oleh admin inspektorat atau belum 
+    */
+   function cekHistoriProsesAdminOpd($pengajuan_uuid)
+   {
+
+      try {
+         $user = new User();
+         $pengajuanService = new PengajuanService();
+
+         $histori  = Pengajuan::with(['histori'])
+            ->whereRelation('histori', 'pengajuan_aksi_id', '=', PengajuanAksi::PROSES)
+            ->where('uuid', $pengajuan_uuid)
+            ->first();
+
+         // jika belum ada maka insert histori pengajuan dengan status proses
+         if ($histori == null && $user->getRoleName() == Role::isAdminInspektorat) {
+            $pengajuanService->storeHistori($pengajuan_uuid, PengajuanAksi::PROSES, '26cabc5d-7c32-4e97-83f0-a02a226783c5');
+         }
+      } catch (\Throwable $th) {
+      }
    }
 }

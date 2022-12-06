@@ -10,3 +10,8 @@ pengirim/auth untuk pengajuan opd relasi, catat langsung
 Tolak berkas ke OPD + alasan
 pisahkan verifikasi proses + baru + selesai
 admin OPD revisi
+
+hak akses aksi detail 
+
+selesai = btn
+siapkan

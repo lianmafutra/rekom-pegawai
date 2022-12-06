@@ -14,6 +14,16 @@ return [
       'TEMUAN'   => 'Bebas Temuan'
    ],
 
+   'status' =>[
+      'KIRIM'      => 1,
+      'PROSES'     => 2,
+      'TOLAK'      => 3,
+      'VERIFIKASI' => 4,
+      'SIAPKAN'    => 5,
+      'SELESAI'    => 6,
+      'REVISI'     => 7,
+   ],
+
    // ROLE USER
    'role'=> [
       'is_superadmin'        => 'superadmin',

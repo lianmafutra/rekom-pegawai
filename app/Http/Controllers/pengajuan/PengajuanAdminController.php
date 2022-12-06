@@ -83,34 +83,26 @@ class PengajuanAdminController extends Controller
       }
    }
 
-   public function detail($uuid, Pengajuan $pengajuan, PengajuanService $pengajuanService)
+   public function detail($uuid, Pengajuan $pengajuan, PengajuanService $pengajuanService, User $user)
    {
-      // abort_if(Gate::denies('pengajuan create'), 403);
 
       $x['title']             = 'Buat Pengajuan';
       $x['url_foto']          = Config::get('global.url.bkd.foto');
       $x['rekom_jenis']       = Config::get('global.rekom_jenis');
-      $x['pengajuan_selesai'] = false;
     
+      $status = $pengajuanService->cekPengajuanStatus($uuid);
 
-      if($pengajuanService->cekPengajuanStatus($uuid) == PengajuanAksi::SIAPKAN){
-         $x['pengajuan_selesai'] = true;
-      }
-      
-      $histori  = Pengajuan::with(['histori'])
-         ->whereRelation('histori', 'pengajuan_aksi_id', '=', PengajuanAksi::PROSES)
-         ->where('uuid', $uuid)
-         ->first();
+      $pengajuanService->cekHistoriProsesAdminOpd($uuid);
 
-      if ($histori == null && auth()->user()->getRoleNames()[0] == Role::isAdminInspektorat) {
-         $pengajuanService->storeHistori($uuid, PengajuanAksi::PROSES, '26cabc5d-7c32-4e97-83f0-a02a226783c5');
-      }
-
-      $pengajuan  = Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $uuid)->first();
+      $view_aksi = $pengajuanService->getViewAksiDetail($uuid);
 
       $user_kirim = $pengajuan->getUserKirim();
 
-      $keperluan  = Keperluan::get();
-      return view('pengajuan.opd.detail', $x, compact('user_kirim', 'keperluan', 'pengajuan', 'user_kirim'));
+      $pengajuan = $pengajuan->getPengajuanWithData($uuid);
+     
+      $keperluan = Keperluan::get();
+
+      return view('pengajuan.opd.detail', $x, 
+      compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi']));
    }
 }
