@@ -365,7 +365,7 @@ CREATE TABLE `pengajuan_histori` (
   CONSTRAINT `fk_pengajuan_histori_aksi` FOREIGN KEY (`pengajuan_aksi_id`) REFERENCES `pengajuan_aksi` (`id`),
   CONSTRAINT `fk_pengajuan_histori_pengajuan_0` FOREIGN KEY (`pengajuan_id`) REFERENCES `pengajuan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_pengajuan_histori_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COMMENT='Status pengajuan Berkas dari admin OPD ke inspektorat\n\nPROSES, TOLAK, SELESAI';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COMMENT='Status pengajuan Berkas dari admin OPD ke inspektorat\n\nPROSES, TOLAK, SELESAI';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -374,7 +374,7 @@ CREATE TABLE `pengajuan_histori` (
 
 LOCK TABLES `pengajuan_histori` WRITE;
 /*!40000 ALTER TABLE `pengajuan_histori` DISABLE KEYS */;
-INSERT INTO `pengajuan_histori` VALUES (5,47,1,'Lian Mafutra',NULL,'BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH',1,NULL,'2022-12-05 01:58:39',NULL,'3ffc5d76-12bd-4e49-a37c-db127cd5f8b8','2022-12-05 01:58:39','2022-12-05 01:58:39');
+INSERT INTO `pengajuan_histori` VALUES (5,47,1,'Lian Mafutra',NULL,'BADAN KEPEGAWAIAN & PENGEMBANGAN SDM DAERAH',1,NULL,'2022-12-05 01:58:39',NULL,'3ffc5d76-12bd-4e49-a37c-db127cd5f8b8','2022-12-05 01:58:39','2022-12-05 01:58:39'),(7,47,3,'Admin Inspektorat',3,'INSPEKTORAT KOTA JAMBI',2,NULL,'2022-12-05 13:57:04',NULL,'4aceed0d-ff17-4ab6-a5a7-b699dfb22aa6','2022-12-05 13:57:04','2022-12-05 13:57:04');
 /*!40000 ALTER TABLE `pengajuan_histori` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -557,7 +557,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'superadmin',1,'Lian Mafutra',NULL,NULL,NULL,'$2a$12$cbboE8Ci243P4NqHRwbcTuNAgE.A4DrPKp7KkQtGzYZmTBNc0rpZ.','j0zwiFVbQMqWd8ku2pUM2Mqi9WXCuw1tK0bJikScrqUvuowAhSK4reNdtfJ8','4eebbb1b-bb61-480c-b449-9d80111a7645','2022-11-23 09:04:52','2022-12-01 06:35:20'),(2,'diskominfo',20,'Admin Diskominfo',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2a$12$cbboE8Ci243P4NqHRwbcTuNAgE.A4DrPKp7KkQtGzYZmTBNc0rpZ.','OzoIMORHMKzCHJiQpGgUoJOZXpkgLstfPqwh8mjCy34j9dpWY29z2lvri2Mo','cf8398a1-134e-4a90-a2e7-f194f452b6b4','2022-11-23 09:04:52','2022-11-29 09:26:50'),(3,'admin_inspektorat',36,'Admin Inspektorat',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','26cabc5d-7c32-4e97-83f0-a02a226783c5','2022-11-23 09:04:52','2022-12-03 08:57:08'),(4,'inspektur',36,'Inspektur',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','743bf273-b7c0-44f2-aba4-eb6d39a12f28','2022-11-23 09:04:52','2022-12-03 08:57:08'),(5,'admin_kasubag',36,'Admin Kasubag',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','a14f74ec-1e3c-4a04-b507-25f1bf750b07','2022-11-23 09:04:52','2022-12-03 08:57:08');
+INSERT INTO `users` VALUES (1,'superadmin',1,'Lian Mafutra',NULL,NULL,NULL,'$2a$12$cbboE8Ci243P4NqHRwbcTuNAgE.A4DrPKp7KkQtGzYZmTBNc0rpZ.','j0zwiFVbQMqWd8ku2pUM2Mqi9WXCuw1tK0bJikScrqUvuowAhSK4reNdtfJ8','4eebbb1b-bb61-480c-b449-9d80111a7645','2022-11-23 09:04:52','2022-12-01 06:35:20'),(2,'diskominfo',20,'Admin Diskominfo',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2a$12$cbboE8Ci243P4NqHRwbcTuNAgE.A4DrPKp7KkQtGzYZmTBNc0rpZ.','OzoIMORHMKzCHJiQpGgUoJOZXpkgLstfPqwh8mjCy34j9dpWY29z2lvri2Mo','cf8398a1-134e-4a90-a2e7-f194f452b6b4','2022-11-23 09:04:52','2022-11-29 09:26:50'),(3,'admin_inspektorat',36,'Admin Inspektorat',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','wtpCX1R2JjO6EQ7ZNaa6gMwHzWaFYsvd7omaQeCfaPDX4NxUOtDgtK0DopFt','26cabc5d-7c32-4e97-83f0-a02a226783c5','2022-11-23 09:04:52','2022-12-03 08:57:08'),(4,'inspektur',36,'Inspektur',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','743bf273-b7c0-44f2-aba4-eb6d39a12f28','2022-11-23 09:04:52','2022-12-03 08:57:08'),(5,'admin_kasubag',36,'Admin Kasubag',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','a14f74ec-1e3c-4a04-b507-25f1bf750b07','2022-11-23 09:04:52','2022-12-03 08:57:08');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -570,4 +570,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-05 16:36:41
+-- Dump completed on 2022-12-06  7:59:01
