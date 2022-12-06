@@ -102,7 +102,7 @@ class PengajuanAdminController extends Controller
      
       $keperluan = Keperluan::get();
 
-      return view('pengajuan.opd.detail', $x, 
+      return view('pengajuan.detail', $x, 
       compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi']));
    }
 }
