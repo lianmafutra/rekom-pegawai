@@ -109,6 +109,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title font-weight-bold">Data Pengajuan</h5>
+                            </div>
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="row">
@@ -263,11 +266,30 @@
                                         <a id="btn_teruskan" class="btn btn-primary">Teruskan</a>
 
                                         @can('pengajuan selesai')
-                                          @if ($pengajuan_selesai)
+                                            @if ($pengajuan_selesai)
                                                 <a id="btn_selesai" class="btn btn-success">Berkas Selesai</a>
-                                          @endif
+                                            @endif
                                         @endcan
 
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title font-weight-bold">Histori Pengajuan Berkas</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="row">
+                                        <div class="timeline modal_content_histori">
+
+                                            {{-- List data histori pegajuan --}}
+
+                                        </div>
                                     </div>
                                     </form>
                                 </div>
@@ -343,6 +365,46 @@
                     }
                 });
             });
+
+
+            $.ajax({
+                url: @json(route('pengajuan.histori', $pengajuan->uuid)),
+                type: 'GET',
+                success: function(json) {
+                    json.data.histori.forEach($item => {
+                        if ($item.pengajuan_aksi_id == 6) {
+                            $(".modal_content_histori").append(`<div>
+                        <i style="color: white !important" class="${$item.aksi.icon}"></i>
+                        <div class="timeline-item">
+                           <div class="timeline-body">
+                              ${$item.aksi.pesan}  <a href="#"> ${$item.user_nama}</a>
+                           </div>
+                           <div class="dropdown-divider"></div>
+                           <div class="timeline-footer">
+                              <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
+                           </div>
+                        </div>
+                     </div>`);
+                        } else {
+                            $(".modal_content_histori").append(`<div>
+                        <i style="color: white !important" class="${$item.aksi.icon}"></i>
+                        <div class="timeline-item">
+                           <div class="timeline-body">
+                              <a href="#"> ${$item.user_nama}</a> ${$item.aksi.pesan}
+                           </div>
+                           <div class="dropdown-divider"></div>
+                           <div class="timeline-footer">
+                              <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
+                           </div>
+                        </div>
+                     </div>`);
+                        }
+                    });
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert("Gagal Mengambil data histori, silahkan coba lagi ...")
+                }
+            })
         });
 
         $('.select2bs4').select2({
