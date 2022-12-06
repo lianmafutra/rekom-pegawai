@@ -227,8 +227,7 @@
                                                                         $pengajuan->file_pengantar[0]->name_random }}"
                                                                         href="#" type="button"
                                                                         class="btn_view_file btn btn-default btn-sm">
-                                                                        <i class="far fa-eye"></i> Lihat
-                                                                        File
+                                                                        <i class="far fa-eye"></i> Lihat File
                                                                     </a>
                                                                 @endif
                                                             </td>
@@ -262,14 +261,20 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a id="btn_tolak" class="btn btn-danger">Tolak Berkas</a>
-                                        <a id="btn_teruskan" class="btn btn-primary">Teruskan</a>
+                                     
 
-                                        @can('pengajuan selesai')
-                                            @if ($pengajuan_selesai)
+                                         
+                                             
+                                        @if ($pengajuan_status)
+                                            @can('pengajuan selesai')
                                                 <a id="btn_selesai" class="btn btn-success">Berkas Selesai</a>
-                                            @endif
-                                        @endcan
+                                            @endcan   
+                                        @else
+                                        <a id="btn_file_rekom" class="btn btn-warning"> <i class="fas fa-file-alt"></i> File Rekomendasi</a>
+                                        @endif
+                                        <a id="btn_tolak" class="btn btn-danger"><i class="fas fa-ban"></i> Tolak Berkas</a>
+                                        <a id="btn_teruskan" class="btn btn-primary"><i class="fas fa-share"></i>
+                                           Teruskan</a>
 
                                     </div>
                                     </form>
