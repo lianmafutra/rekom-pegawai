@@ -93,9 +93,16 @@ class PengajuanService
             'pesan'             => $pesan,
             'tgl_kirim'         => Carbon::now(),
          ]);
-
       } catch (\Throwable $th) {
          throw new CustomException("Terjadi Kesalahan saat Menginput Data Histori" + $th);
       }
+   }
+
+   function cekPengajuanStatus($pengajuan_uuid)
+   {
+      $status =  Pengajuan::with('histori')->whereHas('histori', function ($q) {
+         $q->latest('id');
+      })->where('uuid', $pengajuan_uuid);
+      return $status->first()->histori->last()->pengajuan_aksi_id;
    }
 }

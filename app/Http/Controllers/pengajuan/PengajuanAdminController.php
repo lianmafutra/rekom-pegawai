@@ -87,10 +87,16 @@ class PengajuanAdminController extends Controller
    {
       // abort_if(Gate::denies('pengajuan create'), 403);
 
-      $x['title']     = 'Buat Pengajuan';
-      $x['url_foto']     = Config::get('global.url.bkd.foto');
-      $x['rekom_jenis']     = Config::get('global.rekom_jenis');
+      $x['title']             = 'Buat Pengajuan';
+      $x['url_foto']          = Config::get('global.url.bkd.foto');
+      $x['rekom_jenis']       = Config::get('global.rekom_jenis');
+      $x['pengajuan_selesai'] = false;
+    
 
+      if($pengajuanService->cekPengajuanStatus($uuid) == PengajuanAksi::SIAPKAN){
+         $x['pengajuan_selesai'] = true;
+      }
+      
       $histori  = Pengajuan::with(['histori'])
          ->whereRelation('histori', 'pengajuan_aksi_id', '=', PengajuanAksi::PROSES)
          ->where('uuid', $uuid)
