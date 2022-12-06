@@ -35,4 +35,10 @@ class PengajuanAksi extends Enum
      *@desc Berkas telah selesai (admin inspektorat)
      */
    const SELESAI    = 6;
+
+   
+     /**
+     *@desc Berkas ditolak oleh admin inspektorat dan dikirim ulang oleh Admin OPD(admin inspektorat)
+     */
+    const REVISI    = 7;
 }
