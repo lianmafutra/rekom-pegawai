@@ -70,15 +70,20 @@ class PengajuanService
          ]);
          return $pengajuan;
       } catch (\Throwable $th) {
-         throw new CustomException("Terjadi Kesalahan saat Menginput Data Pengajuan"); 
+         throw new CustomException("Terjadi Kesalahan saat Menginput Data Pengajuan");
       }
    }
 
-   public function storeHistori($pengajuan_id, $aksi_id, $penerima_id, $pesan=null){
+   public function storeHistori($pengajuan_uuid, $aksi_id, $penerima_uuid, $pesan = null)
+   {
       try {
          $user = User::with('opd')->find(auth()->user()->id);
-         $histori = PengajuanHistori::create([
-            'pengajuan_id'      => $pengajuan_id,
+
+         $penerima_id = User::where('uuid', $penerima_uuid)->first()->id;
+         $pengajuan_uuid = Pengajuan::where('uuid', $pengajuan_uuid)->first();
+
+         PengajuanHistori::create([
+            'pengajuan_uuid'    => $pengajuan_uuid->id,
             'user_id'           => $user->id,
             'user_nama'         => $user->name,
             'penerima_id'       => $penerima_id,
@@ -88,8 +93,7 @@ class PengajuanService
             'tgl_kirim'         => Carbon::now(),
          ]);
       } catch (\Throwable $th) {
-         throw new CustomException("Terjadi Kesalahan saat Menginput Data Histori" + $th); 
+         throw new CustomException("Terjadi Kesalahan saat Menginput Data Histori" + $th);
       }
-     
    }
 }

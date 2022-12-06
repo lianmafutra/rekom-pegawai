@@ -113,7 +113,7 @@
                                                             <img class="loading loading-custom"
                                                                 src="{{ asset('img/loading.gif') }}">
                                                             <div class="profile_data">
-                                                                <div class="">
+                                                                <div class="text-center">
                                                                     <img class="profile-user-img profile-custom  img-fluid img-circle"
                                                                         src="{{ config('global.url.bkd.foto') . $pengajuan->photo }}"
                                                                         alt="User profile picture">
