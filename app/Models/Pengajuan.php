@@ -82,6 +82,10 @@ class Pengajuan extends Model
      return Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $pengajuan_uuid)->first();
    }
 
+   
+   /**
+    *@desc cek akses user tujuan teruskan pengajuan 
+    */
    public function getUserKirim()
    {
       $user = auth()->user()->getRoleNames()[0];

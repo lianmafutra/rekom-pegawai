@@ -99,7 +99,10 @@ class PengajuanService
       }
    }
 
-
+ 
+   /**
+    *@desc cek button aksi tiap role dan berdasarkan kondisi pengajuan
+    */
    function cekPengajuanStatus($pengajuan_uuid)
    {
       $status =  Pengajuan::with('histori')->whereHas('histori', function ($q) {
@@ -108,6 +111,10 @@ class PengajuanService
       return $status->first()->histori->last()->pengajuan_aksi_id;
    }
 
+   
+   /**
+    *@desc cek button aksi tiap role dan berdasarkan kondisi pengajuan
+    */
    function getViewAksiDetail($pengajuan_uuid)
    {
       $user = new User();
@@ -141,7 +148,7 @@ class PengajuanService
    }
 
    /**
-    *@desc cek histori sudah dilihat(proses) oleh admin inspektorat atau belum 
+    *@desc cek histori sudah dilihat (proses) oleh admin inspektorat atau belum jika belum ada insert histori jika ada abaikan
     */
    function cekHistoriProsesAdminOpd($pengajuan_uuid)
    {

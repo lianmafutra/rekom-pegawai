@@ -5,6 +5,8 @@
 @endpush
 @section('content')
     <style>
+
+      
         tr td:first-child {
             color: #313131;
             font-weight: bold;
@@ -297,6 +299,7 @@
     @include('pengajuan.modal-view-file')
     @include('pengajuan.modal-teruskan')
     @include('pengajuan.modal-selesai')
+    @include('pengajuan.modal-tolak')
 @endsection
 @push('js')
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
@@ -335,27 +338,7 @@
             });
 
             $("#btn_tolak").click(function() {
-                bootbox.prompt({
-                    title: 'Konfirmasi Penolakan Berkas',
-                    message: 'Berkas akan dikembalikan ke OPD Pengirim, Tuliskan Informasi Pesan Penolakan <br>',
-                    inputType: 'textarea',
-                    centerVertical: true,
-                    buttons: {
-                        confirm: {
-                            label: 'Ok, Lanjutkan',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Batal',
-                            className: 'btn-secondary'
-                        }
-                    },
-                    callback: function(result) {
-                        if (result) {
-                            $("#form_pengajuan").submit();
-                        }
-                    }
-                });
+               $('#modal_tolak').modal('show')
             });
 
 
@@ -403,5 +386,10 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4',
         })
+
+        $('.horizontalLine').css({
+    left: $('.timeline-badge').first().position().left,
+    width: $('.timeline-item-last').position().left
+  });
     </script>
 @endpush

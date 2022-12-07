@@ -238,11 +238,13 @@
 @push('js')
     <script src="{{ asset('plugins/flatpicker/flatpickr.min.js') }}"></script>
     <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
+
     <script src="{{ URL::asset('plugins/filepond/filepond.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
+
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
@@ -354,6 +356,7 @@
             const file_sk = FilePond.create(document.querySelector('#file_sk'));
             const file_pengantar = FilePond.create(document.querySelector('#file_pengantar_opd'));
             const file_konversi_nip = FilePond.create(document.querySelector('#file_konversi_nip'));
+
             file_sk.setOptions({
                 storeAsFile: true,
             });
@@ -363,6 +366,7 @@
             file_konversi_nip.setOptions({
                 storeAsFile: true,
             });
+            
             flatpickr(".tanggal", {
                 allowInput: true,
                 dateFormat: "d-m-Y",

@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Pengajuan;
 
-use App\Config\Pengajuan as ConfigPengajuan;
 use App\Config\PengajuanAksi;
-use App\Config\PengajuanKirim;
-use App\Config\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
@@ -15,13 +12,19 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Gate;
 
 
 class PengajuanAdminController extends Controller
 {
+
+   private $pengajuanService;
+
+   public function __construct(PengajuanService $pengajuanService)
+   {
+       $this->pengajuanService = $pengajuanService;
+   }
 
    public function index()
    {
@@ -44,7 +47,7 @@ class PengajuanAdminController extends Controller
       return view('pengajuan.admin.index', $x, compact('data'));
    }
 
-   public function kirim(Request $request, PengajuanService $pengajuanService)
+   public function kirim(Request $request)
    {
       try {
          $user = User::with('opd')->find(auth()->user()->id);
@@ -69,13 +72,12 @@ class PengajuanAdminController extends Controller
                'tgl_kirim'         => Carbon::now(),
             ]);
          } else {
-            $pengajuanService->storeHistori(
+            $this->pengajuanService->storeHistori(
                $request->pengajuan_uuid,
                $request->aksi_id,
                $request->penerima_uuid
             );
          }
-
 
          return redirect()->back()->with('success', 'Berhasil ', 200)->send();
       } catch (\Throwable $th) {
@@ -83,18 +85,16 @@ class PengajuanAdminController extends Controller
       }
    }
 
-   public function detail($uuid, Pengajuan $pengajuan, PengajuanService $pengajuanService, User $user)
+   public function detail($uuid, Pengajuan $pengajuan, User $user)
    {
 
-      $x['title']             = 'Buat Pengajuan';
-      $x['url_foto']          = Config::get('global.url.bkd.foto');
-      $x['rekom_jenis']       = Config::get('global.rekom_jenis');
+      $x['title'] = 'Buat Pengajuan';
     
-      $status = $pengajuanService->cekPengajuanStatus($uuid);
+      $status = $this->pengajuanService->cekPengajuanStatus($uuid);
 
-      $pengajuanService->cekHistoriProsesAdminOpd($uuid);
+      $this->pengajuanService->cekHistoriProsesAdminOpd($uuid);
 
-      $view_aksi = $pengajuanService->getViewAksiDetail($uuid);
+      $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
 
       $user_kirim = $pengajuan->getUserKirim();
 

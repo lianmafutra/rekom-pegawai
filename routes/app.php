@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MasterRekomController;
 use App\Http\Controllers\Pegawai\PegawaiSyncController;
 use App\Http\Controllers\Pengajuan\PengajuanAdminController;
 use App\Http\Controllers\pengajuan\PengajuanOPDController;
@@ -16,8 +17,10 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
       Route::get('/', [PengajuanAdminController::class, 'index'])->name('index');
       Route::post('kirim', [PengajuanAdminController::class, 'kirim'])->name('kirim');
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
-   });
+      
 
+   });
+   Route::resource('master-rekom', MasterRekomController::class);
    Route::resource('pengajuan', PengajuanOPDController::class);
    Route::get('pengajuan/histori/{uuid}', [PengajuanOPDController::class, 'histori'])->name('pengajuan.histori');
 

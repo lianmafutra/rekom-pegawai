@@ -11,12 +11,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Pengajuan Masuk</h1>
+                        <h1 class="m-0">Master Data Rekom Pegawai</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Pengajuan q</li>
+                            <li class="breadcrumb-item active">Pengajuan </li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -33,45 +33,28 @@
 
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    @can('pengajuan create')
-                                        <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-primary"
-                                            id="btn-tambah"><i class="fas fa-plus"></i> Buat Pengajuan</a>
-                                    @endcan
-                                    @can('pengajuan filter')
-                                        <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
-                                                class="fas fa-filter"></i> Filter Pengajuan</a>
-                                    @endcan
-                                    @can('pengajuan cetak laporan')
-                                        <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-default"
-                                            id="btn_laporan"><i class="fas fa-print"></i></i> Cetak Laporan</a>
-                                    @endcan
+                                    <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-primary"
+                                        id="btn-tambah"><i class="fas fa-plus"></i> Input Data</a>
                                 </h3>
                             </div>
-
                             <div class="card-body">
                                 <div class="tab-content">
-                                    @if ($data->count() == 0)
-                                        <center>
-                                            <h5>Anda Belum Memiliki Pengajuan Berkas</h5>
-                                        </center>
-                                    @else
-                                        <div class="card-body table-responsive">
-                                            <table id="tabel-pengajuan" class="table table-bordered  " style="width:100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>NIP</th>
-                                                        <th>Nama</th>
-                                                        <th>Jenis Rekom</th>
-                                                        <th>Keperluan</th>
-                                                        <th>Tgl Kirim</th>
-                                                        <th>Status</th>
-                                                        <th>#Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    @endif
+                                    <div class="card-body table-responsive">
+                                        <table id="tabel-pengajuan" class="table table-bordered  " style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>NIP</th>
+                                                    <th>Nama</th>
+                                                    <th>OPD</th>
+                                                    <th>Jenis Rekom</th>
+                                                    <th>Tanggal Input</th>
+                                                    <th>#Aksi</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -99,14 +82,14 @@
         });
 
         $('.select2bs4').select2({
-                theme: 'bootstrap4',
-                //  allowClear: true
-            })
-            
+            theme: 'bootstrap4',
+            //  allowClear: true
+        })
+
         $("#tabel-pengajuan").dataTable({
             serverSide: true,
             processing: true,
-            ajax: `{{ route('pengajuan.verifikasi.index') }}`,
+            ajax: @json(route('master-rekom.index')),
             columns: [{
                     data: "DT_RowIndex",
                     orderable: false,
@@ -119,16 +102,13 @@
                     data: 'nama',
                 },
                 {
+                    data: 'opd',
+                },
+                {
                     data: 'rekom_jenis_nama',
                 },
                 {
-                    data: 'keperluan.nama',
-                },
-                {
-                    data: 'tgl_kirim',
-                },
-                {
-                    data: 'status',
+                    data: 'tgl_input',
                 },
                 {
                     data: "action",
@@ -154,7 +134,7 @@
         });
 
         $("#btn_laporan").click(function() {
-           
+
         });
     </script>
     @include('pengajuan.get-data-histori')

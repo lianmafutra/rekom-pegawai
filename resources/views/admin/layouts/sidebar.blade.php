@@ -8,8 +8,6 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-legacy nav-compact"
@@ -73,35 +71,7 @@
                         </a>
                     </li>
                 @endcan
-                {{-- <li class="nav-item">
-                    <a href="{{ route('pengajuan.verifikasi.index') }}"
-                        class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-folder"></i>
-                        <p>Data Pengajuan</p>
-                        <i class="right fas fa-angle-left"></i>
-                    </a>
 
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="pages/charts/chartjs.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Proses</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Selesai</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tolak</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li> --}}
                 @can('pengajuan menu')
                     <li class="nav-item">
                         @can('pengajuan verifikasi index')
@@ -120,6 +90,18 @@
                         @endcan
                     </li>
                 @endcan
+                @can('master rekom pegawai')
+                    <li class="nav-item">
+                        <a href="{{ route('master-rekom.index') }}"
+                            class="nav-link {{ request()->routeIs('master-rekom*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p> Master Rekom</p>
+                          
+                        </a>
+
+                        
+                    </li>
+                @endcan
                 @can('profile menu')
                     <li class="nav-item">
                         <a href="{{ route('profile.index') }}"
@@ -129,6 +111,7 @@
                         </a>
                     </li>
                 @endcan
+
 
                 {{-- <li class="nav-header"></li>
                 <li class="nav-item">

@@ -38,18 +38,22 @@ li.nav-item {
    border-radius: 10px;
    background: rgba(223, 223, 223, 0.418);
    border:none;
-   width: 214px;
+   margin-right: 30px;
+   /* width: 214px; */
 
 }
 .navbar-nav>.user-menu>.dropdown-menu {
    border-top-left-radius: 0;
    border-top-right-radius: 0;
    padding: 0;
-   width: 204px;
+   margin-right: 30px;
+
+   /* width: 204px; */
 }
 
 .dropdown-menu.dropdown-menu-md.dropdown-menu-right.show {
    margin-top: 14px;
+   
 }
 
 a.dropdown-item {

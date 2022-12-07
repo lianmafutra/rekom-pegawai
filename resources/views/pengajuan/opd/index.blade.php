@@ -132,7 +132,6 @@
                 url: $(this).attr('data-url'),
                 type: 'GET',
                 success: function(json) {
-               
                     json.data.histori.forEach($item => {
                         if ($item.pengajuan_aksi_id == 6) {
                             $(".modal_content_histori").append(`<div>
@@ -204,9 +203,6 @@
                 }
             });
         });
-
-
-
 
         function openCenteredWindow(url) {
             const width = 800
