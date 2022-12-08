@@ -73,10 +73,7 @@ class PengajuanOPDController extends Controller
          $pengajuanStore = $pengajuanService->storePengajuan($pegawai_cache, $request);
 
          // Insert histori pengajuan ke DB
-         //   $pengajuanService->storeHistori(
-         //    $pengajuanStore->uuid, 
-         //    PengajuanAksi::KIRIM,
-         //    $request->penerima_uuid);
+    
          $user = User::with('opd')->find(auth()->user()->id);
 
          PengajuanHistori::create([

@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endpush
 @section('content')
+<style>
+   .filter_result{
+      color: blue
+   }
+</style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -35,7 +40,8 @@
                                     <a href="#" class="btn btn-sm btn-primary" id="btn_input_data"><i
                                             class="fas fa-plus"></i> Input Data</a>
                                     <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
-                                            class="fas fa-filter"></i> Filter Data</a>
+                                            class="fas fa-filter"></i> Filter Data</a> 
+                                            <a id="filter_text" style="font-size: 12px; margin-left: 10px"> </a>
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -145,18 +151,21 @@
                 ]
             });
             
-            hideAll()
+            resetKolomTabelRekom()
 
             $(".btn_terapkan_filter").click(function() {
                 select_rekom = $('#select_rekom_rekom').val();
                 if (select_rekom == 'DISIPLIN') {
                     showTableDisiplin()
+                    $('#filter_text').html("Filter berdasarkan data : <span class=filter_result>"+ @json(config('global.rekom_jenis.DISIPLIN'))+"</span>")
                 }
                 if (select_rekom == 'TEMUAN') {
+                     $('#filter_text').html("Filter berdasarkan data : <span class=filter_result>"+ @json(config('global.rekom_jenis.TEMUAN'))+"</span>")
                     showTableTemuan()
                 }
                 if (select_rekom == '') {
-                     hideAll();
+                  $('#filter_text').hide()
+                  resetKolomTabelRekom();
                 }
 
                 rekom_jenis = $('#select_rekom_rekom').val();
@@ -183,7 +192,7 @@
                 tabel_rekom.draw()
             }
 
-            function hideAll() {
+            function resetKolomTabelRekom() {
                 tabel_rekom.column('.ketentuan').visible(false)
                 tabel_rekom.column('.alasan').visible(false)
                 tabel_rekom.column('.hukuman').visible(false)

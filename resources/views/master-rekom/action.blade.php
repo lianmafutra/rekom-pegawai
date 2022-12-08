@@ -16,8 +16,8 @@
                   @method('DELETE')
               </form>
             </a> </li>
-            <div class="dropdown-divider"></div>
-            <li><a  href="#" class="btn_detail dropdown-item">Detail</a></li>
+            {{-- <div class="dropdown-divider"></div>
+            <li><a  href="#" class="btn_detail dropdown-item">Detail</a></li> --}}
         </ul>
     </div>
 </div>

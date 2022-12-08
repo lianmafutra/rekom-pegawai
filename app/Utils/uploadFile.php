@@ -69,6 +69,7 @@ class uploadFile
          }
          return true;
       } catch (\Throwable $th) {
+         dd("error upload function");
          return false;
       }
    }
