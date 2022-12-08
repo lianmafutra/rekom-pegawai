@@ -334,8 +334,7 @@
                     retryLimit: 3,
                     success: function(json) {
                         $(".profile_data").fadeIn(1100);
-                        $('.profile-user-img').attr("src",
-                            @json($url_foto) + json.photo);
+                        $('.profile-user-img').attr("src", @json($url_foto) + json.photo);
                         $('.nama').html(json.nama ? json.nama : '-')
                         $('.nip').html(json.nipbaru)
                         $('.pangkat').html(json.pangkat)
@@ -366,7 +365,7 @@
             file_konversi_nip.setOptions({
                 storeAsFile: true,
             });
-            
+
             flatpickr(".tanggal", {
                 allowInput: true,
                 dateFormat: "d-m-Y",

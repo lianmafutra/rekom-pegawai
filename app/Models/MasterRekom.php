@@ -23,7 +23,8 @@ class MasterRekom extends Model
     {
        if ($this->rekom_jenis == 'DISIPLIN') {
           return config('global.rekom_jenis.DISIPLIN');
-       } else {
+       } 
+       if ($this->rekom_jenis == 'TEMUAN') {
           return config('global.rekom_jenis.TEMUAN');
        }
     }

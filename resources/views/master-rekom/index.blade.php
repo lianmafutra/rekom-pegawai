@@ -33,8 +33,9 @@
 
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-primary"
-                                        id="btn-tambah"><i class="fas fa-plus"></i> Input Data</a>
+                                    <a href="#" class="btn btn-sm btn-primary" id="btn_input_data"><i
+                                            class="fas fa-plus"></i> Input Data</a>
+
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -46,7 +47,7 @@
                                                     <th>#</th>
                                                     <th>NIP</th>
                                                     <th>Nama</th>
-                                                    <th>OPD</th>
+                                                    {{-- <th>OPD</th> --}}
                                                     <th>Jenis Rekom</th>
                                                     <th>Tanggal Input</th>
                                                     <th>#Aksi</th>
@@ -65,75 +66,101 @@
         </section>
         <!-- /.content -->
     </div>
-    @include('pengajuan.modal-histori')
-    @include('pengajuan.modal-filter')
+
+    @include('master-rekom.modal-jenis-rekom')
 @endsection
 
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
 
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.select2bs4').select2({
+                theme: 'bootstrap4',
+                //  allowClear: true
+            })
+
+            $("#tabel-pengajuan").dataTable({
+                serverSide: true,
+                processing: true,
+                ajax: @json(route('master-rekom.index')),
+                columns: [{
+                        data: "DT_RowIndex",
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
+                        data: 'nip',
+                    },
+                    {
+                        data: 'nama',
+                    },
+                    //  {
+                    //      data: 'opd',
+                    //  },
+                    {
+                        data: 'rekom_jenis_nama',
+                    },
+                    {
+                        data: 'tgl_input',
+                    },
+                    {
+                        data: "action",
+                        orderable: false,
+                        searchable: false,
+                    },
+                ]
+            });
+
+            function openCenteredWindow(url) {
+                const width = 800
+                const height = 700
+                const pos = {
+                    x: (screen.width / 2) - (width / 2),
+                    y: (screen.height / 2) - (height / 2)
+                };
+                const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
+                return window.open(url, '_blank', features).focus();
             }
-        });
 
-        $('.select2bs4').select2({
-            theme: 'bootstrap4',
-            //  allowClear: true
-        })
+            $("#btn_filter").click(function() {
+                $('#modal_filter').modal('show')
+            });
 
-        $("#tabel-pengajuan").dataTable({
-            serverSide: true,
-            processing: true,
-            ajax: @json(route('master-rekom.index')),
-            columns: [{
-                    data: "DT_RowIndex",
-                    orderable: false,
-                    searchable: false,
-                },
-                {
-                    data: 'nip',
-                },
-                {
-                    data: 'nama',
-                },
-                {
-                    data: 'opd',
-                },
-                {
-                    data: 'rekom_jenis_nama',
-                },
-                {
-                    data: 'tgl_input',
-                },
-                {
-                    data: "action",
-                    orderable: false,
-                    searchable: false,
-                },
-            ]
-        });
+            $("#btn_laporan").click(function() {
 
-        function openCenteredWindow(url) {
-            const width = 800
-            const height = 700
-            const pos = {
-                x: (screen.width / 2) - (width / 2),
-                y: (screen.height / 2) - (height / 2)
-            };
-            const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
-            return window.open(url, '_blank', features).focus();
-        }
+            });
 
-        $("#btn_filter").click(function() {
-            $('#modal_filter').modal('show')
-        });
+            $("#btn_input_data").click(function() {
+                $('#modal_jenis_rekom').modal('show')
 
-        $("#btn_laporan").click(function() {
+            });
+            $('body').on('click', '.btn_hapus', function(e) {
+                let nama = $(this).attr('data-nama');
+                Swal.fire({
+                    title: 'Apakah anda yakin ingin menghapus data ?',
+                    text: nama,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).find('#form-delete').submit();
+                    }
+                })
+            });
 
         });
     </script>

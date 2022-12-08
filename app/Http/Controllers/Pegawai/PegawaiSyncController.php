@@ -12,4 +12,11 @@ class PegawaiSyncController extends Controller
       
       return response()->json($pegawaiService->filterByNIP($nip)[0]);
    }
+
+   public function getAll( PegawaiService $pegawaiService){
+      
+      return response()->json($pegawaiService->getAll());
+   }
+
+   
 }

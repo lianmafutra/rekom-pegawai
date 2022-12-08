@@ -29,4 +29,9 @@ class PegawaiService
       $pegawai = Cache::get('pegawai')->where('kunker', $kunker)->values()->toArray();
       return $pegawai;
    }
+
+   public function getAll(){
+      $pegawai = Cache::get('pegawai')->values()->toArray();
+      return $pegawai;
+   }
 }

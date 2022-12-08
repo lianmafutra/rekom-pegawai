@@ -1,42 +1,35 @@
 <style>
-   .modal-dialog {
-       min-height: calc(100vh - 60px);
-       display: flex;
-       flex-direction: column;
-       justify-content: center;
-       overflow: auto;
-   }
+    .modal-dialog {
+        min-height: calc(100vh - 60px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: auto;
+    }
 
-   @media(max-width: 768px) {
-       .modal-dialog {
-           min-height: calc(100vh - 20px);
-       }
-   }
+    @media(max-width: 768px) {
+        .modal-dialog {
+            min-height: calc(100vh - 20px);
+        }
+    }
 </style>
-<div class="modal fade" id="modal_tolak">
-   <div class="modal-dialog modal-md">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h6 class="modal-title">Konfirmasi Penolakan Berkas</h6>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                   <span aria-hidden="true">&times;</span>
-               </button>
-           </div>
-           <form action="{{ route('pengajuan.verifikasi.kirim') }}" method="POST">
-               @csrf
-               <div class="modal-body">
-                   <input hidden name="selesai">
-                   <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
-                   <p>Berkas akan dikembalikan ke OPD Pengirim, Tuliskan Informasi Pesan Penolakan</p>
-                   <div class="form-group">
-                       <label></label>
-                       <textarea class="form-control" rows="3" placeholder="Pesan Penolakan"></textarea>
-                   </div>
-               </div>
-               <div class="modal-footer">
-                   <button type="submit" class="btn btn-primary">Ok, Lanjutkan Penolakan</button>
-               </div>
-           </form>
-       </div>
-   </div>
+<div class="modal fade" id="modal_jenis_rekom">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Pilih Jenis Inputan Data Rekap: </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <a href="{{ route('master-rekom.create', 'disiplin') }}" class="btn-block btn btn-md btn-default" id="btn-tambah"></i>Penjatuhan Hukuman
+                  Disiplin</a><br>  
+                <a href="{{ route('master-rekom.create', 'temuan') }}" class="btn-block btn btn-md btn-default" id="btn-tambah"></i>Data Temuan
+                  Catatan</a>
+            </div>
+
+
+        </div>
+    </div>
 </div>
