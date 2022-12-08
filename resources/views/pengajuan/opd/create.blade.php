@@ -56,11 +56,13 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0">Buat Pengajuan Rekomendasi</h1>
+                     
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Pengajuan Rekomendasi</li>
+                            
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -75,7 +77,9 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-
+                                @if ($errors->has('file_sk'))
+                                    <span class="invalid">{{ $errors->first('file_sk') }}</span>
+                                @endif
                                 <div class="tab-content">
                                     <div class="row">
                                         <div class="col-md-6 card-body">
@@ -90,6 +94,9 @@
                                                         class="select2 select2-pegawai form-control select2bs4"
                                                         data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
                                                         <option></option>
+                                                         @if ($errors->has('file_sk'))
+                                                         <span class="invalid">{{ $errors->first('file_sk') }}</span>
+                                                      @endif
                                                         @foreach ($pegawai as $item => $key)
                                                             <option value="{{ $key['nipbaru'] }}"> {{ $key['nama'] }} (
                                                                 {{ $key['nipbaru'] }} )</option>
@@ -105,9 +112,10 @@
                                                     <div class="errors"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                   <input hidden type="text" class="form-control"
-                                                       name="penerima_uuid" placeholder="Nomor Surat Pengantar" value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
-                                               </div>
+                                                    <input hidden type="text" class="form-control" name="penerima_uuid"
+                                                        placeholder="Nomor Surat Pengantar"
+                                                        value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
+                                                </div>
                                                 <div class="form-group">
                                                     <div class="bd-highlight">
                                                         <label>Tanggal Surat Pengantar <span
@@ -140,8 +148,8 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
-                                                    <select id="keperluan_id" name="keperluan_id" required
-                                                        type="" class="select2 form-control select2bs4"
+                                                    <select id="keperluan_id" name="keperluan_id" required type=""
+                                                        class="select2 form-control select2bs4"
                                                         data-placeholder="-- Pilih Jenis Keperluan --" style="width: 100%;">
                                                         <option></option>
                                                         @foreach ($keperluan as $item)
@@ -334,7 +342,8 @@
                     retryLimit: 3,
                     success: function(json) {
                         $(".profile_data").fadeIn(1100);
-                        $('.profile-user-img').attr("src", @json($url_foto) + json.photo);
+                        $('.profile-user-img').attr("src", @json($url_foto) + json
+                            .photo);
                         $('.nama').html(json.nama ? json.nama : '-')
                         $('.nip').html(json.nipbaru)
                         $('.pangkat').html(json.pangkat)
