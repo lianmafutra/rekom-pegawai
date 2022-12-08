@@ -30,32 +30,35 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <a href="#" class="btn btn-sm btn-primary" id="btn_input_data"><i
                                             class="fas fa-plus"></i> Input Data</a>
-
+                                    <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
+                                            class="fas fa-filter"></i> Filter Data</a>
                                 </h3>
                             </div>
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="card-body table-responsive">
-                                        <table id="tabel-pengajuan" class="table table-bordered  " style="width:100%">
+                                        <table id="tabel_rekom" class="table table-bordered  " style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>NIP</th>
                                                     <th>Nama</th>
-                                                    {{-- <th>OPD</th> --}}
                                                     <th>Jenis Rekom</th>
+                                                    <th>Ketentuan</th>
+                                                    <th>Alasan</th>
+                                                    <th>Hukuman</th>
+                                                    <th>No LHP</th>
+                                                    <th>Tahun Temuan</th>
                                                     <th>Tanggal Input</th>
                                                     <th>#Aksi</th>
                                                 </tr>
                                             </thead>
                                         </table>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -66,18 +69,17 @@
         </section>
         <!-- /.content -->
     </div>
-
     @include('master-rekom.modal-jenis-rekom')
+    @include('master-rekom.modal-filter')
 @endsection
-
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
-
     <script>
         $(document).ready(function() {
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -86,13 +88,18 @@
 
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
-                //  allowClear: true
             })
 
-            $("#tabel-pengajuan").dataTable({
+            let rekom_jenis;
+            let tabel_rekom = $("#tabel_rekom").DataTable({
                 serverSide: true,
                 processing: true,
-                ajax: @json(route('master-rekom.index')),
+                ajax: {
+                    url: @json(route('master-rekom.index')),
+                    data: function(e) {
+                        e.rekom_jenis = rekom_jenis
+                    }
+                },
                 columns: [{
                         data: "DT_RowIndex",
                         orderable: false,
@@ -104,11 +111,28 @@
                     {
                         data: 'nama',
                     },
-                    //  {
-                    //      data: 'opd',
-                    //  },
                     {
                         data: 'rekom_jenis_nama',
+                    },
+                    {
+                        data: 'ketentuan',
+                        class: 'ketentuan'
+                    },
+                    {
+                        data: 'alasan',
+                        class: 'alasan'
+                    },
+                    {
+                        data: 'hukuman',
+                        class: 'hukuman'
+                    },
+                    {
+                        data: 'no_lhp',
+                        class: 'no_lhp'
+                    },
+                    {
+                        data: 'tahun_temuan',
+                        class: 'tahun_temuan'
                     },
                     {
                         data: 'tgl_input',
@@ -120,6 +144,53 @@
                     },
                 ]
             });
+            
+            hideAll()
+
+            $(".btn_terapkan_filter").click(function() {
+                select_rekom = $('#select_rekom_rekom').val();
+                if (select_rekom == 'DISIPLIN') {
+                    showTableDisiplin()
+                }
+                if (select_rekom == 'TEMUAN') {
+                    showTableTemuan()
+                }
+                if (select_rekom == '') {
+                     hideAll();
+                }
+
+                rekom_jenis = $('#select_rekom_rekom').val();
+                tabel_rekom.draw();
+
+            });
+          
+
+            function showTableTemuan() {
+                tabel_rekom.column('.no_lhp').visible(true)
+                tabel_rekom.column('.tahun_temuan').visible(true)
+                tabel_rekom.column('.ketentuan').visible(false)
+                tabel_rekom.column('.alasan').visible(false)
+                tabel_rekom.column('.hukuman').visible(false)
+                tabel_rekom.draw()
+            }
+
+            function showTableDisiplin() {
+                tabel_rekom.column('.no_lhp').visible(false)
+                tabel_rekom.column('.tahun_temuan').visible(false)
+                tabel_rekom.column('.ketentuan').visible(true)
+                tabel_rekom.column('.alasan').visible(true)
+                tabel_rekom.column('.hukuman').visible(true)
+                tabel_rekom.draw()
+            }
+
+            function hideAll() {
+                tabel_rekom.column('.ketentuan').visible(false)
+                tabel_rekom.column('.alasan').visible(false)
+                tabel_rekom.column('.hukuman').visible(false)
+                tabel_rekom.column('.no_lhp').visible(false)
+                tabel_rekom.column('.tahun_temuan').visible(false)
+                tabel_rekom.draw()
+            }
 
             function openCenteredWindow(url) {
                 const width = 800
@@ -131,18 +202,12 @@
                 const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
                 return window.open(url, '_blank', features).focus();
             }
-
             $("#btn_filter").click(function() {
                 $('#modal_filter').modal('show')
             });
-
-            $("#btn_laporan").click(function() {
-
-            });
-
+            $("#btn_laporan").click(function() {});
             $("#btn_input_data").click(function() {
                 $('#modal_jenis_rekom').modal('show')
-
             });
             $('body').on('click', '.btn_hapus', function(e) {
                 let nama = $(this).attr('data-nama');
@@ -161,7 +226,6 @@
                     }
                 })
             });
-
         });
     </script>
     @include('pengajuan.get-data-histori')

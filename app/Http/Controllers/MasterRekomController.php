@@ -15,6 +15,15 @@ class MasterRekomController extends Controller
 
       $x['title'] = 'Master Rekom Pegawai';
       $data = MasterRekom::latest('id');
+
+      if ($request->rekom_jenis == 'DISIPLIN') {
+         $data->where('rekom_jenis', 'DISIPLIN');
+      }
+
+      if ($request->rekom_jenis == 'TEMUAN') {
+         $data->where('rekom_jenis', 'TEMUAN');
+      }
+
       if (request()->ajax()) {
          return DataTables::of($data)
             ->addIndexColumn()
