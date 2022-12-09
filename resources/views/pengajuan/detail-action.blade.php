@@ -14,9 +14,6 @@
     <a id="btn_file_rekom" class="mt-1 btn btn-secondary"> <i class="fas fa-file-alt"></i> File Rekomendasi</a>
 @endisset
 
-
-
 @if(in_array("tolak", $aksi))
     <a id="btn_tolak" class="mt-1 btn btn-danger"><i class="fas fa-ban"></i> Tolak Berkas</a>
 @endif
-

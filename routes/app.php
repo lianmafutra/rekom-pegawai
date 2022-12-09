@@ -15,13 +15,12 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::get('pegawai', [PegawaiSyncController::class, 'getAll'])->name('pegawai.all');
    Route::get('pegawai/opd/{kunker}', [PegawaiSyncController::class, 'getByOPD'])->name('pegawai.opd');
    Route::get('pegawai/sync', [PegawaiSyncController::class, 'sync']);
+   Route::get('pegawai/verifikasi/pelanggaran/{nip}', [PegawaiSyncController::class, 'verifikasiPelanggaran'])->name('pegawai.verifikasi.pelanggaran');
 
    Route::prefix('pengajuan/verifikasi')->name('pengajuan.verifikasi.')->middleware(['auth'])->group(function () {
       Route::get('/', [PengajuanAdminController::class, 'index'])->name('index');
       Route::post('kirim', [PengajuanAdminController::class, 'kirim'])->name('kirim');
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
-      
-
    });
    Route::resource('master-rekom', MasterRekomController::class);
    Route::resource('pengajuan', PengajuanOPDController::class);

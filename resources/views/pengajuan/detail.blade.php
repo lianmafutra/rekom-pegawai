@@ -5,8 +5,6 @@
 @endpush
 @section('content')
     <style>
-
-      
         tr td:first-child {
             color: #313131;
             font-weight: bold;
@@ -261,7 +259,7 @@
                                             </table>
                                     </div>
                                     <div class="card-footer">
-                                          {!! $view_aksi !!}
+                                        {!! $view_aksi !!}
                                     </div>
                                     </form>
                                 </div>
@@ -286,8 +284,8 @@
                                 </div>
                             </div>
                             <div class="overlay loading_histori">
-                              <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-                              </div>
+                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -300,6 +298,7 @@
     @include('pengajuan.modal-teruskan')
     @include('pengajuan.modal-selesai')
     @include('pengajuan.modal-tolak')
+    @include('pengajuan.modal-verifikasi-data')
 @endsection
 @push('js')
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
@@ -338,7 +337,22 @@
             });
 
             $("#btn_tolak").click(function() {
-               $('#modal_tolak').modal('show')
+                $('#modal_tolak').modal('show')
+            });
+
+            $("#btn_verifikasi").click(function() {
+                $('#modal_verifikasi').modal('show')
+                let nip = $('#nip').text()
+                $.ajax({
+                    url: `{{ url('admin/pegawai/verifikasi/pelanggaran/${nip}') }}`,
+                    type: 'GET',
+                    success: function(json) {
+                        console.log(json)
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        alert("Gagal Verifikasi Data, silahkan coba lagi ...")
+                    }
+                })
             });
 
 
@@ -346,7 +360,7 @@
                 url: @json(route('pengajuan.histori', $pengajuan->uuid)),
                 type: 'GET',
                 success: function(json) {
-                  $('.loading_histori').hide()
+                    $('.loading_histori').hide()
                     json.data.histori.forEach($item => {
                         if ($item.pengajuan_aksi_id == 6) {
                             $(".modal_content_histori").append(`<div>
@@ -381,6 +395,8 @@
                     alert("Gagal Mengambil data histori, silahkan coba lagi ...")
                 }
             })
+
+
         });
 
         $('.select2bs4').select2({
@@ -388,8 +404,8 @@
         })
 
         $('.horizontalLine').css({
-    left: $('.timeline-badge').first().position().left,
-    width: $('.timeline-item-last').position().left
-  });
+            left: $('.timeline-badge').first().position().left,
+            width: $('.timeline-item-last').position().left
+        });
     </script>
 @endpush
