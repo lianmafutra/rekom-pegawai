@@ -9,7 +9,7 @@
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         </button>
         <ul class="dropdown-menu">
-            <li><a  data-url="{{ route('master-rekom.edit', $data) }}" class="btn_edit dropdown-item" href="#">Edit</a> </li>
+            <li><a  href="{{ route('master-rekom.edit', $data) }}" class="btn_edit dropdown-item" >Ubah Data</a> </li>
             <div class="dropdown-divider"></div>
             <li><a data-nama="{{ $data->nama }}"  data-url="{{ route('master-rekom.destroy', $data->id) }}" class="btn_hapus dropdown-item" href="#">Hapus
                <form hidden id="form-delete" action="{{ route('master-rekom.destroy', $data->id) }}" method="POST"> @csrf

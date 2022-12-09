@@ -5,29 +5,20 @@
 @endpush
 @section('content')
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Input Data Temuan Pegawai</h1>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-        <!-- Main content -->
+      
+      <x-header title='Ubah Data Hukuman Disiplin' />
+
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card">
-                            <form action="{{ route('master-rekom.store') }}" method="POST">
+                            <form action="{{ route('master-rekom.update', $masterRekom) }}" method="POST">
                                 @csrf
+                                @method('PUT')
                                 <div class="card-body">
                                     <div class="tab-content">
-                                       <input hidden name="rekom_jenis" value="TEMUAN">
+                                        <input hidden name="rekom_jenis" value="DISIPLIN">
                                         <x-select2 id="opd" label='Pilih OPD' required="true">
                                             @foreach ($opd as $item)
                                                 <option value='{{ $item->kunker }}'>{{ $item->nunker }}</option>
@@ -37,32 +28,31 @@
                                             <option></option>
                                         </x-select2>
                                         <div class="form-group">
-                                            <div class="form-group">
-                                                <label>Nomor LHP </span></label>
-                                                <input type="text" class="form-control" name="no_lhp"
-                                                    placeholder="Nomor LHP">
-                                            </div>
+                                            <label>Ketentuan Yang Dilanggar</label>
+                                            <textarea name="ketentuan" class="form-control" rows="3">{{ $masterRekom->ketentuan }}</textarea>
                                         </div>
                                         <div class="form-group">
-                                            <label>Tahun Temuan</span></label>
-                                            <input type="text" class="form-control" name="tahun_temuan"
-                                                placeholder="Tahun Temuan">
+                                            <label>Alasan Penjatuhan Hukuman</label>
+                                            <textarea name="alasan" class="form-control" rows="3">{{ $masterRekom->alasan }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Hukuman Yang Di Jatuhkan</label>
+                                            <textarea name="hukuman" class="form-control" rows="3">{{ $masterRekom->hukuman }}</textarea>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="card-footer">
+                                    <a href="{{ route('master-rekom.index') }}" class="btn btn-secondary">Kembali</a>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary">Simpan Data</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="card-footer">
-                            <a href="{{ route('master-rekom.index') }}" class="btn btn-secondary">Kembali</a>
-                            <button type="submit" id="btn_submit" class="btn btn-primary">Simpan Data</button>
-                        </div>
-                        </form>
                     </div>
                 </div>
-            </div>
-            <!-- /.row -->
-    </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
     </div>
 @endsection
 @push('js')
@@ -71,9 +61,17 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4',
         })
+
+        $('#opd').val(@json($kunker)).trigger('change');
+        getPegawai(@json($kunker))
+     
         $('#opd').change(function() {
             var kunker = $(this).val();
             $('#nip').val(null).trigger('change');
+            getPegawai(kunker)
+        });
+
+        function getPegawai(kunker) {
             $.ajax({
                 url: `{{ url('admin/pegawai/opd/${kunker}') }}`,
             }).done(function(json) {
@@ -98,7 +96,8 @@
                         return data.text;
                     }
                 })
+                $('#nip').val(@json($masterRekom->nip)).trigger('change');
             });
-        });
+        }
     </script>
 @endpush

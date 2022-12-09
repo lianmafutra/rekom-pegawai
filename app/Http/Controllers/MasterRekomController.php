@@ -11,11 +11,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class MasterRekomController extends Controller
 {
+   protected $pegawaiService;
+
+   public function __construct(PegawaiService $pegawaiService)
+   {
+      $this->pegawaiService = $pegawaiService;
+   }
 
    public function index(Request $request)
    {
 
-     
       $x['title'] = 'Master Rekom Pegawai';
       $data = MasterRekom::latest('id');
 
@@ -40,9 +45,9 @@ class MasterRekomController extends Controller
    }
 
 
-   public function create(Request $request, PegawaiService $pegawaiService)
+   public function create(Request $request)
    {
-      $pegawai = $pegawaiService->getAll();
+      $pegawai = $this->pegawaiService->getAll();
       $opd = OPD::get();
       if ($request->has('disiplin')) {
          $x['title'] = 'Input Data Disiplin';
@@ -55,11 +60,11 @@ class MasterRekomController extends Controller
    }
 
 
-   public function store(Request $request, PegawaiService $pegawaiService)
+   public function store(Request $request)
    {
       try {
          $input = $request->except(['opd']);
-         $pegawai = $pegawaiService->filterByNIP($request->nip)[0];
+         $pegawai = $this->pegawaiService->filterByNIP($request->nip)[0];
          $input['nama'] = $pegawai['nama'];
          MasterRekom::create($input);
          return redirect()->route('master-rekom.index')->with('success', 'Berhasil ', 200)->send();
@@ -76,12 +81,32 @@ class MasterRekomController extends Controller
 
    public function edit(MasterRekom $masterRekom)
    {
-      //
+
+      $kunker = $this->pegawaiService->filterByNIP($masterRekom->nip)[0]['kunker'];
+
+
+      $opd = OPD::get();
+      if ($masterRekom->rekom_jenis == 'DISIPLIN') {
+         $x['title'] = 'Ubah Data Disiplin';
+         return view('master-rekom.edit-disiplin', $x, compact(['kunker', 'opd',  'masterRekom']));
+      }
+      if ($masterRekom->rekom_jenis == 'TEMUAN') {
+         $x['title'] = 'Ubah Data Temuan';
+         return view('master-rekom.edit-temuan', $x, compact(['kunker', 'opd',  'masterRekom']));
+      }
    }
 
    public function update(Request $request, MasterRekom $masterRekom)
    {
-      //
+      try {
+         $input = $request->except(['opd']);
+         $pegawai = $this->pegawaiService->filterByNIP($request->nip)[0];
+         $input['nama'] = $pegawai['nama'];
+         $masterRekom->fill($input)->save();
+         return redirect()->route('master-rekom.index')->with('success', 'Berhasil ', 200)->send();
+      } catch (\Throwable $th) {
+         return redirect()->back()->with('error', 'Gagal' . $th, 400)->send();
+      }
    }
 
 
