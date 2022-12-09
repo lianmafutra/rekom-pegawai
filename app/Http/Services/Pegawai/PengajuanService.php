@@ -131,7 +131,7 @@ class PengajuanService
             elseif ($status == PengajuanAksi::SIAPKAN) $aksi = ['tolak','selesaikan', 'file_rekom'];
             elseif ($status == PengajuanAksi::TOLAK) $aksi = [];
             elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
-            else $aksi = ['tolak', 'teruskan'];
+            else $aksi = ['tolak', 'teruskan', 'verifikasi'];
             break;
          case  Role::isKasubag:
             $aksi = ['teruskan'];
