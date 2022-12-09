@@ -58,7 +58,7 @@ class MasterRekomController extends Controller
    public function store(Request $request, PegawaiService $pegawaiService)
    {
       try {
-         $input = $request->all();
+         $input = $request->except(['opd']);
          $pegawai = $pegawaiService->filterByNIP($request->nip)[0];
          $input['nama'] = $pegawai['nama'];
          MasterRekom::create($input);

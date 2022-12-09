@@ -85,7 +85,7 @@
                     data2.push({
                         id: data.nipbaru,
                         text: `<div> ${data.nama} ( ${data.nipbaru} ) </div>`,
-                        html: `<div >${data.nama}  ( ${data.nipbaru} )</div><div style="font-size:10px"> - ${data.nunker}</div>`,
+                        html: `<div >${data.nama}  ( ${data.nipbaru} )</div></div>`,
                         title: ''
                     });
                 });
