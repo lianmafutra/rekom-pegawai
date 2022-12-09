@@ -57,7 +57,7 @@ class uploadFile
                FacadesFile::makeDirectory($path, 0777, true, true);
             }
             File::create([
-               'file_id'        => $this->uuid,
+               'file_idd'        => $this->uuid,
                'parent_file_id' => $this->parent_id,
                'name_origin'    => $name_ori,
                'name_random'    => $name_uniqe,
@@ -69,7 +69,6 @@ class uploadFile
          }
          return true;
       } catch (\Throwable $th) {
-         dd("error upload function");
          return false;
       }
    }

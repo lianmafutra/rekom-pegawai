@@ -6,18 +6,15 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
 @endpush
-
 @section('content')
     <style>
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
-
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
-
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -29,7 +26,6 @@
             margin-right: auto;
             position: absolute
         }
-
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -40,14 +36,15 @@
             object-fit: cover;
             height: 300px;
         }
-
         .form-control {
             font-size: 14px !important;
         }
-
         div# {
             position: relative;
             margin-top: -10px;
+        }
+        .filepond--file {
+            background: #28a745;
         }
     </style>
     <div class="content-wrapper">
@@ -57,13 +54,11 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0">Buat Pengajuan Rekomendasi</h1>
-
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Pengajuan Rekomendasi</li>
-
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -78,13 +73,12 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                @if ($errors->has('file_sk'))
+                                {{-- @if ($errors->has('file_sk'))
                                     <span class="invalid">{{ $errors->first('file_sk') }}</span>
-                                @endif
+                                @endif --}}
                                 <div class="tab-content">
                                     <div class="row">
                                         <div class="col-md-6 card-body">
-
                                             <form id="form_pengajuan" name="form_pengajuan" method="POST"
                                                 autocomplete="off" enctype="multipart/form-data">
                                                 @csrf
@@ -95,26 +89,23 @@
                                                         class="select2 select2-pegawai form-control select2bs4"
                                                         data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
                                                         <option></option>
-                                                        @if ($errors->has('file_sk'))
-                                                            <span class="invalid">{{ $errors->first('file_sk') }}</span>
-                                                        @endif
+                                                       
                                                         @foreach ($pegawai as $item => $key)
                                                             <option value="{{ $key['nipbaru'] }}"> {{ $key['nama'] }} (
                                                                 {{ $key['nipbaru'] }} )</option>
                                                         @endforeach
                                                     </select>
-                                                    <span class="error-pegawai"></span>
+                                                    <span class="text-danger error-text pegawai_err"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Nomor Surat Pengantar <span style="color: red">*</span></label>
                                                     <input id="nomor_pengantar" type="text" class="form-control"
                                                         name="nomor_pengantar" placeholder="Nomor Surat Pengantar"
                                                         value="">
-                                                    <div class="errors"></div>
+                                                        <span class="text-danger error-text nomor_pengantar_err"></span>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input hidden type="text" class="form-control" name="penerima_uuid"
-                                                        placeholder="Nomor Surat Pengantar"
+                                                    <input hidden name="penerima_uuid"
                                                         value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
                                                 </div>
                                                 <div class="form-group">
@@ -133,6 +124,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <span class="text-danger error-text tgl_pengantar_err"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Jenis Rekomendasi<span style="color: red">*</span></label>
@@ -146,6 +138,7 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="text-danger error-text rekom_jenis_err"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
@@ -158,6 +151,7 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="text-danger error-text keperluan_id_err"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Catatan Tambahan</label>
@@ -167,7 +161,7 @@
                                                 <input id="file_sk" type="file" data-max-file-size="5 MB"
                                                     class="filepond " accept="{{ config('upload.pengajuan.filetype') }}"
                                                     name="file_sk" placeholder="File SK PNS">
-                                                <div id="error_sk"></div>
+                                                    <span class="text-danger error-text file_sk_err"></span>
                                                 <div class="form-group ">
                                                 </div>
                                                 <div class="form-group ">
@@ -177,7 +171,7 @@
                                                         data-max-file-size="5 MB" class="filepond"
                                                         accept="{{ config('upload.pengajuan.filetype') }}"
                                                         name="file_pengantar_opd" placeholder="File Pengantar OPD">
-                                                    <div id="error_pengantar"></div>
+                                                        <span class="text-danger error-text file_pengantar_opd_err"></span>
                                                 </div>
                                                 <div class="form-group ">
                                                     <label>Konversi NIP (Optional)</label>
@@ -185,7 +179,7 @@
                                                         data-max-file-size="5 MB" class="filepond"
                                                         accept="{{ config('upload.pengajuan.filetype') }}"
                                                         name="file_konversi_nip" placeholder="File Konversi NIP">
-                                                    <div class="errorq" id="error_konversi"></div>
+                                                        <span class="text-danger error-text file_konversi_nip_err"></span>
                                                 </div>
                                         </div>
                                         <div style="margin-left: 10px;" class="col-md-5 card ">
@@ -247,33 +241,24 @@
 @push('js')
     <script src="{{ asset('plugins/flatpicker/flatpickr.min.js') }}"></script>
     <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
-
     <script src="{{ URL::asset('plugins/filepond/filepond.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
-
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
     <script src="https://unpkg.com/just-validate@3.8.1/dist/just-validate.production.min.js"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
-
     <script>
         $(document).ready(function() {
-
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
-
             $("#btn_submit").click(function(e) {
-
                 e.preventDefault();
-
                 Swal.fire({
                     title: 'Konfirmasi Pengajuan',
                     text: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
@@ -284,53 +269,64 @@
                     confirmButtonText: 'Ya, Lanjutkan'
                 }).then((result) => {
                     if (result.isConfirmed) {
-
-                        var formdata = $('#form_pengajuan').serialize();
-                        $.ajax({
-                            type: 'POST',
-                            url: @json(route('pengajuan.store')),
-                            data: formdata,
-                         
-                            beforeSend: function() {
-                                Swal.fire({
-                                    title: 'Mengirim Data...',
-                                    html: 'Mohon TUnggu...',
-                                    allowEscapeKey: false,
-                                    allowOutsideClick: false,
-                                    didOpen: () => {
-                                        Swal.showLoading()
-                                    }
-                                });
-                            },
-                            success: (response) => {
-                                if (response) {
-                                    this.reset()
-                                    Swal.fire(
-                                        'Good job!',
-                                        'You clicked the button!',
-                                        'success'
-                                    )
-                                    swal.hideLoading()
-                                }
-                            },
-                            error: function(response) {
-                                Swal.fire({
-                                    title: 'Oops...',
-                                    text: response.responseJSON
-                                        .message,
-                                })
-                                console.log(response.responseJSON
-                                    .message)
-                            }
-                        });
-
-
-
+                        $("#form_pengajuan").submit();
+                        // var formdata = $('#form_pengajuan').serialize();
                     }
                 })
             });
-
-
+            $("#form_pengajuan").submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: @json(route('pengajuan.store')),
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        Swal.fire({
+                            title: 'Mengirim Data...',
+                            html: 'Mohon TUnggu...',
+                            allowEscapeKey: false,
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        });
+                    },
+                    success: (response) => {
+                        if (response) {
+                            this.reset()
+                            Swal.fire(
+                                'Good job!',
+                                'You clicked the button!',
+                                'success'
+                            )
+                            swal.hideLoading()
+                        }
+                    },
+                    error: function(response) {
+                     printErrorMsg(response.responseJSON.errors);
+                     console.log(response.responseJSON.errors)
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: response.responseJSON
+                                .message,
+                        })
+                        // console.log(response.responseJSON
+                        //     .message)
+                    }
+                });
+            });
+            function printErrorMsg(msg) {
+               console.log('print error')
+                $.each(msg, function(key, value) {
+                    console.log(key);
+                    $('.' + key + '_err').text(value);
+                });
+            }
             // select2
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
@@ -338,10 +334,8 @@
             })
             // select2 validation
             $('.select2').change(function() {
-
                 $(this).closest("div").find('.just-validate-error-label').remove()
             })
-
             $('.select2-pegawai').change(function() {
                 $('.profile-user-img').attr("src", "");
                 $('.loading').css('display', 'block')
@@ -364,7 +358,6 @@
                         $(".loading").fadeOut(1000);
                     },
                     error: function(xhr, textStatus, errorThrown) {
-
                         alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
                     }
                 });
@@ -377,7 +370,6 @@
             const file_sk = FilePond.create(document.querySelector('#file_sk'));
             const file_pengantar = FilePond.create(document.querySelector('#file_pengantar_opd'));
             const file_konversi_nip = FilePond.create(document.querySelector('#file_konversi_nip'));
-
             file_sk.setOptions({
                 storeAsFile: true,
             });
@@ -387,15 +379,11 @@
             file_konversi_nip.setOptions({
                 storeAsFile: true,
             });
-
             flatpickr(".tanggal", {
                 allowInput: true,
                 dateFormat: "d-m-Y",
                 locale: "id",
             });
-
-
-
         });
     </script>
 @endpush

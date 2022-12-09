@@ -77,8 +77,8 @@ class PengajuanOPDController extends Controller
       abort_if(Gate::denies('pengajuan store'), 403);
 
       try {
-         // dd($request->all());
-         // return $this->success( 'Pengajuan Berkas Rekomendasi Berhasil Dikirim', $request->all(), 400);
+        
+         // return $this->success( 'Pengajuan Berkas Rekomendasi Berhasil Dikirim', $request->file_sk, 400);
          DB::beginTransaction();
          // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
@@ -126,17 +126,15 @@ class PengajuanOPDController extends Controller
             ->parent_id($pengajuanStore->id);
 
          if (!$upload_file_sk->save() || !$upload_file_pengantar->save() || !$upload_file_konversi->save()) {
-            throw new CustomException("Terjadi Kesalahan saat mengupload File");
-         }
+               return $this->error( 'Error Upload File ', 400);
+          }
 
          DB::commit();
-         // return redirect()->route('pengajuan.index')->with('success', 'Berhasil ', 200)->send();
 
          return $this->success( 'Pengajuan Berkas Rekomendasi Berhasil Dikirim');
       } catch (\Throwable $th) {
          DB::rollBack();
          return $this->error( 'Pengajuan Berkas Rekomendasi Gagal Dikirim' .$th->getMessage(), 400);
-         // return redirect()->back()->with('error', 'Gagal : ' . $th->getMessage(), 400)->send();
       }
    }
 
