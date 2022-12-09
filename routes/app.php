@@ -13,6 +13,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    Route::get('pegawai/{nip}', [PegawaiSyncController::class, 'getPegawaiByNip'])->name('pegawai.nip');
    Route::get('pegawai', [PegawaiSyncController::class, 'getAll'])->name('pegawai.all');
+   Route::get('pegawai/opd/{kunker}', [PegawaiSyncController::class, 'getByOPD'])->name('pegawai.opd');
    Route::get('pegawai/sync', [PegawaiSyncController::class, 'sync']);
 
    Route::prefix('pengajuan/verifikasi')->name('pengajuan.verifikasi.')->middleware(['auth'])->group(function () {

@@ -27,16 +27,18 @@
                                 @csrf
                                 <div class="card-body">
                                     <div class="tab-content">
-                                       <input hidden  name="rekom_jenis" value="DISIPLIN">
+                                        <input hidden name="rekom_jenis" value="DISIPLIN">
 
-                                        <div class="form-group">
-                                            <label>Nama Pegawai<span style="color: red">*</span></label>
-                                            <select  name="nip" required type=""
-                                                class="select2 select2-pegawai form-control select2bs4"
-                                                data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
-                                                <option></option>
-                                            </select>
-                                        </div>
+                                        <x-select2 id="opd" label='Pilih OPD' required="true">
+                                            @foreach ($opd as $item)
+                                                <option value='{{ $item->kunker }}'>{{ $item->nunker }}</option>
+                                            @endforeach
+                                        </x-select2>
+
+                                        <x-select2 id="nip" label='Nama Pegawai' required="true">
+                                            <option></option>
+                                        </x-select2>
+
                                         <div class="form-group">
                                             <label>Ketentuan Yang Dilanggar</label>
                                             <textarea name="ketentuan" class="form-control" rows="3"></textarea>
@@ -71,30 +73,39 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4',
         })
-        $.ajax({
-            url: @json(route('pegawai.all')),
-        }).done(function(json) {
-         let data2 = [];
-            json.forEach(function(data) {
-                data2.push({
-                    id: data.nipbaru,
-                    text: `<div> ${data.nama} ( ${data.nipbaru} ) </div>`,
-                    html: `<div >${data.nama}  ( ${data.nipbaru} )</div><div style="font-size:10px"> - ${data.nunker}</div>`,
-                    title: ''
+
+        $('#opd').change(function() {
+            var kunker = $(this).val();
+            $('#nip').val(null).trigger('change');
+            $.ajax({
+                url: `{{ url('admin/pegawai/opd/${kunker}') }}`,
+            }).done(function(json) {
+                let data2 = [];
+                json.forEach(function(data) {
+                    data2.push({
+                        id: data.nipbaru,
+                        text: `<div> ${data.nama} ( ${data.nipbaru} ) </div>`,
+                        html: `<div >${data.nama}  ( ${data.nipbaru} )</div><div style="font-size:10px"> - ${data.nunker}</div>`,
+                        title: ''
+                    });
                 });
+
+
+
+                $("#nip").select2({
+                    data: data2,
+
+                    escapeMarkup: function(markup) {
+                        return markup;
+                    },
+                    templateResult: function(data) {
+                        return data.html;
+                    },
+                    templateSelection: function(data) {
+                        return data.text;
+                    }
+                })
             });
-            $("select").select2({
-                data: data2,
-                escapeMarkup: function(markup) {
-                    return markup;
-                },
-                templateResult: function(data) {
-                    return data.html;
-                },
-                templateSelection: function(data) {
-                    return data.text;
-                }
-            })
         });
     </script>
 @endpush

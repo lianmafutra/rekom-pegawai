@@ -18,6 +18,11 @@ class PegawaiSyncController extends Controller
       return response()->json($pegawaiService->getAll());
    }
 
+   public function getByOPD(PegawaiService $pegawaiService, $kunker){
+      
+      return response()->json($pegawaiService->filterByOPD($kunker));
+   }
+
    public function sync(PegawaiService $pegawaiService){
       return $pegawaiService->sync();
    }
