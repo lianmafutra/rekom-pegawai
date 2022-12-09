@@ -8,6 +8,6 @@ class CustomException extends Exception
 {
    public function render($request)
    {       
-       return$this->getMessage();       
+       return response()->json($this->getMessage());       
    }
 }

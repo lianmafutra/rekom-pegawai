@@ -2,14 +2,16 @@
 
 namespace App\Utils;
 
+use App\Exceptions\CustomException;
 use App\Models\File;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
-
+use Throwable;
 
 class uploadFile
 {
-   
+
    protected $file;
    protected $path;
    protected $uuid;
@@ -46,6 +48,7 @@ class uploadFile
       $uuid = null;
       try {
          if ($this->file) {
+            DB::beginTransaction();
             $name_ori = $this->file->getClientOriginalName();
             $name_uniqe =  pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension();
             $tahun       = Carbon::now()->format('Y');
@@ -57,19 +60,19 @@ class uploadFile
                FacadesFile::makeDirectory($path, 0777, true, true);
             }
             File::create([
-               'file_idd'        => $this->uuid,
+               'file_id'        => $this->uuid,
                'parent_file_id' => $this->parent_id,
                'name_origin'    => $name_ori,
                'name_random'    => $name_uniqe,
                'path'           => $custom_path,
                'size'           => $this->file->getSize(),
             ]);
-
             $this->file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $this->path, $name_uniqe);
+            DB::commit();
+          
          }
-         return true;
       } catch (\Throwable $th) {
-         return false;
+         throw new CustomException(", kesalahan Upload File");
       }
    }
 }

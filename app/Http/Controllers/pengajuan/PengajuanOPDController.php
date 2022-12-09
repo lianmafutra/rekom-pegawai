@@ -16,11 +16,13 @@ use App\Models\User;
 use App\Utils\ApiResponse;
 use App\Utils\UploadFile;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Throwable;
 use Yajra\DataTables\DataTables;
 
 class PengajuanOPDController extends Controller
@@ -32,8 +34,8 @@ class PengajuanOPDController extends Controller
 
    public function __construct(PengajuanService $pengajuanService, PegawaiService $pegawaiService)
    {
-       $this->pengajuanService = $pengajuanService;
-       $this->pegawaiService = $pegawaiService;
+      $this->pengajuanService = $pengajuanService;
+      $this->pegawaiService = $pegawaiService;
    }
 
 
@@ -77,9 +79,10 @@ class PengajuanOPDController extends Controller
       abort_if(Gate::denies('pengajuan store'), 403);
 
       try {
-        
-         // return $this->success( 'Pengajuan Berkas Rekomendasi Berhasil Dikirim', $request->file_sk, 400);
+
+
          DB::beginTransaction();
+
          // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
 
@@ -87,7 +90,7 @@ class PengajuanOPDController extends Controller
          $pengajuanStore = $this->pengajuanService->storePengajuan($pegawai_cache, $request);
 
          // Insert histori pengajuan ke DB
-    
+
          $user = User::with('opd')->find(auth()->user()->id);
 
          PengajuanHistori::create([
@@ -111,30 +114,25 @@ class PengajuanOPDController extends Controller
          $upload_file_sk->file($request->file('file_sk'))
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_sk_terakhir)
-            ->parent_id($pengajuanStore->id);
+            ->parent_id($pengajuanStore->id)->save();
 
          $upload_file_pengantar
             ->file($request->file('file_pengantar_opd'))
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_pengantar_opd)
-            ->parent_id($pengajuanStore->id);
+            ->parent_id($pengajuanStore->id)->save();
 
          $upload_file_konversi //optional
             ->file($request->file('file_konversi_nip'))
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_konversi_nip)
-            ->parent_id($pengajuanStore->id);
-
-         if (!$upload_file_sk->save() || !$upload_file_pengantar->save() || !$upload_file_konversi->save()) {
-               return $this->error( 'Error Upload File ', 400);
-          }
-
+            ->parent_id($pengajuanStore->id)->save();
+            
          DB::commit();
-
-         return $this->success( 'Pengajuan Berkas Rekomendasi Berhasil Dikirim');
+         return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
       } catch (\Throwable $th) {
          DB::rollBack();
-         return $this->error( 'Pengajuan Berkas Rekomendasi Gagal Dikirim' .$th->getMessage(), 400);
+         return $this->error('Pengajuan Berkas Rekomendasi Gagal Dikirim' . $th->getMessage(), 400);
       }
    }
 
@@ -169,6 +167,6 @@ class PengajuanOPDController extends Controller
    public function histori($uuid)
    {
       $pengajuan = Pengajuan::with(['histori', 'histori.aksi'])->whereUuid($uuid)->first();
-      return $this->success('Histori Pengajuan',$pengajuan, );
+      return $this->success('Histori Pengajuan', $pengajuan,);
    }
 }

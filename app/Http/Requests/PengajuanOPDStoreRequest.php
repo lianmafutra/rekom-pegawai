@@ -23,42 +23,52 @@ class PengajuanOPDStoreRequest extends FormRequest
     */
    public function rules()
    {
-     
+
       return [
          'pegawai'            => 'required',
          'nomor_pengantar'    => 'required',
          'tgl_pengantar'      => 'required',
          'rekom_jenis'        => 'required',
          'keperluan_id'       => 'required',
-         'file_sk'            => 'required:mimes:pdf|file|size:1024',
-         'file_pengantar_opd' => 'required:mimes:pdf|file|size:1024',
-         'file_konversi_nip'  => 'mimes:pdf|file|size:1024',
+         'file_sk'            => 'required|mimes:pdf',
+         'file_pengantar_opd' => 'required|mimes:pdf',
+         'file_konversi_nip'  => 'mimes:pdf',
       ];
    }
 
    public function messages()
-   {     
+   {
       return [
          'pegawai' => [
-            'required' => 'We need to know your email address!',
+            'required' => 'Pegawai Belum dipilih',
          ],
          'nomor_pengantar' => [
-            'required' => 'We need to know your email address!',
+            'required' => 'Nomor Pengantar Surat Wajib di isi',
          ],
          'tgl_pengantar' => [
-            'required' => 'We need to know your email address!',
+            'required' => 'Tanggal Pengantar Surat Wajib di isi',
          ],
          'rekom_jenis' => [
-            'required' => 'We need to know your email address!',
+            'required' => 'Jenis Rekomendasi Wajib di isi',
          ],
          'keperluan_id' => [
-            'required' => 'We need to know your email address!',
+            'required' => 'Keperluan Rekomendasi Wajib di isi',
          ],
-         'file_sk'                  => 'mimes:pdf|file|size:1024',
-         'file_pengantar_opd'       => 'mimes:pdf|file|size:1024',
-         'file_konversi_nip'        => 'mimes:pdf|file|size:1024',
+         'file_sk' => [
+            'required' => 'File SK PNS Wajib di isi',
+            'mimes' => 'Format File SK PNS tidak cocok'
+         ],
+         'file_pengantar_opd' => [
+            'required' => 'File Pengantar OPD Wajib di isi',
+            'mimes' => 'Format file File Pengantar OPD tidak cocok'
+
+         ],
+         'file_konversi_nip' => [
+            'mimes' => 'Format file File Pengantar OPD tidak cocok'
+         ],
+         
+
+
       ];
    }
-
-   
 }
