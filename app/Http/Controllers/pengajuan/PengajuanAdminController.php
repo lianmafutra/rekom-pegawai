@@ -71,6 +71,19 @@ class PengajuanAdminController extends Controller
                'pesan'             => '',
                'tgl_kirim'         => Carbon::now(),
             ]);
+         }
+         else if ($request->has('tolak')) {
+            PengajuanHistori::create([
+               'pengajuan_id'      => $pengajuan_id,
+               'user_id'           => $user->id,
+               'user_nama'         => auth()->user()->name,
+               'penerima_id'       => $penerima_id->pengirim->id,
+               'pengirim_id'       => $user->id,
+               'opd'               => $user->opd->nunker,
+               'pengajuan_aksi_id' => PengajuanAksi::TOLAK,
+               'pesan'             => $request->pesan,
+               'tgl_kirim'         => Carbon::now(),
+            ]);
          } else {
             $this->pengajuanService->storeHistori(
                $request->pengajuan_uuid,

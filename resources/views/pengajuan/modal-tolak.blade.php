@@ -25,12 +25,12 @@
             <form action="{{ route('pengajuan.verifikasi.kirim') }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <input hidden name="selesai">
+                  <input hidden name="tolak">
                     <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
                     <p>Berkas akan dikembalikan ke OPD Pengirim, Tuliskan Informasi Pesan Penolakan</p>
                     <div class="form-group">
                         <label></label>
-                        <textarea class="form-control" rows="3" placeholder="Pesan Penolakan"></textarea>
+                        <textarea name="pesan" class="form-control" rows="3" placeholder="Pesan Penolakan"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
