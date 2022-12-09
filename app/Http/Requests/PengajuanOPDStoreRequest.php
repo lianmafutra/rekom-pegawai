@@ -25,7 +25,7 @@ class PengajuanOPDStoreRequest extends FormRequest
    {
      
       return [
-         'file_sk'            => 'numeric',
+         // 'file_sk'            => 'numeric',
       ];
    }
 

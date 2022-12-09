@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
 @endpush
+
 @section('content')
     <style>
         .filepond--drop-label.filepond--drop-label label {
@@ -56,13 +57,13 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0">Buat Pengajuan Rekomendasi</h1>
-                     
+
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Pengajuan Rekomendasi</li>
-                            
+
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -84,7 +85,7 @@
                                     <div class="row">
                                         <div class="col-md-6 card-body">
 
-                                            <form id="form_pengajuan" action="{{ route('pengajuan.store') }}" method="POST"
+                                            <form id="form_pengajuan" name="form_pengajuan" method="POST"
                                                 autocomplete="off" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('POST')
@@ -94,9 +95,9 @@
                                                         class="select2 select2-pegawai form-control select2bs4"
                                                         data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
                                                         <option></option>
-                                                         @if ($errors->has('file_sk'))
-                                                         <span class="invalid">{{ $errors->first('file_sk') }}</span>
-                                                      @endif
+                                                        @if ($errors->has('file_sk'))
+                                                            <span class="invalid">{{ $errors->first('file_sk') }}</span>
+                                                        @endif
                                                         @foreach ($pegawai as $item => $key)
                                                             <option value="{{ $key['nipbaru'] }}"> {{ $key['nama'] }} (
                                                                 {{ $key['nipbaru'] }} )</option>
@@ -253,71 +254,82 @@
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
 
-    <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
     <script src="https://unpkg.com/just-validate@3.8.1/dist/just-validate.production.min.js"></script>
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
+
     <script>
         $(document).ready(function() {
+
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            const validation = new JustValidate('#form_pengajuan');
-            validation
-                .addField('#pegawai', [{
-                    rule: 'required',
-                    errorMessage: 'Nama Pegawai Wajib dipilih',
-                }, ]).addField('#nomor_pengantar', [{
-                    rule: 'required',
-                    errorMessage: 'Nomor Pengantar Surat Wajib di isi',
-                }, ]).addField('#tgl_pengantar', [{
-                    rule: 'required',
-                    errorMessage: 'Tanggal Pengantar Surat Wajib di isi',
-                }, ]).addField('#rekom_jenis', [{
-                    rule: 'required',
-                    errorMessage: 'Jenis Rekomendasi Wajib di isi',
-                }, ]).addField('#keperluan_id', [{
-                    rule: 'required',
-                    errorMessage: 'Jenis Keperluan Wajib di isi',
-                }]).onSuccess((event) => {
-                    if (file_sk.getFile() == null) {
-                        bootbox.alert({
-                            message: 'File Sk Pangkat Terakhir Wajib Di isi',
-                            size: 'small',
-                            centerVertical: true,
-                        });
-                    } else if (file_pengantar.getFile() == null) {
-                        bootbox.alert({
-                            message: 'File Pengantar Dari OPD  Wajib Di isi',
-                            size: 'small',
-                            centerVertical: true,
-                        });
-                    } else {
-                        bootbox.confirm({
-                            title: 'Konfirmasi Pengajuan',
-                            message: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
-                            centerVertical: true,
-                            buttons: {
-                                confirm: {
-                                    label: 'Ya, Lanjutkan',
-                                    className: 'btn-success'
-                                },
-                                cancel: {
-                                    label: 'Batal',
-                                    className: 'btn-secondary'
+
+
+            $("#btn_submit").click(function(e) {
+
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Konfirmasi Pengajuan',
+                    text: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Lanjutkan'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        var formdata = $('#form_pengajuan').serialize();
+                        $.ajax({
+                            type: 'POST',
+                            url: @json(route('pengajuan.store')),
+                            data: formdata,
+                         
+                            beforeSend: function() {
+                                Swal.fire({
+                                    title: 'Mengirim Data...',
+                                    html: 'Mohon TUnggu...',
+                                    allowEscapeKey: false,
+                                    allowOutsideClick: false,
+                                    didOpen: () => {
+                                        Swal.showLoading()
+                                    }
+                                });
+                            },
+                            success: (response) => {
+                                if (response) {
+                                    this.reset()
+                                    Swal.fire(
+                                        'Good job!',
+                                        'You clicked the button!',
+                                        'success'
+                                    )
+                                    swal.hideLoading()
                                 }
                             },
-                            callback: function(result) {
-                                if (result) {
-                                    $("#form_pengajuan").submit();
-                                }
+                            error: function(response) {
+                                Swal.fire({
+                                    title: 'Oops...',
+                                    text: response.responseJSON
+                                        .message,
+                                })
+                                console.log(response.responseJSON
+                                    .message)
                             }
                         });
+
+
+
                     }
-                });
+                })
+            });
+
 
             // select2
             $('.select2bs4').select2({
@@ -352,6 +364,7 @@
                         $(".loading").fadeOut(1000);
                     },
                     error: function(xhr, textStatus, errorThrown) {
+
                         alert("Gagal Mengambil data pegawai, silahkan coba lagi ...")
                     }
                 });
@@ -380,6 +393,9 @@
                 dateFormat: "d-m-Y",
                 locale: "id",
             });
+
+
+
         });
     </script>
 @endpush

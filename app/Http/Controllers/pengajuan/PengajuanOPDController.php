@@ -13,6 +13,7 @@ use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Models\PengajuanHistori;
 use App\Models\User;
+use App\Utils\ApiResponse;
 use App\Utils\UploadFile;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,6 +25,17 @@ use Yajra\DataTables\DataTables;
 
 class PengajuanOPDController extends Controller
 {
+
+
+   private $pengajuanService, $pegawaiService;
+   use ApiResponse;
+
+   public function __construct(PengajuanService $pengajuanService, PegawaiService $pegawaiService)
+   {
+       $this->pengajuanService = $pengajuanService;
+       $this->pegawaiService = $pegawaiService;
+   }
+
 
    public function index()
    {
@@ -46,7 +58,7 @@ class PengajuanOPDController extends Controller
       return view('pengajuan.opd.index', $x, compact('data'));
    }
 
-   public function create(PegawaiService $pegawaiService, User $user)
+   public function create(User $user)
    {
 
       abort_if(Gate::denies('pengajuan create'), 403);
@@ -54,23 +66,25 @@ class PengajuanOPDController extends Controller
       $x['url_foto']     = Config::get('global.url.bkd.foto');
       $x['rekom_jenis']     = Config::get('global.rekom_jenis');
 
-      $pegawai = $pegawaiService->filterByOPD($user->getWithOpd()->kunker);
+      $pegawai = $this->pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
       return view('pengajuan.opd.create', $x, compact('pegawai', 'keperluan'));
    }
 
 
-   public function store(PengajuanOPDStoreRequest $request, PegawaiService $pegawaiService, PengajuanService $pengajuanService)
+   public function store(PengajuanOPDStoreRequest $request)
    {
       abort_if(Gate::denies('pengajuan store'), 403);
 
       try {
+         // dd($request->all());
+         // return $this->success( 'Pengajuan Berkas Rekomendasi Berhasil Dikirim', $request->all(), 400);
          DB::beginTransaction();
          // Ambil data pegawai dari cache ( API BKD )
-         $pegawai_cache = $pegawaiService->filterByNIP($request->pegawai)[0];
+         $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
 
          // Insert data pengajuan ke DB
-         $pengajuanStore = $pengajuanService->storePengajuan($pegawai_cache, $request);
+         $pengajuanStore = $this->pengajuanService->storePengajuan($pegawai_cache, $request);
 
          // Insert histori pengajuan ke DB
     
@@ -116,10 +130,13 @@ class PengajuanOPDController extends Controller
          }
 
          DB::commit();
-         return redirect()->route('pengajuan.index')->with('success', 'Berhasil ', 200)->send();
+         // return redirect()->route('pengajuan.index')->with('success', 'Berhasil ', 200)->send();
+
+         return $this->success( 'Pengajuan Berkas Rekomendasi Berhasil Dikirim');
       } catch (\Throwable $th) {
          DB::rollBack();
-         return redirect()->back()->with('error', 'Gagal : ' . $th->getMessage(), 400)->send();
+         return $this->error( 'Pengajuan Berkas Rekomendasi Gagal Dikirim' .$th->getMessage(), 400);
+         // return redirect()->back()->with('error', 'Gagal : ' . $th->getMessage(), 400)->send();
       }
    }
 
@@ -154,6 +171,6 @@ class PengajuanOPDController extends Controller
    public function histori($uuid)
    {
       $pengajuan = Pengajuan::with(['histori', 'histori.aksi'])->whereUuid($uuid)->first();
-      return $this->success($pengajuan, 'Histori Pengajuan');
+      return $this->success('Histori Pengajuan',$pengajuan, );
    }
 }

@@ -66,6 +66,8 @@
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
+
 
     <script>
          $.ajaxSetup({
@@ -73,6 +75,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
