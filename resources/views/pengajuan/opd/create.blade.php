@@ -1,10 +1,9 @@
 @extends('admin.layouts.master')
 @push('css')
-    <link href="{{ URL::asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
-    <link href="{{ URL::asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
-    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
+    <link href="{{ asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
+    <link href="{{ asset('plugins/select2/css/select2.min.css') }} " rel="stylesheet">
+    <link href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}" rel="stylesheet">
 @endpush
 @section('content')
     <style>
@@ -48,207 +47,122 @@
         }
     </style>
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Buat Pengajuan Rekomendasi</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Pengajuan Rekomendasi</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-        <!-- Main content -->
+       <x-header title='Buat Pengajuan Rekomendasi' />
         <section class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                {{-- @if ($errors->has('file_sk'))
-                                    <span class="invalid">{{ $errors->first('file_sk') }}</span>
-                                @endif --}}
-                                <div class="tab-content">
-                                    <div class="row">
-                                        <div class="col-md-6 card-body">
-                                            <form id="form_pengajuan" name="form_pengajuan" method="POST"
-                                                autocomplete="off" enctype="multipart/form-data">
-                                                @csrf
-                                                @method('POST')
-                                                <div class="form-group">
-                                                    <label>Nama Pegawai<span style="color: red">*</span></label>
-                                                    <select id="pegawai" name="pegawai" required type=""
-                                                        class="select2 select2-pegawai form-control select2bs4"
-                                                        data-placeholder="-- Pilih Pegawai --" style="width: 100%;">
-                                                        <option></option>
-                                                       
-                                                        @foreach ($pegawai as $item => $key)
-                                                            <option value="{{ $key['nipbaru'] }}"> {{ $key['nama'] }} (
-                                                                {{ $key['nipbaru'] }} )</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="text-danger error-text pegawai_err"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Nomor Surat Pengantar <span style="color: red">*</span></label>
-                                                    <input id="nomor_pengantar" type="text" class="form-control"
-                                                        name="nomor_pengantar" placeholder="Nomor Surat Pengantar"
-                                                        value="">
-                                                        <span class="text-danger error-text nomor_pengantar_err"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input hidden name="penerima_uuid"
-                                                        value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="bd-highlight">
-                                                        <label>Tanggal Surat Pengantar <span
-                                                                style="color: red">*</span></label>
-                                                        <div style="padding: 0 !important; width: 100%"
-                                                            class="input-group ">
-                                                            <input style="width: 90%" id="tgl_pengantar" required
-                                                                autocomplete="off" name="tgl_pengantar"
-                                                                class="form-control tanggal" type="text"
-                                                                placeholder="Hari/Bulan/Tahun" data-input>
-                                                            <div class="input-group-append">
-                                                                <div class="input-group-text"><i class="fa fa-calendar"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-danger error-text tgl_pengantar_err"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Jenis Rekomendasi<span style="color: red">*</span></label>
-                                                    <select id="rekom_jenis" name="rekom_jenis" required type=""
-                                                        class="select2 form-control select2bs4"
-                                                        data-placeholder="-- Pilih Jenis Rekomendasi --"
-                                                        style="width: 100%;">
-                                                        <option></option>
-                                                        @foreach ($rekom_jenis as $key => $item)
-                                                            <option value="{{ $key }}">{{ $item }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="text-danger error-text rekom_jenis_err"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Keperluan Rekomendasi<span style="color: red">*</span></label>
-                                                    <select id="keperluan_id" name="keperluan_id" required type=""
-                                                        class="select2 form-control select2bs4"
-                                                        data-placeholder="-- Pilih Jenis Keperluan --" style="width: 100%;">
-                                                        <option></option>
-                                                        @foreach ($keperluan as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->nama }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="text-danger error-text keperluan_id_err"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Catatan Tambahan</label>
-                                                    <textarea name="catatan" class="form-control" rows="3" placeholder="Tuliskan Catatan Tambahan (Opsional)"></textarea>
-                                                </div>
-                                                <label>File SK Pangkat Terakhir<span style="color: red">*</span></label>
-                                                <input id="file_sk" type="file" data-max-file-size="5 MB"
-                                                    class="filepond " accept="{{ config('upload.pengajuan.filetype') }}"
-                                                    name="file_sk" placeholder="File SK PNS">
-                                                    <span class="text-danger error-text file_sk_err"></span>
-                                                <div class="form-group ">
-                                                </div>
-                                                <div class="form-group ">
-                                                    <label>File Surat Pengantar kepala OPD <span
-                                                            style="color: red">*</span></label>
-                                                    <input id="file_pengantar_opd" type="file"
-                                                        data-max-file-size="5 MB" class="filepond"
-                                                        accept="{{ config('upload.pengajuan.filetype') }}"
-                                                        name="file_pengantar_opd" placeholder="File Pengantar OPD">
-                                                        <span class="text-danger error-text file_pengantar_opd_err"></span>
-                                                </div>
-                                                <div class="form-group ">
-                                                    <label>Konversi NIP (Optional)</label>
-                                                    <input id="file_konversi_nip" required type="file"
-                                                        data-max-file-size="5 MB" class="filepond"
-                                                        accept="{{ config('upload.pengajuan.filetype') }}"
-                                                        name="file_konversi_nip" placeholder="File Konversi NIP">
-                                                        <span class="text-danger error-text file_konversi_nip_err"></span>
-                                                </div>
-                                        </div>
-                                        <div style="margin-left: 10px;" class="col-md-5 card ">
-                                            <div class="card-header">
-                                                <h6>Detail Pegawai</h6>
-                                            </div>
-                                            <div class="card-body box-profile">
-                                                <img class="loading loading-custom" src="{{ asset('img/loading.gif') }}">
-                                                <div class="profile_data">
-                                                    <div class="text-center">
-                                                        <img class="profile-user-img profile-custom  img-fluid img-circle"
-                                                            src="{{ asset('img/avatar2.png') }}"
-                                                            alt="User profile picture">
-                                                    </div>
-                                                    <ul class="list-group list-group-unbordered mb-3 mt-3">
-                                                        <li class="list-group-item">
-                                                            <b>Nama Lengkap : </b> <a class="float-right nama"></a>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <b>NIP : </b> <a class="float-right nip"></a>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <b>Pangkat/Gol : </b> <a class="float-right pangkat"></a>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <b>Jabatan : </b> <a class="float-right jabatan"></a>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <b>OPD : </b> <a class="float-right opd"></a>
-                                                        </li>
-                                                        <div class="info-data-api profile_data"
-                                                            style="display: none; font-style: italic; padding : 20px 0 0 0">
-                                                            <span>Data Sinkron dari Dinas BKPSDMD ( 10-12-2022 10:09 ),
-                                                                Apabila ada data pegawai yang tidak sesuai silahkan
-                                                                menghubungi Dinas Komunikasi & Informatika Kota Jambi</span>
-                                                        </div>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" id="btn_submit" class="btn btn-primary">Submit
-                                            Berkas</button>
-                                    </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               <div class="col-md-12">
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="tab-content">
+                              <div class="row">
+                                  <div class="col-md-6 card-body">
+                                      <form id="form_pengajuan" name="form_pengajuan" method="POST"
+                                          autocomplete="off" enctype="multipart/form-data">
+                                          @csrf
+                                          @method('POST')
+
+                                          <x-select2 id="pegawai" label='Pilih Pegawai' required="true">
+                                              @foreach ($pegawai as $key => $item)
+                                                  <option value="{{ $item['nipbaru'] }}"> {{ $item['nama']  }}
+                                                      ({{ $item['nipbaru'] }})
+                                                  </option>
+                                              @endforeach
+                                          </x-select2>
+
+                                          <x-input id='nomor_pengantar' label='Nomor Surat Pengantar' required=true />
+                                          <div class="form-group">
+                                              <input hidden name="penerima_uuid"
+                                                  value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
+                                          </div>
+
+                                          <x-datepicker id='tgl_pengantar' label='Tanggal Pengantar Surat'
+                                              required='true' />
+
+                                          <x-select2 id="rekom_jenis" label="Jenis Rekomendasi" required="true">
+                                              @foreach ($rekom_jenis as $key => $item)
+                                                  <option value="{{ $key }}">{{ $item }}
+                                                  </option>
+                                              @endforeach
+                                          </x-select2>
+
+                                          <x-select2 id="keperluan_id" label="Keperluan Rekomendasi" required="true">
+                                              @foreach ($keperluan as $item)
+                                                  <option value="{{ $item->id }}">{{ $item->nama }}
+                                                  </option>
+                                              @endforeach
+                                          </x-select2>
+
+                                          <x-textarea id='catatan' label='Catatan Tambahan' hint='Tuliskan Catatan Tambahan (Opsional)' required='false' />
+                                         
+                                          <x-filepond id='file_sk' label='File SK PNS' required='true' max='5 MB'/>
+                                          <x-filepond id='file_pengantar_opd' label='File Surat Pengantar kepala OPD' required='true' max='5 MB'/>
+                                          <x-filepond id='file_konversi_nip' label='File Konversi NIP' required='false' max='5 MB'/>
+                                  </div>
+
+                                  <div style="margin-left: 10px;" class="col-md-5 card ">
+                                      <div class="card-header">
+                                          <h6>Detail Pegawai</h6>
+                                      </div>
+                                      <div class="card-body box-profile">
+                                          <img class="loading loading-custom" src="{{ asset('img/loading.gif') }}">
+                                          <div class="profile_data">
+                                              <div class="text-center">
+                                                  <img class="profile-user-img profile-custom  img-fluid img-circle"
+                                                      src="{{ asset('img/avatar2.png') }}"
+                                                      alt="User profile picture">
+                                              </div>
+                                              <ul class="list-group list-group-unbordered mb-3 mt-3">
+                                                  <li class="list-group-item">
+                                                      <b>Nama Lengkap : </b> <a class="float-right nama"></a>
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                      <b>NIP : </b> <a class="float-right nip"></a>
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                      <b>Pangkat/Gol : </b> <a class="float-right pangkat"></a>
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                      <b>Jabatan : </b> <a class="float-right jabatan"></a>
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                      <b>OPD : </b> <a class="float-right opd"></a>
+                                                  </li>
+                                                  <div class="info-data-api profile_data"
+                                                      style="display: none; font-style: italic; padding : 20px 0 0 0">
+                                                      <span>Data Sinkron dari Dinas BKPSDMD ( 10-12-2022 10:09 ),
+                                                          Apabila ada data pegawai yang tidak sesuai silahkan
+                                                          menghubungi Dinas Komunikasi & Informatika Kota Jambi</span>
+                                                  </div>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="card-footer">
+                                  <button type="submit" id="btn_submit" class="btn btn-primary">Submit
+                                      Berkas</button>
+                              </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
-        <!-- /.content -->
     </div>
     @include('pengajuan.modal-view-file')
 @endsection
 @push('js')
     <script src="{{ asset('plugins/flatpicker/flatpickr.min.js') }}"></script>
     <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
-    <script src="{{ URL::asset('plugins/filepond/filepond.js') }}"></script>
-    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
-    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
-    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
-    <script src="{{ URL::asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
+    <script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
-    <script src="https://unpkg.com/just-validate@3.8.1/dist/just-validate.production.min.js"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script>
         $(document).ready(function() {
@@ -270,7 +184,6 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $("#form_pengajuan").submit();
-                        // var formdata = $('#form_pengajuan').serialize();
                     }
                 })
             });
@@ -308,20 +221,18 @@
                         }
                     },
                     error: function(response) {
-                     printErrorMsg(response.responseJSON.errors);
-                     console.log(response.responseJSON.errors)
+                        printErrorMsg(response.responseJSON.errors);
+                        console.log(response.responseJSON.errors)
                         Swal.fire({
-                            title: 'Oops...',
+                            title: 'Terjadi Kesalahan...',
                             text: response.responseJSON
                                 .message,
                         })
-                        // console.log(response.responseJSON
-                        //     .message)
                     }
                 });
             });
             function printErrorMsg(msg) {
-               console.log('print error')
+                console.log('print error')
                 $.each(msg, function(key, value) {
                     console.log(key);
                     $('.' + key + '_err').text(value);

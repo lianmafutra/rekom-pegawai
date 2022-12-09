@@ -18,5 +18,9 @@ class PegawaiSyncController extends Controller
       return response()->json($pegawaiService->getAll());
    }
 
+   public function sync(PegawaiService $pegawaiService){
+      return $pegawaiService->sync();
+   }
+
    
 }

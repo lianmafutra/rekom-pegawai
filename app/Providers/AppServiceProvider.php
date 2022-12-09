@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\View\Components\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
    public function boot()
    {
 
+     
 
     
       view()->composer('*', function ($view) {
