@@ -129,6 +129,30 @@ nav.main-header.navbar.navbar-expand.navbar-dark {
   
 }
 
+.page-item.active .page-link {
+   z-index: 3;
+   color: #fff;
+   background-color: rgb(128, 75, 223);
+   border-color:  rgba(127, 75, 223, 0.538) !important;
+}
+
+.custom_btn_dropdown {
+   background-color: #f2eaff;
+   border-color: #ddd;
+   color: rgb(128, 75, 223);
+}
+
+.page-link {
+   position: relative;
+   display: block;
+   padding: .5rem .75rem;
+   margin-left: -1px;
+   line-height: 1.25;
+   color:  rgb(128, 75, 223);
+   background-color: #fff;
+   border: 1px solid #dee2e6;
+}
+
 .btn.btn-primary {
    border: none;
    background-color: rgb(128, 75, 223);
@@ -138,6 +162,17 @@ nav.main-header.navbar.navbar-expand.navbar-dark {
    letter-spacing: 0.3px;
    box-shadow: rgba(58, 53, 65, 0.42) 0px 4px 8px -4px;
 }
+
+.btn.btn-secondary {
+   border: none;
+   /* background-color: rgb(128, 75, 223); */
+   font-weight: 500;
+   border-radius: 5px;
+   line-height: 1.71;
+   letter-spacing: 0.3px;
+   box-shadow: rgba(58, 53, 65, 0.42) 0px 4px 8px -4px;
+}
+
 .content-wrapper {
    padding: 25px;
 }

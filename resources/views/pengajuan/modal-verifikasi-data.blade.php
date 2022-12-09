@@ -22,9 +22,9 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
-                                <center>
+                                {{-- <center>
                                     <h4 style="color: green">Data Pelanggaran tidak ditemukan dalam database</h4>
-                                </center>
+                                </center> --}}
                             </div>
                         </div>
                     </div>

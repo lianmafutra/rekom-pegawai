@@ -9,11 +9,9 @@
             color: #313131;
             font-weight: bold;
         }
-
         .column {
             width: 100%;
         }
-
         .ico {
             color: orange;
             display: inline-block;
@@ -25,12 +23,10 @@
             background-position: 0 0;
             background-repeat: no-repeat;
         }
-
         .title {
             display: block;
             overflow: hidden;
         }
-
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -42,16 +38,13 @@
             height: 196px;
             margin-bottom: 20px;
         }
-
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
-
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
-
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -63,7 +56,6 @@
             margin-right: auto;
             position: absolute
         }
-
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -74,11 +66,9 @@
             object-fit: cover;
             height: 300px;
         }
-
         .form-control {
             font-size: 14px !important;
         }
-
         div# {
             position: relative;
             margin-top: -10px;
@@ -275,9 +265,7 @@
                                 <div class="tab-content">
                                     <div class="row">
                                         <div class="timeline modal_content_histori">
-
                                             {{-- List data histori pegajuan --}}
-
                                         </div>
                                     </div>
                                     </form>
@@ -303,7 +291,6 @@
 @push('js')
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-
     <script>
         $(document).ready(function() {
             $('.btn_view_file').click(function(e) {
@@ -311,7 +298,6 @@
                 let url = $(this).attr('data-url');
                 viewFile(url);
             });
-
             function viewFile(url) {
                 const width = 800
                 const height = 700
@@ -327,19 +313,15 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $("#btn_teruskan").click(function() {
                 $('#modal_teruskan').modal('show')
             });
-
             $("#btn_selesai").click(function() {
                 $('#modal_selesai').modal('show')
             });
-
             $("#btn_tolak").click(function() {
                 $('#modal_tolak').modal('show')
             });
-
             $("#btn_verifikasi").click(function() {
                 $('#modal_verifikasi').modal('show')
                 let nip = $('#nip').text()
@@ -354,7 +336,6 @@
                     }
                 })
             });
-
 
             $.ajax({
                 url: @json(route('pengajuan.histori', $pengajuan->uuid)),
@@ -396,13 +377,11 @@
                 }
             })
 
-
         });
-
+        
         $('.select2bs4').select2({
             theme: 'bootstrap4',
         })
-
         $('.horizontalLine').css({
             left: $('.timeline-badge').first().position().left,
             width: $('.timeline-item-last').position().left
