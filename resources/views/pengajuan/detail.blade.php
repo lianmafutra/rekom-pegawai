@@ -356,6 +356,24 @@
                            </div>
                         </div>
                      </div>`);
+                        }
+                        else if ($item.pengajuan_aksi_id == 3) {
+                            $(".modal_content_histori").append(`<div>
+                        <i style="color: white !important" class="${$item.aksi.icon}"></i>
+                        <div class="timeline-item">
+                           <div class="timeline-body">
+                              ${$item.aksi.pesan}  <a href="#"> ${$item.user_nama}</a> <p></p>
+                            
+                           </div>
+                           <div class="pesan">
+                             <span style="padding: 10px 10px 10px 10px">"${$item.pesan}"</span>
+                           </div>
+                           <div class="dropdown-divider"></div>
+                           <div class="timeline-footer">
+                              <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
+                           </div>
+                        </div>
+                     </div>`);
                         } else {
                             $(".modal_content_histori").append(`<div>
                         <i style="color: white !important" class="${$item.aksi.icon}"></i>

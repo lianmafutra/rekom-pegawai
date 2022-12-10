@@ -26,6 +26,7 @@
             <div class="card card-outline card-primary">
                 <div class="card-header text-center">
                     <a href="{{ route('login') }}" class="h1"><b>{{ ENV('APP_NAME') }}</b></a>
+                    <p class="h6">Sistem Informasi Rekomendasi Pegawai</p>
                 </div>
                 <div class="card-body">
                     <form method="POST" id="#recaptcha-form" action="{{ route('login') }}">
@@ -48,14 +49,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <div class="col-md-12">
-                                {!! htmlFormSnippet([
-                                    "theme" => "light",
-                                    "size" => "normal",
-                                    "tabindex" => "3",
-                                    "callback" => "callbackFunction",
-                                    "expired-callback" => "expiredCallbackFunction",
-                                    "error-callback" => "errorCallbackFunction",
-                                ]) !!}
+                               
                             </div>
                         </div>
                         <div class="row">

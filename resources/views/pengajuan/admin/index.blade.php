@@ -153,6 +153,25 @@
             $('#modal_filter').modal('show')
         });
 
+        $('body').on('click', '.btn_hapus', function(e) {
+                let nama = $(this).attr('data-nama');
+                let url = $(this).attr('data-url');
+                Swal.fire({
+                    title: 'Apakah anda yakin ingin menghapus data Permohonan ?',
+                    text: nama,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).find('#form-delete').submit();
+                    }
+                })
+            });
+
         $("#btn_laporan").click(function() {
            
         });

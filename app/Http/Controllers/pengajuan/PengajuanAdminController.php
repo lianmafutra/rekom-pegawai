@@ -12,6 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Gate;
 
@@ -56,7 +57,7 @@ class PengajuanAdminController extends Controller
          ->where('uuid', '=', $request->pengajuan_uuid)
          ->first();
 
-      
+
          $pengajuan_id = Pengajuan::where('uuid', $request->pengajuan_uuid)->first()->id;
 
          if ($request->has('selesai')) {
@@ -118,4 +119,15 @@ class PengajuanAdminController extends Controller
       return view('pengajuan.detail', $x, 
       compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi']));
    }
+   
+   
+   public function destroy($uuid)
+      {
+         try {
+           $pengajuan = Pengajuan::where('uuid', $uuid)->delete();
+            return redirect()->back()->with('success', 'Berhasil Hapus Data', 200)->send();
+         } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Gagal Menghapus Data '.$th, 400)->send();
+         }   
+      }
 }

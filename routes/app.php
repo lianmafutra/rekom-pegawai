@@ -19,6 +19,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    Route::prefix('pengajuan/verifikasi')->name('pengajuan.verifikasi.')->middleware(['auth'])->group(function () {
       Route::get('/', [PengajuanAdminController::class, 'index'])->name('index');
+      Route::delete('destroy/{uuid}', [PengajuanAdminController::class, 'destroy'])->name('destroy');
       Route::post('kirim', [PengajuanAdminController::class, 'kirim'])->name('kirim');
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
    });
