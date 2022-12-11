@@ -131,4 +131,18 @@ class PengajuanAdminController extends Controller
          return redirect()->back()->with('error', 'Gagal Menghapus Data ' . $th, 400)->send();
       }
    }
+   
+   
+   public function destroy($uuid)
+      {
+         try {
+            DB::beginTransaction();
+           $pengajuan = Pengajuan::where('uuid', $uuid)->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Berhasil Hapus Data', 200)->send();
+         } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal Menghapus Data '.$th, 400)->send();
+         }   
+      }
 }
