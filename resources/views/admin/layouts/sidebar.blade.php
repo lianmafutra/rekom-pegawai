@@ -79,6 +79,7 @@
                                 class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>Data Pengajuan</p>
+                                <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
                             </a>
                         @endcan
                         @can('pengajuan index')

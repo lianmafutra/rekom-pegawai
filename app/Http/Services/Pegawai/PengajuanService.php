@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Pegawai;
 
+use App\Config\Pengajuan as ConfigPengajuan;
 use Carbon\Carbon;
 use App\Config\Role;
 use App\Models\User;
@@ -10,11 +11,15 @@ use Illuminate\Support\Str;
 use App\Config\PengajuanAksi;
 use App\Models\PengajuanHistori;
 use App\Exceptions\CustomException;
+use App\Utils\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 
 
 class PengajuanService
 {
+
+   use ApiResponse;
+
    public function getPenerimaId()
    {
 
@@ -75,31 +80,76 @@ class PengajuanService
       }
    }
 
-   public function storeHistori($pengajuan_uuid, $aksi_id, $penerima_uuid, $pesan = null)
+   public function storeHistori($pengajuan_uuid, $aksi_id, $penerima_uuid = null, $pesan = null)
    {
       try {
-         $user = User::with('opd')->find(auth()->user()->id);
 
-         $penerima_id    = User::where('uuid', $penerima_uuid)->first();
+         $pengirim     = User::with('opd')->find(auth()->user()->id);
+
          $pengajuan_id = Pengajuan::where('uuid', $pengajuan_uuid)->first()->id;
 
-         PengajuanHistori::create([
-            'pengajuan_id'      => $pengajuan_id,
-            'user_id'           => $user->id,
-            'user_nama'         => $penerima_id->name,
-            'penerima_id'       => $penerima_id->id,
-            'pengirim_id'       => $user->id,
-            'opd'               => $user->opd->nunker,
-            'pengajuan_aksi_id' => $aksi_id,
-            'pesan'             => $pesan,
-            'tgl_kirim'         => Carbon::now(),
-         ]);
+         switch ($aksi_id) {
+
+            case PengajuanAksi::KIRIM_BERKAS:
+            case PengajuanAksi::MENERUSKAN:
+            case PengajuanAksi::REVISI:
+            case PengajuanAksi::TOLAK:
+            case PengajuanAksi::SELESAI:
+               $penerima     = User::with('opd')->where('uuid', $penerima_uuid)->first();
+               PengajuanHistori::create([
+                  'pengajuan_id'      => $pengajuan_id,
+                  'penerima_id'       => $penerima->id,
+                  'pengirim_id'       => $pengirim->id,
+                  'penerima_nama'     => $penerima->name,
+                  'pengirim_nama'     => $pengirim->name,
+                  'opd_pengirim'      => $pengirim->opd->nunker,
+                  'opd_penerima'      => $penerima->opd->nunker,
+                  'pengajuan_aksi_id' => $aksi_id,
+                  'pesan'             => $pesan,
+                  'tgl_kirim'         => Carbon::now(),
+                  'tgl_proses'        => Carbon::now(),
+               ]);
+               break;
+            case PengajuanAksi::VERIFIKASI_DATA:
+               PengajuanHistori::create([
+                  'pengajuan_id'      => $pengajuan_id,
+                  'penerima_id'       => null,
+                  'pengirim_id'       => $pengirim->id,
+                  'pengirim_nama'     => $pengirim->name,
+                  'opd_pengirim'      => $pengirim->opd->nunker,
+                  'pengajuan_aksi_id' => $aksi_id,
+                  'pesan'             => $pesan,
+                  'tgl_kirim'         => Carbon::now(),
+                  'tgl_proses'        => Carbon::now(),
+               ]);
+            default:
+
+               break;
+         }
       } catch (\Throwable $th) {
-         throw new CustomException("Terjadi Kesalahan saat Menginput Data Histori" + $th);
+         throw new CustomException("Terjadi Kesalahan saat Menginput Data Histori" . $th);
       }
    }
 
- 
+   /**
+    *@desc update DB 'tgl_proses' pengajuan setiap proses disposisi ,berguna untuk tracking pengajuan yang belum di respon oleh user penerima
+    */
+   public function updateTglProses($pengajuan_id)
+   {
+      try {
+         PengajuanHistori::where('pengajuan_id', $pengajuan_id)
+            ->where('penerima_id', auth()->user()->id)
+            ->where('tgl_proses', NULL)
+            ->where('user_id', auth()->user()->id)
+            ->update([
+               'tgl_proses' => Carbon::now()
+            ]);
+      } catch (\Throwable $th) {
+         throw new CustomException("Kesalahan Mengupdate Data" .$th);
+      }
+   }
+
+
    /**
     *@desc cek button aksi tiap role dan berdasarkan kondisi pengajuan
     */
@@ -111,7 +161,7 @@ class PengajuanService
       return $status->first()->histori->last()->pengajuan_aksi_id;
    }
 
-   
+
    /**
     *@desc cek button aksi tiap role dan berdasarkan kondisi pengajuan
     */
@@ -127,8 +177,8 @@ class PengajuanService
             $aksi = [];
             break;
          case  Role::isAdminInspektorat:
-            if ($status == PengajuanAksi::VERIFIKASI) $aksi = [];
-            elseif ($status == PengajuanAksi::SIAPKAN) $aksi = ['tolak','selesaikan', 'file_rekom'];
+            if ($status == PengajuanAksi::MENERUSKAN) $aksi = [];
+            elseif ($status == PengajuanAksi::PROSES_SURAT) $aksi = ['tolak', 'selesaikan', 'file_rekom'];
             elseif ($status == PengajuanAksi::TOLAK) $aksi = [];
             elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             else $aksi = ['tolak', 'teruskan', 'verifikasi'];
@@ -158,19 +208,21 @@ class PengajuanService
          $pengajuanService = new PengajuanService();
 
          $histori  = Pengajuan::with(['histori'])
-            ->whereRelation('histori', 'pengajuan_aksi_id', '=', PengajuanAksi::PROSES)
-            ->where('uuid', $pengajuan_uuid)
+            ->whereRelation('histori', 'pengajuan_aksi_id', '=', PengajuanAksi::VERIFIKASI_DATA)
+            ->where('uuid', '=', $pengajuan_uuid)
             ->first();
+
 
          // jika belum ada maka insert histori pengajuan dengan status proses
          if ($histori == null && $user->getRoleName() == Role::isAdminInspektorat) {
-            $pengajuanService->storeHistori($pengajuan_uuid, PengajuanAksi::PROSES, '26cabc5d-7c32-4e97-83f0-a02a226783c5');
+            $pengajuanService->storeHistori($pengajuan_uuid, PengajuanAksi::VERIFIKASI_DATA);
          }
       } catch (\Throwable $th) {
       }
    }
 
-   function generateFileRekom(){
+   function generateFileRekom()
+   {
       // data user
       // jenis rekom 
       // jenis keperluan

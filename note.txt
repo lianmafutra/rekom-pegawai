@@ -15,3 +15,10 @@ hak akses aksi detail
 
 selesai = btn
 siapkan
+
+todo
++ tambah status verifikasi disposisi ketika posisi di admin kasubag dan inspektorat
++ ketika sudah melakukan verifikasi data tampilkan status verifikasi di menu detail admin OPD
++ Menu hapus pengajuan hanya untuk superadmin
++ logo index link belum tepat
++ alert ketika admin opd ingin melanjutkan maka harus virifkasi data dulu / optional

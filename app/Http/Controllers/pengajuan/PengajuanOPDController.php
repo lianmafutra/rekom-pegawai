@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\pengajuan;
 
 use App\Config\PengajuanAksi;
-use App\Config\Role;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
@@ -11,12 +10,12 @@ use App\Http\Services\Pegawai\PegawaiService;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
+use App\Models\PengajuanAksi as ModelsPengajuanAksi;
 use App\Models\PengajuanHistori;
 use App\Models\User;
 use App\Utils\ApiResponse;
 use App\Utils\UploadFile;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -30,6 +29,7 @@ class PengajuanOPDController extends Controller
 
 
    private $pengajuanService, $pegawaiService;
+
    use ApiResponse;
 
    public function __construct(PengajuanService $pengajuanService, PegawaiService $pegawaiService)
@@ -80,33 +80,29 @@ class PengajuanOPDController extends Controller
 
       try {
 
+        
+       
 
          DB::beginTransaction();
+
+         // default opd ,kirim ke admin inspektorat (penerima id)
+         $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";  
 
          // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
 
          // Insert data pengajuan ke DB
          $pengajuanStore = $this->pengajuanService->storePengajuan($pegawai_cache, $request);
+       
 
-         // Insert histori pengajuan ke DB
+         // Insert data histori pengajuan ke DB
+         $this->pengajuanService->storeHistori(
+            $pengajuanStore->uuid,
+            PengajuanAksi::KIRIM_BERKAS
+            ,$admin_inspektorat_uuid);
 
-         $user = User::with('opd')->find(auth()->user()->id);
+         // upload 3 file syarat pengajuan
 
-         PengajuanHistori::create([
-            'pengajuan_id'      => $pengajuanStore->id,
-            'user_id'           => $user->id,
-            'user_nama'         => $user->name,
-            'penerima_id'       => 3,
-            'pengirim_id'       => $user->id,
-            'opd'               => $user->opd->nunker,
-            'pengajuan_aksi_id' => PengajuanAksi::KIRIM,
-            'pesan'             => '',
-            'tgl_kirim'         => Carbon::now(),
-         ]);
-
-
-         // upload file syarat pengajuan
          $upload_file_sk        = new UploadFile();
          $upload_file_pengantar = new UploadFile();
          $upload_file_konversi  = new UploadFile();
@@ -127,14 +123,15 @@ class PengajuanOPDController extends Controller
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_konversi_nip)
             ->parent_id($pengajuanStore->id)->save();
-            
+
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
-      } catch (\Throwable $th) {
-         DB::rollBack();
-         return $this->error('Pengajuan Berkas Rekomendasi Gagal Dikirim' . $th->getMessage(), 400);
       }
-   }
+      catch (\Exception $th) {
+         DB::rollBack();
+         return $this->error('Pengajuan Berkas Rekomendasi Gagal Dikirim' . $th, 400);
+      }
+   }  
 
    public function show(Pengajuan $pengajuan)
    {

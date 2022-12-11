@@ -9,12 +9,11 @@
                 success: function(json) {
                   console.log(json.data.histori)
                   json.data.histori.forEach($item => {
-                        if ($item.pengajuan_aksi_id == 6) {
-                            $(".modal_content_histori").append(`<div>
+                     $(".modal_content_histori").append(`<div>
                         <i style="color: white !important" class="${$item.aksi.icon}"></i>
                         <div class="timeline-item">
                            <div class="timeline-body">
-                              ${$item.aksi.pesan}  <a href="#"> ${$item.user_nama}</a>
+                              <a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}
                            </div>
                            <div class="dropdown-divider"></div>
                            <div class="timeline-footer">
@@ -22,20 +21,7 @@
                            </div>
                         </div>
                      </div>`);
-                        } else {
-                            $(".modal_content_histori").append(`<div>
-                        <i style="color: white !important" class="${$item.aksi.icon}"></i>
-                        <div class="timeline-item">
-                           <div class="timeline-body">
-                              <a href="#"> ${$item.user_nama}</a> ${$item.aksi.pesan}
-                           </div>
-                           <div class="dropdown-divider"></div>
-                           <div class="timeline-footer">
-                              <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
-                           </div>
-                        </div>
-                     </div>`);
-                        }
+                        
                     });
                 },
                 error: function(xhr, textStatus, errorThrown) {

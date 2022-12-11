@@ -2,11 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use App\View\Components\Input;
+use App\Config\Pengajuan;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,11 +25,18 @@ class AppServiceProvider extends ServiceProvider
     */
    public function boot()
    {
-
-     
-
-    
       view()->composer('*', function ($view) {
+      
+
+
+
+         // $jumlah_notif = Pengajuan::with('histori')
+         //    ->where('tgl_proses', null)
+         //    ->where('penerima_id', auth()->user()->id)
+         //    ->count();
+
+         $view->with('global_jumlah_notif', 0);
+
          if (Auth::check()) {
             $view->with('user_data', Auth::user());
          } else {

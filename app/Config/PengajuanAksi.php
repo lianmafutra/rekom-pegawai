@@ -6,38 +6,13 @@ use Illuminate\Validation\Rules\Enum;
 
 class PengajuanAksi extends Enum
 {
-    /**
-     *@desc OPD mengirim pengajuan ke admin inspektorat (admin OPD)
-     */
-   const KIRIM      = 1;
 
-     /**
-     *@desc Admin Inspektorat Memproses Berkas
-     */
-   const PROSES     = 2;
-   
-     /**
-     *@desc Berkas Ditolak (Admin inspektorat)
-     */
-   const TOLAK      = 3;
-   
-     /**
-     *@desc Berkas di verifikasi (Admin kasubag, Inspektur)
-     */
-   const VERIFIKASI = 4;
-   
-     /**
-     *@desc Admin Inspektorat Memproses Berkas , berkas belum dikirim ke OPD (admin inspektorat)
-     */
-   const SIAPKAN    = 5;
-   
-     /**
-     *@desc Berkas telah selesai dikirim ke OPD (admin inspektorat)
-     */
-   const SELESAI    = 6;
-
-     /**
-     *@desc Berkas ditolak oleh admin inspektorat dan dikirim ulang oleh Admin OPD(admin inspektorat)
-     */
-    const REVISI    = 7;
+   const KIRIM_BERKAS       = 1;
+   const VERIFIKASI_DATA    = 2;
+   const VERIFIKASI_HUKUMAN = 3;
+   const MENERUSKAN         = 4;
+   const PROSES_SURAT       = 5;
+   const SELESAI            = 6;
+   const REVISI             = 7;
+   const TOLAK              = 8; 
 }

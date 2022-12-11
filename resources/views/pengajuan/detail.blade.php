@@ -343,12 +343,15 @@
                 success: function(json) {
                     $('.loading_histori').hide()
                     json.data.histori.forEach($item => {
-                        if ($item.pengajuan_aksi_id == 6) {
-                            $(".modal_content_histori").append(`<div>
+
+                     
+                    let data_tracking = `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
+                     $(".modal_content_histori").append(
+                        `<div>
                         <i style="color: white !important" class="${$item.aksi.icon}"></i>
                         <div class="timeline-item">
                            <div class="timeline-body">
-                              ${$item.aksi.pesan}  <a href="#"> ${$item.user_nama}</a>
+                                 ${data_tracking}
                            </div>
                            <div class="dropdown-divider"></div>
                            <div class="timeline-footer">
@@ -356,38 +359,6 @@
                            </div>
                         </div>
                      </div>`);
-                        }
-                        else if ($item.pengajuan_aksi_id == 3) {
-                            $(".modal_content_histori").append(`<div>
-                        <i style="color: white !important" class="${$item.aksi.icon}"></i>
-                        <div class="timeline-item">
-                           <div class="timeline-body">
-                              ${$item.aksi.pesan}  <a href="#"> ${$item.user_nama}</a> <p></p>
-                            
-                           </div>
-                           <div class="pesan">
-                             <span style="padding: 10px 10px 10px 10px">"${$item.pesan}"</span>
-                           </div>
-                           <div class="dropdown-divider"></div>
-                           <div class="timeline-footer">
-                              <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
-                           </div>
-                        </div>
-                     </div>`);
-                        } else {
-                            $(".modal_content_histori").append(`<div>
-                        <i style="color: white !important" class="${$item.aksi.icon}"></i>
-                        <div class="timeline-item">
-                           <div class="timeline-body">
-                              <a href="#"> ${$item.user_nama}</a> ${$item.aksi.pesan}
-                           </div>
-                           <div class="dropdown-divider"></div>
-                           <div class="timeline-footer">
-                              <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
-                           </div>
-                        </div>
-                     </div>`);
-                        }
                     });
                 },
                 error: function(xhr, textStatus, errorThrown) {

@@ -147,6 +147,13 @@ nav.main-header.navbar.navbar-expand.navbar-dark {
    background-color:rgb(128, 75, 223);
 }
 
+.badge-info {
+   /* border-radius: 20px; */
+   padding: 4px;
+   color: rgb(244, 242, 238);
+   background-color: rgb(227 35 79) !important;
+}
+
 .page-link {
    position: relative;
    display: block;

@@ -40,8 +40,8 @@
         }
 
         /* .filepond--file {
-            background: #28a745;
-        } */
+                background: #28a745;
+            } */
 
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
@@ -72,6 +72,8 @@
                                             <div class="form-group">
                                                 <input hidden name="penerima_uuid"
                                                     value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
+
+                                               
                                             </div>
                                             <x-datepicker id='tgl_pengantar' label='Tanggal Pengantar Surat'
                                                 required='true' />
@@ -262,7 +264,7 @@
                     }
                 });
             });
-            
+
             function printErrorMsg(msg) {
                 let dataku = [];
                 let dataku2 = [];
@@ -274,7 +276,7 @@
                     dataku2.push(key)
                     $('.' + key + '_err').text(value);
                     $('.' + key + '_err').show();
-                   
+
                 });
                 let uniqueChars = [...new Set(dataku)];
 
@@ -283,7 +285,7 @@
                     $('.' + element + '_err').hide();
                 });
 
-              
+
             }
 
             function getDifference(a, b) {

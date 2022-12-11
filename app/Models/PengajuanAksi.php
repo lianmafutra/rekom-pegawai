@@ -14,4 +14,5 @@ class PengajuanAksi extends Model
    public function histori(){
      return $this->hasMany(PengajuanHistori::class);
    }
+  
 }

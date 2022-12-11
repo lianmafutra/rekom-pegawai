@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pengajuan;
 
 use App\Config\PengajuanAksi;
+use App\Config\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
@@ -24,16 +25,22 @@ class PengajuanAdminController extends Controller
 
    public function __construct(PengajuanService $pengajuanService)
    {
-       $this->pengajuanService = $pengajuanService;
+      $this->pengajuanService = $pengajuanService;
    }
 
    public function index()
    {
       abort_if(Gate::denies('pengajuan verifikasi index'), 403);
 
-
       $x['title'] = 'Pengajuan Verifikasi';
-      $data    = Pengajuan::with('keperluan')->latest()->get();
+      $data    = Pengajuan::with('keperluan', 'histori')
+         ->whereRelation(
+            'histori',
+            'penerima_id',
+            '=',
+            auth()->user()->id
+         )->latest()->get();
+
       $pegawai = Cache::get('pegawai');
 
       if (request()->ajax()) {
@@ -51,50 +58,27 @@ class PengajuanAdminController extends Controller
    public function kirim(Request $request)
    {
       try {
+
+         DB::beginTransaction();
          $user = User::with('opd')->find(auth()->user()->id);
 
          $penerima_id    = Pengajuan::with('pengirim')
-         ->where('uuid', '=', $request->pengajuan_uuid)
-         ->first();
-
+            ->where('uuid', '=', $request->pengajuan_uuid)
+            ->first();
 
          $pengajuan_id = Pengajuan::where('uuid', $request->pengajuan_uuid)->first()->id;
 
-         if ($request->has('selesai')) {
-            PengajuanHistori::create([
-               'pengajuan_id'      => $pengajuan_id,
-               'user_id'           => $user->id,
-               'user_nama'         => $penerima_id->pengirim->name,
-               'penerima_id'       => $penerima_id->pengirim->id,
-               'pengirim_id'       => $user->id,
-               'opd'               => $user->opd->nunker,
-               'pengajuan_aksi_id' => PengajuanAksi::SELESAI,
-               'pesan'             => '',
-               'tgl_kirim'         => Carbon::now(),
-            ]);
-         }
-         else if ($request->has('tolak')) {
-            PengajuanHistori::create([
-               'pengajuan_id'      => $pengajuan_id,
-               'user_id'           => $user->id,
-               'user_nama'         => auth()->user()->name,
-               'penerima_id'       => $penerima_id->pengirim->id,
-               'pengirim_id'       => $user->id,
-               'opd'               => $user->opd->nunker,
-               'pengajuan_aksi_id' => PengajuanAksi::TOLAK,
-               'pesan'             => $request->pesan,
-               'tgl_kirim'         => Carbon::now(),
-            ]);
-         } else {
-            $this->pengajuanService->storeHistori(
-               $request->pengajuan_uuid,
-               $request->aksi_id,
-               $request->penerima_uuid
-            );
-         }
+         // $this->pengajuanService->updateTglProses($pengajuan_id);
 
+         $this->pengajuanService->storeHistori(
+            $request->pengajuan_uuid,
+            $request->aksi_id,
+            $request->penerima_uuid
+         );
+         DB::commit();
          return redirect()->back()->with('success', 'Berhasil ', 200)->send();
       } catch (\Throwable $th) {
+         DB::rollback();
          return redirect()->back()->with('error', 'Gagal : ' . $th->getMessage(), 400)->send();
       }
    }
@@ -103,31 +87,48 @@ class PengajuanAdminController extends Controller
    {
 
       $x['title'] = 'Buat Pengajuan';
-    
+
       $status = $this->pengajuanService->cekPengajuanStatus($uuid);
 
-      $this->pengajuanService->cekHistoriProsesAdminOpd($uuid);
+      // $this->pengajuanService->cekHistoriProsesAdminOpd($uuid);
 
+      $user = new User();
+      $pengajuanService = new PengajuanService();
+
+      $histori  = Pengajuan::with(['histori'])
+      ->whereRelation('histori', 'pengajuan_aksi_id', '=', PengajuanAksi::VERIFIKASI_DATA)
+      ->where('uuid', '=', $uuid)
+      ->first();
+
+
+      // jika belum ada maka insert histori pengajuan dengan status proses
+      if ($histori == null && $user->getRoleName() == Role::isAdminInspektorat) {
+         $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA);
+      }
+     
       $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
 
       $user_kirim = $pengajuan->getUserKirim();
 
       $pengajuan = $pengajuan->getPengajuanWithData($uuid);
-     
+
       $keperluan = Keperluan::get();
 
-      return view('pengajuan.detail', $x, 
-      compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi']));
+      return view(
+         'pengajuan.detail',
+         $x,
+         compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi'])
+      );
    }
-   
-   
+
+
    public function destroy($uuid)
-      {
-         try {
-           $pengajuan = Pengajuan::where('uuid', $uuid)->delete();
-            return redirect()->back()->with('success', 'Berhasil Hapus Data', 200)->send();
-         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Gagal Menghapus Data '.$th, 400)->send();
-         }   
+   {
+      try {
+         $pengajuan = Pengajuan::where('uuid', $uuid)->delete();
+         return redirect()->back()->with('success', 'Berhasil Hapus Data', 200)->send();
+      } catch (\Throwable $th) {
+         return redirect()->back()->with('error', 'Gagal Menghapus Data ' . $th, 400)->send();
       }
+   }
 }
