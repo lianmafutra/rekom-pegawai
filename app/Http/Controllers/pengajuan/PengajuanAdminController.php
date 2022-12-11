@@ -122,16 +122,7 @@ class PengajuanAdminController extends Controller
    }
 
 
-   public function destroy($uuid)
-   {
-      try {
-         $pengajuan = Pengajuan::where('uuid', $uuid)->delete();
-         return redirect()->back()->with('success', 'Berhasil Hapus Data', 200)->send();
-      } catch (\Throwable $th) {
-         return redirect()->back()->with('error', 'Gagal Menghapus Data ' . $th, 400)->send();
-      }
-   }
-   
+ 
    
    public function destroy($uuid)
       {
