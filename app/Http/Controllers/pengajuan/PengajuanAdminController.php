@@ -57,7 +57,7 @@ class PengajuanAdminController extends Controller
    public function kirim(Request $request, User $user)
    {
 
-  
+   
 
       try {
 
@@ -76,6 +76,22 @@ class PengajuanAdminController extends Controller
                6,
                $user_pengirim_opd_uuid
             );
+         } else if ($request->aksi_id == 8) {
+            
+
+            $penerima  = Pengajuan::with('pengirim')
+               ->where('uuid', '=', $request->pengajuan_uuid)
+               ->first();
+
+            $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
+
+            $this->pengajuanService->storeHistori(
+               $request->pengajuan_uuid,
+               8,
+               $user_pengirim_opd_uuid, 
+               $request->pesan
+            );
+
          } else {
             $this->pengajuanService->storeHistori(
                $request->pengajuan_uuid,
@@ -83,7 +99,6 @@ class PengajuanAdminController extends Controller
                $request->penerima_uuid
             );
          }
-
 
          if ($user->getRoleName() == Role::isInspektur) {
 
@@ -93,19 +108,7 @@ class PengajuanAdminController extends Controller
                $request->penerima_uuid
             );
          }
-         // $user = User::with('opd')->find(auth()->user()->id);
-
-         // $penerima_id    = Pengajuan::with('pengirim')
-         //    ->where('uuid', '=', $request->pengajuan_uuid)
-         //    ->first();
-
-         // $pengajuan_id = Pengajuan::where('uuid', $request->pengajuan_uuid)->first()->id;
-
-         // $this->pengajuanService->updateTglProses($pengajuan_id);
-
-
-
-
+       
          DB::commit();
          return redirect()->back()->with('success', 'Berhasil ', 200)->send();
       } catch (\Throwable $th) {
