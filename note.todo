@@ -1,0 +1,13 @@
+
+todo
++ tambah status verifikasi disposisi ketika posisi di admin kasubag dan inspektorat
++ ketika sudah melakukan verifikasi data tampilkan status verifikasi di menu detail admin OPD
++ Menu hapus pengajuan hanya untuk superadmin 
+
++ alert ketika admin opd ingin melanjutkan maka harus virifkasi data dulu / optional
+
+New Task:
+   ✔ Delete Pengajuan Superadmin @done (12/12/2022, 2:37:54 PM)
+   ☐ logo index link belum tepat
+   ☐ Data waktu sinkron terakhir tampil di form pengajuan opd
+  

@@ -21,9 +21,7 @@ class PengajuanAdminController extends Controller
 {
 
    private $pengajuanService;
-
-   public function __construct(PengajuanService $pengajuanService)
-   {
+   public function __construct(PengajuanService $pengajuanService){
       $this->pengajuanService = $pengajuanService;
    }
 
@@ -48,6 +46,10 @@ class PengajuanAdminController extends Controller
             ->addColumn('action', function ($data) {
                return view('pengajuan.admin.action', compact('data'));
             })
+            ->editColumn('status', function ($data) {
+              $status = $this->pengajuanService->cekPengajuanStatus($data->uuid);
+               return view('pengajuan.status', compact('status'));
+            })
             ->rawColumns(['action'])
             ->make(true);
       }
@@ -56,9 +58,6 @@ class PengajuanAdminController extends Controller
 
    public function kirim(Request $request, User $user)
    {
-
-   
-
       try {
 
          DB::beginTransaction();

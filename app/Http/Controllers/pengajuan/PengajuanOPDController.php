@@ -54,7 +54,11 @@ class PengajuanOPDController extends Controller
             ->addColumn('action', function ($data) {
                return view('pengajuan.opd.action', compact('data'));
             })
-            ->rawColumns(['action'])
+            ->editColumn('status', function ($data) {
+               $status = $this->pengajuanService->cekPengajuanStatus($data->uuid);
+                return view('pengajuan.status', compact('status'));
+             })
+            ->rawColumns(['action', 'status'])
             ->make(true);
       }
       return view('pengajuan.opd.index', $x, compact('data'));
