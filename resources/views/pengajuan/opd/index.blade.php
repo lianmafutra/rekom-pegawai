@@ -133,15 +133,26 @@
                 type: 'GET',
                 success: function(json) {
                   json.data.histori.forEach($item => {
-                     let data_tracking ='';
-                        //status =  meneruskan , selesai
-                        if($item.pengajuan_aksi_id == 4 || $item.pengajuan_aksi_id == 6){
-                           data_tracking = `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
-                        }else{
-                           data_tracking = `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}`
+                     let data_tracking = '';
+                        switch ($item.aksi.status) {
+                            case 'meneruskan':
+                                data_tracking =
+                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
+                                break;
+                            case 'proses_surat':
+                                data_tracking =
+                                    `<a href="#"> ${$item.penerima_nama}</a> ${$item.aksi.pesan}`
+                                break;
+                            case 'selesai':
+                                data_tracking =
+                                    `${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
+                                break;
+                            default:
+                                data_tracking =
+                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}`
                         }
                         $(".modal_content_histori").append(
-                           `<div>
+                            `<div>
                            <i style="color: white !important" class="${$item.aksi.icon}"></i>
                            <div class="timeline-item">
                               <div class="timeline-body">

@@ -79,7 +79,10 @@
                                 class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>Data Pengajuan</p>
-                                <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
+                                @if ($global_jumlah_notif)
+                                    <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
+                                @endif
+
                             </a>
                         @endcan
                         @can('pengajuan index')
@@ -97,10 +100,10 @@
                             class="nav-link {{ request()->routeIs('master-rekom*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-shield"></i>
                             <p> Master Rekom</p>
-                          
+
                         </a>
 
-                        
+
                     </li>
                 @endcan
                 @can('profile menu')

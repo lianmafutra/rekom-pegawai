@@ -104,6 +104,7 @@
         </div>
         <!-- /.content-header -->
         <!-- Main content -->
+
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -369,6 +370,13 @@
                                 data_tracking =
                                     `${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
                                 break;
+                            case 'tolak':
+                                data_tracking =
+                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan} <div style="margin-top:10px" class="alert alert-secondary alert-dismissible">
+                                  
+                                    ${$item.pesan}
+                                    </div>`
+                                break;
                             default:
                                 data_tracking =
                                     `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}`
@@ -378,7 +386,8 @@
                            <i style="color: white !important" class="${$item.aksi.icon}"></i>
                            <div class="timeline-item">
                               <div class="timeline-body">
-                                    ${data_tracking}
+                                    ${data_tracking} 
+                                     
                               </div>
                               <div class="dropdown-divider"></div>
                               <div class="timeline-footer">

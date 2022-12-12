@@ -97,6 +97,7 @@ class PengajuanService
             case PengajuanAksi::SELESAI:
             case PengajuanAksi::VERIFIKASI_DATA:
             case PengajuanAksi::PROSES_SURAT:
+               
                $penerima     = User::with('opd')->where('uuid', $penerima_uuid)->first();
                PengajuanHistori::create([
                   'pengajuan_id'      => $pengajuan_id,
@@ -164,7 +165,7 @@ class PengajuanService
       switch ($user->getRoleName()) {
 
          case  Role::isAdminOpd:
-            $aksi = [];
+            if ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             break;
          case  Role::isAdminInspektorat:
             if ($status == PengajuanAksi::MENERUSKAN) $aksi = [];
@@ -174,10 +175,12 @@ class PengajuanService
             else $aksi = ['tolak', 'teruskan', 'verifikasi'];
             break;
          case  Role::isKasubag:
-            $aksi = ['teruskan'];
+            if ($status == PengajuanAksi::VERIFIKASI_DATA) $aksi = ['teruskan'];
+            elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             break;
          case  Role::isInspektur:
-            $aksi = ['teruskan'];
+            if ($status == PengajuanAksi::VERIFIKASI_DATA) $aksi = ['teruskan'];
+            elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             break;
          default:
             $aksi = [];
