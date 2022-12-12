@@ -4,7 +4,7 @@ namespace App\Config;
 
 use Illuminate\Validation\Rules\Enum;
 
-class PengajuanAksi extends Enum
+class PengajuanAksiOLD extends Enum
 {
     /**
      *@desc OPD mengirim pengajuan ke admin inspektorat (admin OPD)

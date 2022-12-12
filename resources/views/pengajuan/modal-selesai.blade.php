@@ -25,7 +25,7 @@
             <form action="{{ route('pengajuan.verifikasi.kirim') }}" method="POST">
                @csrf
                 <div class="modal-body">
-                     <input hidden name="selesai">
+                     <input hidden name="aksi_id" value="6">
                      <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
                     <div class="embed_box">
                         <p>Selesaikan Berkas, dan Kirim Surat Rekomendasi ke OPD Pengirim</p>

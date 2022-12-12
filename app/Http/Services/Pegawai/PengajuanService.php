@@ -80,7 +80,7 @@ class PengajuanService
       }
    }
 
-   public function storeHistori($pengajuan_uuid, $aksi_id, $penerima_uuid = null, $pesan = null)
+   public function storeHistori($pengajuan_uuid, $aksi_id, $penerima_uuid, $pesan = null)
    {
       try {
 
@@ -95,6 +95,8 @@ class PengajuanService
             case PengajuanAksi::REVISI:
             case PengajuanAksi::TOLAK:
             case PengajuanAksi::SELESAI:
+            case PengajuanAksi::VERIFIKASI_DATA:
+            case PengajuanAksi::PROSES_SURAT:
                $penerima     = User::with('opd')->where('uuid', $penerima_uuid)->first();
                PengajuanHistori::create([
                   'pengajuan_id'      => $pengajuan_id,
@@ -110,18 +112,6 @@ class PengajuanService
                   'tgl_proses'        => Carbon::now(),
                ]);
                break;
-            case PengajuanAksi::VERIFIKASI_DATA:
-               PengajuanHistori::create([
-                  'pengajuan_id'      => $pengajuan_id,
-                  'penerima_id'       => null,
-                  'pengirim_id'       => $pengirim->id,
-                  'pengirim_nama'     => $pengirim->name,
-                  'opd_pengirim'      => $pengirim->opd->nunker,
-                  'pengajuan_aksi_id' => $aksi_id,
-                  'pesan'             => $pesan,
-                  'tgl_kirim'         => Carbon::now(),
-                  'tgl_proses'        => Carbon::now(),
-               ]);
             default:
 
                break;
@@ -215,7 +205,7 @@ class PengajuanService
 
          // jika belum ada maka insert histori pengajuan dengan status proses
          if ($histori == null && $user->getRoleName() == Role::isAdminInspektorat) {
-            $pengajuanService->storeHistori($pengajuan_uuid, PengajuanAksi::VERIFIKASI_DATA);
+            // $pengajuanService->storeHistori($pengajuan_uuid, PengajuanAksi::VERIFIKASI_DATA);
          }
       } catch (\Throwable $th) {
       }

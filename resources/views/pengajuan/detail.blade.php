@@ -9,9 +9,11 @@
             color: #313131;
             font-weight: bold;
         }
+
         .column {
             width: 100%;
         }
+
         .ico {
             color: orange;
             display: inline-block;
@@ -23,10 +25,12 @@
             background-position: 0 0;
             background-repeat: no-repeat;
         }
+
         .title {
             display: block;
             overflow: hidden;
         }
+
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -38,13 +42,16 @@
             height: 196px;
             margin-bottom: 20px;
         }
+
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
+
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
+
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -56,6 +63,7 @@
             margin-right: auto;
             position: absolute
         }
+
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -66,9 +74,11 @@
             object-fit: cover;
             height: 300px;
         }
+
         .form-control {
             font-size: 14px !important;
         }
+
         div# {
             position: relative;
             margin-top: -10px;
@@ -298,6 +308,7 @@
                 let url = $(this).attr('data-url');
                 viewFile(url);
             });
+
             function viewFile(url) {
                 const width = 800
                 const height = 700
@@ -342,23 +353,39 @@
                 type: 'GET',
                 success: function(json) {
                     $('.loading_histori').hide()
-                    json.data.histori.forEach($item => {
 
-                     
-                    let data_tracking = `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
-                     $(".modal_content_histori").append(
-                        `<div>
-                        <i style="color: white !important" class="${$item.aksi.icon}"></i>
-                        <div class="timeline-item">
-                           <div class="timeline-body">
-                                 ${data_tracking}
+                    json.data.histori.forEach($item => {
+                        let data_tracking = '';
+                        switch ($item.aksi.status) {
+                            case 'meneruskan':
+                                data_tracking =
+                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
+                                break;
+                            case 'proses_surat':
+                                data_tracking =
+                                    `<a href="#"> ${$item.penerima_nama}</a> ${$item.aksi.pesan}`
+                                break;
+                            case 'selesai':
+                                data_tracking =
+                                    `${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
+                                break;
+                            default:
+                                data_tracking =
+                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}`
+                        }
+                        $(".modal_content_histori").append(
+                            `<div>
+                           <i style="color: white !important" class="${$item.aksi.icon}"></i>
+                           <div class="timeline-item">
+                              <div class="timeline-body">
+                                    ${data_tracking}
+                              </div>
+                              <div class="dropdown-divider"></div>
+                              <div class="timeline-footer">
+                                 <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
+                              </div>
                            </div>
-                           <div class="dropdown-divider"></div>
-                           <div class="timeline-footer">
-                              <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
-                           </div>
-                        </div>
-                     </div>`);
+                        </div>`);
                     });
                 },
                 error: function(xhr, textStatus, errorThrown) {
@@ -367,7 +394,7 @@
             })
 
         });
-        
+
         $('.select2bs4').select2({
             theme: 'bootstrap4',
         })

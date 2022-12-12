@@ -26,4 +26,8 @@ class PengajuanHistori extends Model
     public function aksi(){
       return $this->hasOne(PengajuanAksi::class, 'id', 'pengajuan_aksi_id');
     }
+
+    public function user(){
+      return $this->hasOne(PengajuanAksi::class, 'penerima_id', 'id');
+    }
 }

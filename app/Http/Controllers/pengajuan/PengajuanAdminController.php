@@ -8,9 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
-use App\Models\PengajuanHistori;
 use App\Models\User;
-use Carbon\Carbon;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -55,26 +54,58 @@ class PengajuanAdminController extends Controller
       return view('pengajuan.admin.index', $x, compact('data'));
    }
 
-   public function kirim(Request $request)
+   public function kirim(Request $request, User $user)
    {
+
+  
+
       try {
 
          DB::beginTransaction();
-         $user = User::with('opd')->find(auth()->user()->id);
+         if ($request->aksi_id == 6) {
 
-         $penerima_id    = Pengajuan::with('pengirim')
-            ->where('uuid', '=', $request->pengajuan_uuid)
-            ->first();
+            // OPD asal Pengirim
+            $penerima  = Pengajuan::with('pengirim')
+               ->where('uuid', '=', $request->pengajuan_uuid)
+               ->first();
 
-         $pengajuan_id = Pengajuan::where('uuid', $request->pengajuan_uuid)->first()->id;
+            $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
+
+            $this->pengajuanService->storeHistori(
+               $request->pengajuan_uuid,
+               6,
+               $user_pengirim_opd_uuid
+            );
+         } else {
+            $this->pengajuanService->storeHistori(
+               $request->pengajuan_uuid,
+               $request->aksi_id,
+               $request->penerima_uuid
+            );
+         }
+
+
+         if ($user->getRoleName() == Role::isInspektur) {
+
+            $this->pengajuanService->storeHistori(
+               $request->pengajuan_uuid,
+               PengajuanAksi::PROSES_SURAT,
+               $request->penerima_uuid
+            );
+         }
+         // $user = User::with('opd')->find(auth()->user()->id);
+
+         // $penerima_id    = Pengajuan::with('pengirim')
+         //    ->where('uuid', '=', $request->pengajuan_uuid)
+         //    ->first();
+
+         // $pengajuan_id = Pengajuan::where('uuid', $request->pengajuan_uuid)->first()->id;
 
          // $this->pengajuanService->updateTglProses($pengajuan_id);
 
-         $this->pengajuanService->storeHistori(
-            $request->pengajuan_uuid,
-            $request->aksi_id,
-            $request->penerima_uuid
-         );
+
+
+
          DB::commit();
          return redirect()->back()->with('success', 'Berhasil ', 200)->send();
       } catch (\Throwable $th) {
@@ -96,16 +127,24 @@ class PengajuanAdminController extends Controller
       $pengajuanService = new PengajuanService();
 
       $histori  = Pengajuan::with(['histori'])
-      ->whereRelation('histori', 'pengajuan_aksi_id', '=', PengajuanAksi::VERIFIKASI_DATA)
-      ->where('uuid', '=', $uuid)
-      ->first();
-
+         ->where('uuid', '=', $uuid)
+         ->whereHas('histori', function (Builder $query) {
+            $query->where('pengajuan_aksi_id', '=', PengajuanAksi::VERIFIKASI_DATA);
+            $query->where('penerima_id', '=', auth()->user()->id);
+         })
+         ->first();
 
       // jika belum ada maka insert histori pengajuan dengan status proses
       if ($histori == null && $user->getRoleName() == Role::isAdminInspektorat) {
-         $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA);
+         $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA, auth()->user()->uuid);
       }
-     
+      if ($histori == null && $user->getRoleName() == Role::isKasubag) {
+         $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA, auth()->user()->uuid);
+      }
+      if ($histori == null && $user->getRoleName() == Role::isInspektur) {
+         $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA, auth()->user()->uuid);
+      }
+
       $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
 
       $user_kirim = $pengajuan->getUserKirim();
@@ -122,18 +161,16 @@ class PengajuanAdminController extends Controller
    }
 
 
- 
-   
    public function destroy($uuid)
-      {
-         try {
-            DB::beginTransaction();
-           $pengajuan = Pengajuan::where('uuid', $uuid)->delete();
-            DB::commit();
-            return redirect()->back()->with('success', 'Berhasil Hapus Data', 200)->send();
-         } catch (\Throwable $th) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Gagal Menghapus Data '.$th, 400)->send();
-         }   
+   {
+      try {
+         DB::beginTransaction();
+         $pengajuan = Pengajuan::where('uuid', $uuid)->delete();
+         DB::commit();
+         return redirect()->back()->with('success', 'Berhasil Hapus Data', 200)->send();
+      } catch (\Throwable $th) {
+         DB::rollBack();
+         return redirect()->back()->with('error', 'Gagal Menghapus Data ' . $th, 400)->send();
       }
+   }
 }
