@@ -27,6 +27,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    Route::resource('pengajuan', PengajuanOPDController::class);
    Route::get('pengajuan/revisi/{uuid}',[PengajuanOPDController::class, 'revisi'])->name('pengajuan.revisi');
+   Route::put('pengajuan/revisi/update',[PengajuanOPDController::class, 'updateRevisi'])->name('pengajuan.revisi.update');
 
    Route::get('pengajuan/histori/{uuid}', [PengajuanOPDController::class, 'histori'])->name('pengajuan.histori');
 

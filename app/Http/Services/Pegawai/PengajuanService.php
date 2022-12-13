@@ -46,8 +46,6 @@ class PengajuanService
    public function storePengajuan($pegawai_cache, $request)
    {
 
-   
-
       try {
          $pengajuan = Pengajuan::create([
             'nip'                 => $pegawai_cache['nipbaru'],
@@ -79,6 +77,44 @@ class PengajuanService
          return $pengajuan;
       } catch (\Throwable $th) {
          throw new CustomException("Terjadi Kesalahan saat Menginput Data Pengajuan");
+      }
+   }
+
+   public function updatePengajuan($pegawai_cache, $request)
+   {
+    
+    
+
+      try {
+         $pengajuan = Pengajuan::where('uuid', $request->pengajuan_uuid)
+         ->update([
+            'nip'                 => $pegawai_cache['nipbaru'],
+            'gldepan'             => $pegawai_cache['gldepan'],
+            'glblk'               => $pegawai_cache['glblk'],
+            'nama'                => $pegawai_cache['nama'],
+            'kunker'              => $pegawai_cache['kunker'],
+            'nunker'              => $pegawai_cache['nunker'],
+            'kjab'                => $pegawai_cache['kjab'],
+            'njab'                => $pegawai_cache['njab'],
+            'keselon'             => $pegawai_cache['keselon'],
+            'neselon'             => $pegawai_cache['neselon'],
+            'kgolru'              => $pegawai_cache['kgolru'],
+            'ngolru'              => $pegawai_cache['ngolru'],
+            'pangkat'             => $pegawai_cache['pangkat'],
+            'photo'               => $pegawai_cache['photo'],
+            'nomor_pengantar'     => $request->nomor_pengantar,
+            'tgl_surat_pengantar' =>NUll,
+            'rekom_jenis'         => $request->rekom_jenis,
+            'keperluan_id'        => $request->keperluan_id,
+            'pengirim_id'         => auth()->user()->id,
+            'penerima_id'         => $this->getPenerimaId(),
+            'penerima_opd_id'     => $this->getPenerimaOpdId(),
+            'catatan'             => $request->catatan,
+         ]);
+        
+         return $pengajuan;
+      } catch (\Throwable $th) {
+         throw $th;
       }
    }
 

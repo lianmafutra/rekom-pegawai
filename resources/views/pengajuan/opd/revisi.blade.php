@@ -12,42 +12,36 @@
             font-size: 11px;
             color: #9459fd;
         }
-
-      
-
-            .loading-custom {
-                display: none;
-                z-index: 9999999;
-                left: 0;
-                width: 120px;
-                right: 0;
-                top: 130px;
-                margin-left: auto;
-                margin-right: auto;
-                position: absolute
-            }
-
-            .profile-custom {
-                border: 1px solid #adb5bd !important;
-                margin: 0 auto;
-                border-radius: 5%;
-                background-position: center center;
-                background-repeat: no-repeat;
-                width: 250px;
-                object-fit: cover;
-                height: 300px;
-            }
-
-            .form-control {
-                font-size: 14px !important;
-            }
-
-            /* .filepond--file {
-                                                                                background: #28a745;
-                                                                            } */
-            .filepond--drop-label.filepond--drop-label label {
-                font-weight: 200 !important;
-            }
+        .loading-custom {
+            display: none;
+            z-index: 9999999;
+            left: 0;
+            width: 120px;
+            right: 0;
+            top: 130px;
+            margin-left: auto;
+            margin-right: auto;
+            position: absolute
+        }
+        .profile-custom {
+            border: 1px solid #adb5bd !important;
+            margin: 0 auto;
+            border-radius: 5%;
+            background-position: center center;
+            background-repeat: no-repeat;
+            width: 250px;
+            object-fit: cover;
+            height: 300px;
+        }
+        .form-control {
+            font-size: 14px !important;
+        }
+        /* .filepond--file {
+                                                                                    background: #28a745;
+                                                                                } */
+        .filepond--drop-label.filepond--drop-label label {
+            font-weight: 200 !important;
+        }
     </style>
     <div class="content-wrapper">
         <x-header title='Revisi Data Pengajuan Rekomendasi' />
@@ -62,7 +56,7 @@
                                         <form id="form_pengajuan" name="form_pengajuan" method="POST" autocomplete="off"
                                             enctype="multipart/form-data">
                                             @csrf
-                                            @method('POST')
+                                            @method('PUT')
                                             <x-select2 id="pegawai" label='Pilih Pegawai' required="true">
                                                 @foreach ($pegawai as $key => $item)
                                                     <option value="{{ $item['nipbaru'] }}"> {{ $item['nama'] }}
@@ -75,6 +69,8 @@
                                             <div class="form-group">
                                                 <input hidden name="penerima_uuid"
                                                     value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
+                                                <input hidden name="pengajuan_uuid"
+                                                    value="{{ $pengajuan->uuid }}">
                                             </div>
                                             <x-datepicker id='tgl_pengantar' label='Tanggal Pengantar Surat'
                                                 required='true' />
@@ -137,7 +133,8 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" id="btn_submit" class="btn btn-primary">Kirim Revisi</button>
+                                    <button type="submit" id="btn_kirim_revisi" class="btn btn-primary">Kirim
+                                        Revisi</button>
                                 </div>
                                 </form>
                             </div>
@@ -187,7 +184,6 @@
             if (@json($pengajuan->file_sk) != null) {
                 file_sk.setOptions({
                     storeAsFile: true,
-                   
                     allowDownloadByUrl: true,
                     files: [{
                         source: @json($pengajuan->file_sk ? $pengajuan->file_sk[0]->file_url : ''),
@@ -197,9 +193,7 @@
             if (@json($pengajuan->file_konversi_nip) !== null) {
                 file_konversi_nip.setOptions({
                     storeAsFile: true,
-                   
-              
-                    allowDownloadByUrl: true, 
+                    allowDownloadByUrl: true,
                     files: [{
                         source: @json($pengajuan->file_konversi_nip ? $pengajuan->file_konversi_nip[0]->file_url : ''),
                     }]
@@ -208,24 +202,10 @@
             if (@json($pengajuan->file_pengantar) != null) {
                 file_pengantar_opd.setOptions({
                     storeAsFile: true,
-                    allowDownloadByUrl: true, 
+                    allowDownloadByUrl: true,
                     files: [{
                         source: @json($pengajuan->file_pengantar ? $pengajuan->file_pengantar[0]->file_url : ''),
                     }]
-                });
-            }
-
-            function myFunction() {
-                $('body').on('click', '.filepond--item', function(e) {
-                    let name = $(this).find("legend").html()
-                    let ext = name.toLowerCase().split('.').pop();
-                    if (ext == "docx" || ext == "doc" || ext == "xls" || ext == "xlsx" || ext == "ppt" ||
-                        ext == "pptx") {
-                        window.open("https://view.officeapps.live.com/op/view.aspx?src=" + window.location
-                            .origin + "/uploads/" + name, '_blank');
-                    } else {
-                        window.open(window.location.origin + "/uploads/" + name, '_blank');
-                    }
                 });
             }
             flatpickr(".tanggal", {
@@ -233,11 +213,11 @@
                 dateFormat: "d-m-Y",
                 locale: "id",
             });
-            $("#btn_submit").click(function(e) {
+            $("#btn_kirim_revisi").click(function(e) {
                 e.preventDefault();
                 Swal.fire({
-                    title: 'Konfirmasi Pengajuan',
-                    text: 'Apakah anda yakin ingin melanjutkan pengajuan berkas rekomendasi ?',
+                    title: 'Konfirmasi Revisi Pengajuan ',
+                    text: 'Apakah anda yakin ingin melanjutkan pengajuan revisi berkas rekomendasi ?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -256,7 +236,7 @@
                 file_sk2 = file_sk.getFiles();
                 $.ajax({
                     type: 'POST',
-                    url: @json(route('pengajuan.store')),
+                    url: @json(route('pengajuan.revisi.update')),
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -275,21 +255,21 @@
                     },
                     success: (response) => {
                         if (response) {
-                            this.reset()
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil Mengirim Berkas',
-                                html: 'Berkas anda akan segera di verifikasi oleh Dinas Inspektorat Kota Jambi ',
-                                showCancelButton: true,
-                                allowEscapeKey: false,
-                                showCancelButton: false,
-                                allowOutsideClick: false,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = @json(route('pengajuan.index'))
-                                }
-                            })
-                            swal.hideLoading()
+                           //  this.reset()
+                           //  Swal.fire({
+                           //      icon: 'success',
+                           //      title: 'Berhasil Mengirim Revisi Berkas',
+                           //      html: 'Berkas anda akan segera di verifikasi oleh Dinas Inspektorat Kota Jambi ',
+                           //      showCancelButton: true,
+                           //      allowEscapeKey: false,
+                           //      showCancelButton: false,
+                           //      allowOutsideClick: false,
+                           //  }).then((result) => {
+                           //      if (result.isConfirmed) {
+                           //          window.location.href = @json(route('pengajuan.index'))
+                           //      }
+                           //  })
+                           //  swal.hideLoading()
                         }
                     },
                     error: function(response) {
@@ -307,7 +287,6 @@
                     }
                 });
             });
-
             function printErrorMsg(msg) {
                 let dataku = [];
                 let dataku2 = [];
@@ -325,7 +304,6 @@
                     $('.' + element + '_err').hide();
                 });
             }
-
             function getDifference(a, b) {
                 return a.filter(element => {
                     return !b.includes(element);
@@ -345,7 +323,6 @@
                 getDataPegawai(nip);
             });
             getDataPegawai(@json($pengajuan->nip))
-
             function getDataPegawai(nip) {
                 $('.profile-user-img').attr("src", "");
                 $('.loading').css('display', 'block')
