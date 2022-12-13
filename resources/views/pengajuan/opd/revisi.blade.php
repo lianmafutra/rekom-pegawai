@@ -4,7 +4,7 @@
     <link href="{{ asset('plugins/select2/css/select2.min.css') }} " rel="stylesheet">
     <link href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugins/filepond/filepond-get-file.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/filepond/filepond-button.css') }}" rel="stylesheet">
 @endpush
 @section('content')
     <style>
@@ -13,39 +13,41 @@
             color: #9459fd;
         }
 
-        .loading-custom {
-            display: none;
-            z-index: 9999999;
-            left: 0;
-            width: 120px;
-            right: 0;
-            top: 130px;
-            margin-left: auto;
-            margin-right: auto;
-            position: absolute
-        }
+      
 
-        .profile-custom {
-            border: 1px solid #adb5bd !important;
-            margin: 0 auto;
-            border-radius: 5%;
-            background-position: center center;
-            background-repeat: no-repeat;
-            width: 250px;
-            object-fit: cover;
-            height: 300px;
-        }
+            .loading-custom {
+                display: none;
+                z-index: 9999999;
+                left: 0;
+                width: 120px;
+                right: 0;
+                top: 130px;
+                margin-left: auto;
+                margin-right: auto;
+                position: absolute
+            }
 
-        .form-control {
-            font-size: 14px !important;
-        }
+            .profile-custom {
+                border: 1px solid #adb5bd !important;
+                margin: 0 auto;
+                border-radius: 5%;
+                background-position: center center;
+                background-repeat: no-repeat;
+                width: 250px;
+                object-fit: cover;
+                height: 300px;
+            }
 
-        /* .filepond--file {
-                                                                background: #28a745;
-                                                            } */
-        .filepond--drop-label.filepond--drop-label label {
-            font-weight: 200 !important;
-        }
+            .form-control {
+                font-size: 14px !important;
+            }
+
+            /* .filepond--file {
+                                                                                background: #28a745;
+                                                                            } */
+            .filepond--drop-label.filepond--drop-label label {
+                font-weight: 200 !important;
+            }
     </style>
     <div class="content-wrapper">
         <x-header title='Revisi Data Pengajuan Rekomendasi' />
@@ -154,10 +156,10 @@
     <script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
-    <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+    {{-- <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script> --}}
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('plugins/filepond/filepond-plugin-get-file.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-button.js') }}"></script>
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script>
@@ -167,7 +169,6 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $("#pegawai").val(@json($pengajuan->nip))
             $('#pegawai').trigger('change');
             $("#nomor_pengantar").val(@json($pengajuan->nomor_pengantar))
@@ -178,53 +179,38 @@
             // Filepond
             FilePond.registerPlugin(
                 FilePondPluginFileEncode,
-                FilePondPluginGetFile,
-                FilePondPluginFileValidateType,
+                FilePondPluginButton,
                 FilePondPluginFileValidateSize);
-
-      
-      // Get a reference to the file input element
-      // const inputElement = document.querySelector('input[type="file"]');
-
-
-
-// function init() {
-
-//     FilePond.registerPlugin(FilePondPluginGetFile); 
-//     const pond = FilePond.create(inputElement);
-//     pond.addFile(@json($pengajuan->file_sk ? $pengajuan->file_sk[0]->file_url : ''));
-// }
-
-// init();
             const file_sk = FilePond.create(document.querySelector('#file_sk'));
             const file_konversi_nip = FilePond.create(document.querySelector('#file_konversi_nip'));
             const file_pengantar_opd = FilePond.create(document.querySelector('#file_pengantar_opd'));
             if (@json($pengajuan->file_sk) != null) {
-               
                 file_sk.setOptions({
                     storeAsFile: true,
-                    name: 'filepond',
-                    labelFileWaitingForSize : 'tungguuuuu',
-                    labelButtonDownloadItem: 'custom label', // by default 'Download file'
-                    allowDownloadByUrl: true, // by default downloading by URL disabled
+                   
+                    allowDownloadByUrl: true,
                     files: [{
                         source: @json($pengajuan->file_sk ? $pengajuan->file_sk[0]->file_url : ''),
                     }]
                 });
             }
-            if (@json($pengajuan->file_pengantar_opd) != null) {
-                file_pengantar_opd.setOptions({
+            if (@json($pengajuan->file_konversi_nip) !== null) {
+                file_konversi_nip.setOptions({
                     storeAsFile: true,
+                   
+              
+                    allowDownloadByUrl: true, 
                     files: [{
-                        source: @json($pengajuan->file_pengantar ? $pengajuan->file_pengantar[0]->file_url : ''),
+                        source: @json($pengajuan->file_konversi_nip ? $pengajuan->file_konversi_nip[0]->file_url : ''),
                     }]
                 });
             }
-            if (@json($pengajuan->file_konversi_nip) != null) {
-                file_konversi_nip.setOptions({
+            if (@json($pengajuan->file_pengantar) != null) {
+                file_pengantar_opd.setOptions({
                     storeAsFile: true,
+                    allowDownloadByUrl: true, 
                     files: [{
-                        source: @json($pengajuan->file_konversi_nip ? $pengajuan->file_konversi_nip[0]->file_url : ''),
+                        source: @json($pengajuan->file_pengantar ? $pengajuan->file_pengantar[0]->file_url : ''),
                     }]
                 });
             }

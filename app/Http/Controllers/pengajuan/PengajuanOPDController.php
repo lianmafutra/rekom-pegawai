@@ -43,11 +43,15 @@ class PengajuanOPDController extends Controller
       $data    = Pengajuan::with('keperluan')->latest()->get();
       $pegawai = Cache::get('pegawai');
 
+
       if (request()->ajax()) {
+
+
          return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-               return view('pengajuan.opd.action', compact('data'));
+               $status = $this->pengajuanService->cekPengajuanStatus($data->uuid);
+               return view('pengajuan.opd.action', compact('data', 'status'));
             })
             ->editColumn('status', function ($data) {
                $status = $this->pengajuanService->cekPengajuanStatus($data->uuid);
@@ -78,6 +82,8 @@ class PengajuanOPDController extends Controller
       abort_if(Gate::denies('pengajuan store'), 403);
 
       try {
+
+
 
          DB::beginTransaction();
 
@@ -114,11 +120,14 @@ class PengajuanOPDController extends Controller
             ->uuid($pengajuanStore->file_pengantar_opd)
             ->parent_id($pengajuanStore->id)->save();
 
-         $upload_file_konversi //optional
+         if($request->hasFile('file_konversi_nip')){
+            $upload_file_konversi //optional
             ->file($request->file('file_konversi_nip'))
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_konversi_nip)
             ->parent_id($pengajuanStore->id)->save();
+         }
+         
 
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
@@ -156,12 +165,12 @@ class PengajuanOPDController extends Controller
 
       $pegawai = $this->pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
-      return view('pengajuan.opd.revisi', $x, compact('pegawai','pengajuan', 'keperluan'));
+      return view('pengajuan.opd.revisi', $x, compact('pegawai', 'pengajuan', 'keperluan'));
    }
 
 
-   public function updateRevisi(){
-
+   public function updateRevisi()
+   {
    }
 
    public function update(Request $request, Pengajuan $pengajuan)

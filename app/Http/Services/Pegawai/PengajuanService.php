@@ -46,6 +46,8 @@ class PengajuanService
    public function storePengajuan($pegawai_cache, $request)
    {
 
+   
+
       try {
          $pengajuan = Pengajuan::create([
             'nip'                 => $pegawai_cache['nipbaru'],
@@ -70,8 +72,8 @@ class PengajuanService
             'penerima_id'         => $this->getPenerimaId(),
             'penerima_opd_id'     => $this->getPenerimaOpdId(),
             'file_sk_terakhir'    => Str::uuid()->toString(),
-            'file_pengantar_opd'      => Str::uuid()->toString(),
-            'file_konversi_nip'   => Str::uuid()->toString(),
+            'file_pengantar_opd'  => Str::uuid()->toString(),
+            'file_konversi_nip'   => $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL,
             'catatan'             => $request->catatan,
          ]);
          return $pengajuan;

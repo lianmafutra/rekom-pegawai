@@ -10,4 +10,6 @@ New Task:
    ✔ Delete Pengajuan Superadmin @done (12/12/2022, 2:37:54 PM)
    ☐ logo index link belum tepat
    ☐ Data waktu sinkron terakhir tampil di form pengajuan opd
-  
+
+   bug
+   ☐ BUg file konversi nip insert db tetap ada nama meski file kosong

@@ -7,6 +7,7 @@ use App\Models\File;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class uploadFile
@@ -47,7 +48,9 @@ class uploadFile
       $custom_path = null;
       $uuid = null;
       try {
-         if ($this->file) {
+       
+
+         if ($this->file ) {
             DB::beginTransaction();
             $name_ori = $this->file->getClientOriginalName();
             $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension());
@@ -59,20 +62,25 @@ class uploadFile
             if (!FacadesFile::isDirectory($path)) {
                FacadesFile::makeDirectory($path, 0777, true, true);
             }
-            File::create([
-               'file_id'        => $this->uuid,
-               'parent_file_id' => $this->parent_id,
-               'name_origin'    => $name_ori,
-               'name_random'    => $name_uniqe,
-               'path'           => $custom_path,
-               'size'           => $this->file->getSize(),
-            ]);
+
+         
+               File::create([
+                  'file_id'        => $this->uuid,
+                  'parent_file_id' => $this->parent_id,
+                  'name_origin'    => $name_ori,
+                  'name_random'    => $name_uniqe,
+                  'path'           => $custom_path,
+                  'size'           => $this->file->getSize(),
+               ]);
+
+          
             $this->file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $this->path, $name_uniqe);
             DB::commit();
           
          }
       } catch (\Throwable $th) {
-         throw new CustomException(", kesalahan Upload File");
+         DB::rollBack();
+         throw new $th;
       }
    }
 }

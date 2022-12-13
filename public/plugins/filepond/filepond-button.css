@@ -1,0 +1,47 @@
+.filepond--file {
+   padding-right: 50px !important;
+}
+
+span.btn-success.btn.btn-sm.lianm2 {
+   font-size: 12px !important;
+}
+
+   .lianm {
+       pointer-events: auto;
+
+
+       float: right !important;
+       right: -55px !important;
+       position: absolute;
+   }
+
+   .lianm2 {
+       pointer-events: auto;
+
+
+       float: right !important;
+       right: -86px !important;
+       position: absolute;
+   }
+
+   .lianm {
+       pointer-events: auto;
+
+
+       float: right !important;
+       right: -55px !important;
+       position: absolute;
+   }
+
+   .lianm2 {
+       pointer-events: auto;
+
+
+       float: right !important;
+       right: -86px !important;
+       position: absolute;
+   }
+
+   span.lianm.btn.btn-sm.btn-primary {
+       font-size: 10px !important;
+   }

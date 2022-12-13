@@ -18,7 +18,9 @@ class File extends Model
 
     public function getFileUrlAttribute()
     {
-       return url('storage/' . $this->path . '/'.$this->name_random);
+    
+         return url('storage/' . $this->path . '/'.$this->name_random);
+    
     }
  
 
