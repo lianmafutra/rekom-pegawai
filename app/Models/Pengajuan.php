@@ -49,7 +49,7 @@ class Pengajuan extends Model
 
    public function file_sk()
    {
-      return $this->hasMany(File::class, 'file_id', 'file_sk_terakhir');
+         return $this->hasMany(File::class, 'file_id', 'file_sk_terakhir');
    }
 
    public function file_pengantar()
@@ -81,6 +81,7 @@ class Pengajuan extends Model
    public function getPengajuanWithData($pengajuan_uuid){
      return Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $pengajuan_uuid)->first();
    }
+   
 
    
    /**

@@ -12,6 +12,8 @@
            <li><a  data-url="{{ route('pengajuan.histori', $data->uuid) }}" class="btn_lihat_histori dropdown-item" href="#">Lihat Histori </a> </li>
            <div class="dropdown-divider"></div>
            <li><a  href="{{ route('pengajuan.verifikasi.detail', $data->uuid) }}" class="dropdown-item">Detail</a></li>
+           <div class="dropdown-divider"></div>
+           <li><a  href="{{ route('pengajuan.revisi', $data->uuid) }}" class="dropdown-item">Perbaiki</a></li>
        </ul>
    </div>
 </div>

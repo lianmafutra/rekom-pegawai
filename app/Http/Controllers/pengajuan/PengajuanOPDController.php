@@ -3,25 +3,20 @@
 namespace App\Http\Controllers\pengajuan;
 
 use App\Config\PengajuanAksi;
-use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
 use App\Http\Services\Pegawai\PegawaiService;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
-use App\Models\PengajuanAksi as ModelsPengajuanAksi;
-use App\Models\PengajuanHistori;
 use App\Models\User;
 use App\Utils\ApiResponse;
 use App\Utils\UploadFile;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Throwable;
 use Yajra\DataTables\DataTables;
 
 class PengajuanOPDController extends Controller
@@ -56,8 +51,8 @@ class PengajuanOPDController extends Controller
             })
             ->editColumn('status', function ($data) {
                $status = $this->pengajuanService->cekPengajuanStatus($data->uuid);
-                return view('pengajuan.status', compact('status'));
-             })
+               return view('pengajuan.status', compact('status'));
+            })
             ->rawColumns(['action', 'status'])
             ->make(true);
       }
@@ -68,9 +63,9 @@ class PengajuanOPDController extends Controller
    {
 
       abort_if(Gate::denies('pengajuan create'), 403);
-      $x['title']     = 'Buat Pengajuan';
-      $x['url_foto']     = Config::get('global.url.bkd.foto');
-      $x['rekom_jenis']     = Config::get('global.rekom_jenis');
+      $x['title']       = 'Buat Pengajuan';
+      $x['url_foto']    = Config::get('global.url.bkd.foto');
+      $x['rekom_jenis'] = Config::get('global.rekom_jenis');
 
       $pegawai = $this->pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
@@ -84,26 +79,23 @@ class PengajuanOPDController extends Controller
 
       try {
 
-        
-       
-
          DB::beginTransaction();
 
          // default opd ,kirim ke admin inspektorat (penerima id)
-         $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";  
+         $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";
 
          // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
 
          // Insert data pengajuan ke DB
          $pengajuanStore = $this->pengajuanService->storePengajuan($pegawai_cache, $request);
-       
 
          // Insert data histori pengajuan ke DB
          $this->pengajuanService->storeHistori(
             $pengajuanStore->uuid,
-            PengajuanAksi::KIRIM_BERKAS
-            ,$admin_inspektorat_uuid);
+            PengajuanAksi::KIRIM_BERKAS,
+            $admin_inspektorat_uuid
+         );
 
          // upload 3 file syarat pengajuan
 
@@ -130,12 +122,11 @@ class PengajuanOPDController extends Controller
 
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
-      }
-      catch (\Exception $th) {
+      } catch (\Exception $th) {
          DB::rollBack();
          return $this->error('Pengajuan Berkas Rekomendasi Gagal Dikirim' . $th, 400);
       }
-   }  
+   }
 
    public function show(Pengajuan $pengajuan)
    {
@@ -153,6 +144,24 @@ class PengajuanOPDController extends Controller
       $pegawai = $pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
       return view('pengajuan.opd.edit', $x, compact('pegawai', 'keperluan', 'pengajuan'));
+   }
+
+   public function revisi($pengajuan_uuid, Pengajuan $pengajuan, User $user)
+   {
+      abort_if(Gate::denies('pengajuan revisi'), 403);
+      $x['title']       = 'Revisi Pengajuan';
+      $x['url_foto']    = Config::get('global.url.bkd.foto');
+      $x['rekom_jenis'] = Config::get('global.rekom_jenis');
+      $pengajuan = $pengajuan->getPengajuanWithData($pengajuan_uuid);
+
+      $pegawai = $this->pegawaiService->filterByOPD($user->getWithOpd()->kunker);
+      $keperluan = Keperluan::get();
+      return view('pengajuan.opd.revisi', $x, compact('pegawai','pengajuan', 'keperluan'));
+   }
+
+
+   public function updateRevisi(){
+
    }
 
    public function update(Request $request, Pengajuan $pengajuan)

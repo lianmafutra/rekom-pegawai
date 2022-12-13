@@ -16,7 +16,7 @@ class datepicker extends Component
     public function __construct($label, $required = false, $id)
     {
         //
-       $this->label = $label;
+      $this->label = $label;
       $this->required = $required ;
       $this->id = $id;
    }

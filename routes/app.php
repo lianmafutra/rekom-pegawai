@@ -24,7 +24,10 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
    });
    Route::resource('master-rekom', MasterRekomController::class);
+
    Route::resource('pengajuan', PengajuanOPDController::class);
+   Route::get('pengajuan/revisi/{uuid}',[PengajuanOPDController::class, 'revisi'])->name('pengajuan.revisi');
+
    Route::get('pengajuan/histori/{uuid}', [PengajuanOPDController::class, 'histori'])->name('pengajuan.histori');
 
 });

@@ -50,7 +50,7 @@ class uploadFile
          if ($this->file) {
             DB::beginTransaction();
             $name_ori = $this->file->getClientOriginalName();
-            $name_uniqe =  pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension();
+            $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension());
             $tahun       = Carbon::now()->format('Y');
             $bulan       = Carbon::now()->format('m');
             $custom_path = $tahun . '/' . $bulan . '/' . $this->path;
