@@ -16,30 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `admin_opd`
---
-
-DROP TABLE IF EXISTS `admin_opd`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `admin_opd` (
-  `id` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `admin_opd`
---
-
-LOCK TABLES `admin_opd` WRITE;
-/*!40000 ALTER TABLE `admin_opd` DISABLE KEYS */;
-/*!40000 ALTER TABLE `admin_opd` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `failed_jobs`
 --
 
@@ -86,7 +62,7 @@ CREATE TABLE `file` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +71,7 @@ CREATE TABLE `file` (
 
 LOCK TABLES `file` WRITE;
 /*!40000 ALTER TABLE `file` DISABLE KEYS */;
-INSERT INTO `file` VALUES (5,'6fdaabf4-40d3-4cd4-8fd6-7333e2601f85',199,'request.pdf','request-1670694828.pdf','2022/12/pengajuan','262983','2022-12-10 17:53:48','2022-12-10 17:53:48'),(6,'2f92e714-7df1-4dfb-a602-2f37fa6e3a4e',199,'request.pdf','request-1670694828.pdf','2022/12/pengajuan','262983','2022-12-10 17:53:48','2022-12-10 17:53:48'),(7,'70627506-d93c-4db1-b767-55a8470d1ecb',203,'request.pdf','request-1670695361.pdf','2022/12/pengajuan','262983','2022-12-10 18:02:41','2022-12-10 18:02:41'),(8,'7f2f35f4-10da-473e-bc06-1c9707a987e6',203,'request.pdf','request-1670695361.pdf','2022/12/pengajuan','262983','2022-12-10 18:02:41','2022-12-10 18:02:41'),(9,'9dd45945-93e8-4612-93af-0a8d57bea2a6',204,'Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81 (1).pdf','Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81 (1)-1670818058.pdf','2022/12/pengajuan','805318','2022-12-12 04:07:38','2022-12-12 04:07:38'),(10,'97509ea8-9257-44ec-908c-ce4866a3196c',204,'Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81 (1).pdf','Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81 (1)-1670818058.pdf','2022/12/pengajuan','805318','2022-12-12 04:07:38','2022-12-12 04:07:38'),(11,'3c0c8021-a976-4159-929e-f34ed85cce3e',205,'Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81 (1).pdf','Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81 (1)-1670818493.pdf','2022/12/pengajuan','805318','2022-12-12 04:14:53','2022-12-12 04:14:53'),(12,'380653d3-7c07-462e-8ed5-ebd34c29d1f4',205,'Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81 (1).pdf','Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81 (1)-1670818493.pdf','2022/12/pengajuan','805318','2022-12-12 04:14:53','2022-12-12 04:14:53');
+INSERT INTO `file` VALUES (15,'b5178dd6-6626-4a9b-829a-1ed431d5bef7',207,'report.pdf','report-1670919544.pdf','2022/12/pengajuan','77196','2022-12-13 08:19:04','2022-12-13 08:19:04'),(16,'d5ff15b0-7902-41ee-93f4-6bf645decffa',207,'Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81.pdf','Surat-3154dc16-e9f2-3cb9-a550-4de50049ff81-1670919544.pdf','2022/12/pengajuan','805318','2022-12-13 08:19:04','2022-12-13 08:19:04');
 /*!40000 ALTER TABLE `file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,7 +307,7 @@ CREATE TABLE `pengajuan` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_pengajuan_users` (`pengirim_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +316,7 @@ CREATE TABLE `pengajuan` (
 
 LOCK TABLES `pengajuan` WRITE;
 /*!40000 ALTER TABLE `pengajuan` DISABLE KEYS */;
-INSERT INTO `pengajuan` VALUES (199,'196811142000121001','','S.Kom','NOVIARDI ','4021000000','DINAS KOMUNIKASI & INFORMATIKA','402101','SEKRETARIS','31','III.A','142','IV/b','PEMBINA TK. I','430011533.jpg',NULL,NULL,'dwqd','2022-12-07','DISIPLIN',1,2,6,36,'6fdaabf4-40d3-4cd4-8fd6-7333e2601f85','2f92e714-7df1-4dfb-a602-2f37fa6e3a4e','56a95ca7-5076-41a8-ad66-9e6fdf9b4236',NULL,'dwqd','bf405aeb-eeab-43d3-a4a9-9aca0b6316f8','UNREAD','2022-12-10 17:53:48','2022-12-10 17:53:48'),(200,'196811142000121001','','S.Kom','NOVIARDI ','4021000000','DINAS KOMUNIKASI & INFORMATIKA','402101','SEKRETARIS','31','III.A','142','IV/b','PEMBINA TK. I','430011533.jpg',NULL,NULL,'dwqd','2022-12-07','DISIPLIN',1,2,6,36,'8db641f1-3910-4fdf-b330-bf61132d711c','fc90f5eb-cb05-4631-9104-7380222083a1','ed465dcf-79d6-4a44-8686-a31c946996e0',NULL,'dwqd','52952134-8f8e-4bd9-8476-3fa28b4dd095','UNREAD','2022-12-10 17:58:21','2022-12-10 17:58:21'),(203,'196811142000121001','','S.Kom','NOVIARDI ','4021000000','DINAS KOMUNIKASI & INFORMATIKA','402101','SEKRETARIS','31','III.A','142','IV/b','PEMBINA TK. I','430011533.jpg',NULL,NULL,'dwqd','2022-12-07','DISIPLIN',1,2,6,36,'70627506-d93c-4db1-b767-55a8470d1ecb','7f2f35f4-10da-473e-bc06-1c9707a987e6','9812c3d2-9784-49c4-a7f9-8a6d3acc684c',NULL,'dwqd','f7679b2a-f1a5-453f-8986-ccc5e034c2fb','UNREAD','2022-12-10 18:02:41','2022-12-10 18:02:41'),(204,'198607212006041003','','SE., MM','HENDRA SAPUTRA','4021000000','DINAS KOMUNIKASI & INFORMATIKA','402102','KABID. INFORMASI & KOMUNIKASI PUBLIK','41','IV.A','133','III/c','PENATA','430017727.jpg',NULL,NULL,'19739017203','2022-12-22','TEMUAN',5,2,6,36,'9dd45945-93e8-4612-93af-0a8d57bea2a6','97509ea8-9257-44ec-908c-ce4866a3196c','3029f9a4-9532-495f-8080-aa9418bad9b9',NULL,'testing kirim','f91aa482-5acd-4446-8bf4-d73a8274b0e0','UNREAD','2022-12-12 04:07:38','2022-12-12 04:07:38'),(205,'196806061992031006','Ir','M.Si','SUDIRMAN','4021000000','DINAS KOMUNIKASI & INFORMATIKA','402103','KABID. APLIKASI INFORMATIKA','32','III.B','141','IV/a','PEMBINA','430009409.jpg',NULL,NULL,'213123','2022-12-10','TEMUAN',4,2,6,36,'3c0c8021-a976-4159-929e-f34ed85cce3e','380653d3-7c07-462e-8ed5-ebd34c29d1f4','bc38a594-3bd1-4558-975f-6a0f63387a1e',NULL,'dqwd','fa196be0-bf5c-4e34-841a-6cb7b0511d54','UNREAD','2022-12-12 04:14:53','2022-12-12 04:14:53');
+INSERT INTO `pengajuan` VALUES (207,'198607212006041003','','SE., MM','HENDRA SAPUTRA','4021000000','DINAS KOMUNIKASI & INFORMATIKA','402102','KABID. INFORMASI & KOMUNIKASI PUBLIK','41','IV.A','133','III/c','PENATA','430017727.jpg',NULL,NULL,'123123','2022-12-01','DISIPLIN',5,2,6,36,'b5178dd6-6626-4a9b-829a-1ed431d5bef7','d5ff15b0-7902-41ee-93f4-6bf645decffa',NULL,NULL,'dwqd','e15b84a3-23c7-4b44-a64b-84575eaddc47','UNREAD','2022-12-13 08:19:04','2022-12-13 08:19:04');
 /*!40000 ALTER TABLE `pengajuan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -430,7 +406,7 @@ CREATE TABLE `pengajuan_histori` (
   KEY `fk_pengajuan_histori_aksi` (`pengajuan_aksi_id`),
   CONSTRAINT `fk_pengajuan_histori_aksi` FOREIGN KEY (`pengajuan_aksi_id`) REFERENCES `pengajuan_aksi` (`id`),
   CONSTRAINT `fk_pengajuan_histori_pengajuan_0` FOREIGN KEY (`pengajuan_id`) REFERENCES `pengajuan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1 COMMENT='Status pengajuan Berkas dari admin OPD ke inspektorat\n\nPROSES, TOLAK, SELESAI';
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=latin1 COMMENT='Status pengajuan Berkas dari admin OPD ke inspektorat\n\nPROSES, TOLAK, SELESAI';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -439,7 +415,7 @@ CREATE TABLE `pengajuan_histori` (
 
 LOCK TABLES `pengajuan_histori` WRITE;
 /*!40000 ALTER TABLE `pengajuan_histori` DISABLE KEYS */;
-INSERT INTO `pengajuan_histori` VALUES (36,203,1,3,2,'Admin Inspektorat','Admin Diskominfo','DINAS KOMUNIKASI & INFORMATIKA','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-10 18:02:41',NULL,'2022-12-10 18:02:41','316531b9-f4c9-431b-ac9e-12b7c96b9522','2022-12-10 18:02:41','2022-12-10 18:02:41'),(38,203,2,3,3,'Admin Inspektorat','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-10 19:00:32',NULL,'2022-12-10 19:00:32','b398b32c-202f-4dc7-ab48-a3a5c83ac499','2022-12-10 19:00:32','2022-12-10 19:00:32'),(39,203,4,5,3,'Admin Kasubag','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-10 19:20:19',NULL,'2022-12-10 19:20:19','65cb6f1d-b8e1-4a3b-983d-0aeece026f62','2022-12-10 19:20:19','2022-12-10 19:20:19'),(46,203,2,5,5,'Admin Kasubag','Admin Kasubag','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 02:46:31',NULL,'2022-12-12 02:46:31','d891299a-1e00-4995-8218-cda2f803565e','2022-12-12 02:46:31','2022-12-12 02:46:31'),(47,203,4,4,5,'Inspektur','Admin Kasubag','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 02:47:58',NULL,'2022-12-12 02:47:58','d09fb41c-13a8-4f34-86cf-745dda4827aa','2022-12-12 02:47:58','2022-12-12 02:47:58'),(49,203,2,4,4,'Inspektur','Inspektur','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 02:49:13',NULL,'2022-12-12 02:49:13','b220df6c-42a5-44b2-aefc-815d0a244dae','2022-12-12 02:49:13','2022-12-12 02:49:13'),(55,203,4,3,4,'Admin Inspektorat','Inspektur','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 03:04:35',NULL,'2022-12-12 03:04:35','4a137a56-7dda-4ed2-9b47-55cfc4d114d7','2022-12-12 03:04:35','2022-12-12 03:04:35'),(56,203,5,3,4,'Admin Inspektorat','Inspektur','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 03:04:35',NULL,'2022-12-12 03:04:35','8efc4cdd-58ed-461d-a916-e048515ebcfd','2022-12-12 03:04:35','2022-12-12 03:04:35'),(57,203,6,2,3,'Admin Diskominfo','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','DINAS KOMUNIKASI & INFORMATIKA',NULL,'2022-12-12 03:35:59',NULL,'2022-12-12 03:35:59','8ed97e8a-af73-4eb3-b4a0-565e05f159f9','2022-12-12 03:35:59','2022-12-12 03:35:59'),(58,204,1,3,2,'Admin Inspektorat','Admin Diskominfo','DINAS KOMUNIKASI & INFORMATIKA','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:07:38',NULL,'2022-12-12 04:07:38','432de325-fbf8-46d9-b291-53fbd525bd4c','2022-12-12 04:07:38','2022-12-12 04:07:38'),(59,204,2,3,3,'Admin Inspektorat','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:07:58',NULL,'2022-12-12 04:07:58','4e69e2bb-8d75-401d-a2fc-99524df1cb30','2022-12-12 04:07:58','2022-12-12 04:07:58'),(60,204,4,5,3,'Admin Kasubag','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:08:06',NULL,'2022-12-12 04:08:06','1d404f3e-761e-4044-b045-364581e23f61','2022-12-12 04:08:06','2022-12-12 04:08:06'),(61,204,2,5,5,'Admin Kasubag','Admin Kasubag','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:08:15',NULL,'2022-12-12 04:08:15','4cfabbfd-7de6-49ad-8f59-3b3232be3a8d','2022-12-12 04:08:15','2022-12-12 04:08:15'),(62,204,4,4,5,'Inspektur','Admin Kasubag','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:09:39',NULL,'2022-12-12 04:09:39','e33c982b-b281-4aa3-b53a-1bd6a8d8ae86','2022-12-12 04:09:39','2022-12-12 04:09:39'),(63,204,2,4,4,'Inspektur','Inspektur','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:09:47',NULL,'2022-12-12 04:09:47','a477bfc9-743a-4e33-a70b-c3e247380b19','2022-12-12 04:09:47','2022-12-12 04:09:47'),(64,204,4,3,4,'Admin Inspektorat','Inspektur','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:09:52',NULL,'2022-12-12 04:09:52','cf8ecebb-1ef6-413b-a6c6-7c6417a33aa0','2022-12-12 04:09:52','2022-12-12 04:09:52'),(65,204,5,3,4,'Admin Inspektorat','Inspektur','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:09:52',NULL,'2022-12-12 04:09:52','52211ffa-dc78-4372-b371-799f642c8794','2022-12-12 04:09:52','2022-12-12 04:09:52'),(66,204,6,2,3,'Admin Diskominfo','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','DINAS KOMUNIKASI & INFORMATIKA',NULL,'2022-12-12 04:10:21',NULL,'2022-12-12 04:10:21','53bdd31c-61fc-4024-a941-fd9e26c9dad6','2022-12-12 04:10:21','2022-12-12 04:10:21'),(67,205,1,3,2,'Admin Inspektorat','Admin Diskominfo','DINAS KOMUNIKASI & INFORMATIKA','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:14:53',NULL,'2022-12-12 04:14:53','cf9b3915-5e2c-4952-b65b-39c06a57f5f7','2022-12-12 04:14:53','2022-12-12 04:14:53'),(68,205,2,3,3,'Admin Inspektorat','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-12 04:15:03',NULL,'2022-12-12 04:15:03','1ad06ba8-d907-48dd-baf1-64ddf1a24ca8','2022-12-12 04:15:03','2022-12-12 04:15:03'),(69,205,8,2,3,'Admin Diskominfo','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','DINAS KOMUNIKASI & INFORMATIKA','Berkas Tidak lengkap mohon dicek kembali','2022-12-12 04:44:00',NULL,'2022-12-12 04:44:00','2d21980d-0c84-40f7-86ad-e2b953bce31a','2022-12-12 04:44:00','2022-12-12 04:44:00');
+INSERT INTO `pengajuan_histori` VALUES (73,207,1,3,2,'Admin Inspektorat','Admin Diskominfo','DINAS KOMUNIKASI & INFORMATIKA','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-13 08:19:04',NULL,'2022-12-13 08:19:04','c0918600-dc77-4599-a888-ea3961a994bd','2022-12-13 08:19:04','2022-12-13 08:19:04'),(74,207,2,3,3,'Admin Inspektorat','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','INSPEKTORAT KOTA JAMBI',NULL,'2022-12-13 08:19:18',NULL,'2022-12-13 08:19:18','a340576f-eedb-4861-b913-5f3dbecf8788','2022-12-13 08:19:18','2022-12-13 08:19:18'),(75,207,8,2,3,'Admin Diskominfo','Admin Inspektorat','INSPEKTORAT KOTA JAMBI','DINAS KOMUNIKASI & INFORMATIKA','salah','2022-12-13 08:19:26',NULL,'2022-12-13 08:19:26','9edc7ee7-c1e0-4475-84c7-a8ea6ff9daeb','2022-12-13 08:19:26','2022-12-13 08:19:26');
 /*!40000 ALTER TABLE `pengajuan_histori` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -458,7 +434,7 @@ CREATE TABLE `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -467,7 +443,7 @@ CREATE TABLE `permissions` (
 
 LOCK TABLES `permissions` WRITE;
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
-INSERT INTO `permissions` VALUES (1,'filemanager','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(2,'read module','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(3,'delete setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(4,'update setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(5,'read setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(6,'create setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(7,'delete user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(8,'update user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(9,'read user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(10,'create user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(11,'delete role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(12,'update role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(13,'read role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(14,'create role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(15,'delete permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(16,'update permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(17,'read permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(18,'create permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(19,'view_data_pegawai','web','2022-11-18 04:16:07','2022-11-18 04:16:07'),(20,'pengajuan menu','web','2022-11-18 04:41:26','2022-11-29 01:42:51'),(21,'pengajuan create','web','2022-11-22 02:08:40','2022-11-22 02:08:40'),(22,'pengajuan store','web','2022-11-22 07:59:32','2022-11-22 07:59:32'),(23,'pengajuan destroy','web','2022-11-22 07:59:43','2022-11-22 07:59:43'),(24,'pengajuan update','web','2022-11-22 07:59:50','2022-11-22 07:59:50'),(25,'profile menu','web','2022-11-29 01:43:03','2022-11-29 01:43:03'),(26,'pengajuan index','web','2022-11-29 01:43:44','2022-11-29 01:43:44'),(27,'pengajuan show','web','2022-12-03 09:27:42','2022-12-03 09:27:42'),(28,'pengajuan verifikasi kirim','web','2022-12-05 02:25:00','2022-12-05 02:38:16'),(29,'pengajuan verifikasi index','web','2022-12-05 02:38:59','2022-12-05 02:38:59'),(30,'pengajuan verifikasi tolak','web','2022-12-05 03:02:17','2022-12-05 03:02:17'),(31,'pengajuan selesai','web','2022-12-06 03:06:08','2022-12-06 03:06:08'),(32,'pengajuan filter','web','2022-12-06 18:14:56','2022-12-06 18:14:56'),(33,'master rekom pegawai','web','2022-12-07 04:02:14','2022-12-07 04:02:31');
+INSERT INTO `permissions` VALUES (1,'filemanager','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(2,'read module','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(3,'delete setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(4,'update setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(5,'read setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(6,'create setting','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(7,'delete user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(8,'update user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(9,'read user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(10,'create user','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(11,'delete role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(12,'update role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(13,'read role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(14,'create role','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(15,'delete permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(16,'update permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(17,'read permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(18,'create permission','web','2022-11-18 03:50:20','2022-11-18 03:50:20'),(19,'view_data_pegawai','web','2022-11-18 04:16:07','2022-11-18 04:16:07'),(20,'pengajuan menu','web','2022-11-18 04:41:26','2022-11-29 01:42:51'),(21,'pengajuan create','web','2022-11-22 02:08:40','2022-11-22 02:08:40'),(22,'pengajuan store','web','2022-11-22 07:59:32','2022-11-22 07:59:32'),(23,'pengajuan destroy','web','2022-11-22 07:59:43','2022-11-22 07:59:43'),(24,'pengajuan update','web','2022-11-22 07:59:50','2022-11-22 07:59:50'),(25,'profile menu','web','2022-11-29 01:43:03','2022-11-29 01:43:03'),(26,'pengajuan index','web','2022-11-29 01:43:44','2022-11-29 01:43:44'),(27,'pengajuan show','web','2022-12-03 09:27:42','2022-12-03 09:27:42'),(28,'pengajuan verifikasi kirim','web','2022-12-05 02:25:00','2022-12-05 02:38:16'),(29,'pengajuan verifikasi index','web','2022-12-05 02:38:59','2022-12-05 02:38:59'),(30,'pengajuan verifikasi tolak','web','2022-12-05 03:02:17','2022-12-05 03:02:17'),(31,'pengajuan selesai','web','2022-12-06 03:06:08','2022-12-06 03:06:08'),(32,'pengajuan filter','web','2022-12-06 18:14:56','2022-12-06 18:14:56'),(33,'master rekom pegawai','web','2022-12-07 04:02:14','2022-12-07 04:02:31'),(34,'pengajuan edit','web','2022-12-13 02:46:20','2022-12-13 02:46:20'),(35,'pengajuan revisi','web','2022-12-13 03:06:15','2022-12-13 03:06:15');
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -526,7 +502,7 @@ CREATE TABLE `role_has_permissions` (
 
 LOCK TABLES `role_has_permissions` WRITE;
 /*!40000 ALTER TABLE `role_has_permissions` DISABLE KEYS */;
-INSERT INTO `role_has_permissions` VALUES (20,2),(22,2),(23,2),(24,2),(25,2),(27,2),(28,2),(29,2),(30,2),(31,2),(32,2),(33,2),(20,3),(21,3),(22,3),(23,3),(24,3),(25,3),(26,3),(20,4),(21,4),(23,4),(24,4),(25,4),(27,4),(28,4),(29,4),(30,4),(20,5),(23,5),(24,5),(25,5),(27,5),(28,5),(29,5),(30,5);
+INSERT INTO `role_has_permissions` VALUES (20,2),(22,2),(23,2),(24,2),(25,2),(27,2),(28,2),(29,2),(30,2),(31,2),(32,2),(33,2),(20,3),(21,3),(22,3),(23,3),(24,3),(25,3),(26,3),(34,3),(35,3),(20,4),(21,4),(23,4),(24,4),(25,4),(27,4),(28,4),(29,4),(30,4),(20,5),(23,5),(24,5),(25,5),(27,5),(28,5),(29,5),(30,5);
 /*!40000 ALTER TABLE `role_has_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -635,4 +611,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-12 16:46:26
+-- Dump completed on 2022-12-13 16:23:48
