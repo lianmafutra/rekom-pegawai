@@ -104,8 +104,6 @@ class PengajuanService
             'photo'               => $pegawai_cache['photo'],
             'nomor_pengantar'     => $request->nomor_pengantar,
             'tgl_surat_pengantar' => NUll,
-            'file_sk_terakhir'    => Str::uuid()->toString(),
-            'file_pengantar_opd'  => Str::uuid()->toString(),
             'file_konversi_nip'   => $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL,
             'rekom_jenis'         => $request->rekom_jenis,
             'keperluan_id'        => $request->keperluan_id,

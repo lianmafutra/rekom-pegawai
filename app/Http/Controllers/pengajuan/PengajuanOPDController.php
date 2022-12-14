@@ -171,7 +171,7 @@ class PengajuanOPDController extends Controller
 
    public function updateRevisi(Request $request)
    {
-
+     
       try {
          DB::beginTransaction();
       
@@ -193,14 +193,14 @@ class PengajuanOPDController extends Controller
          );
 
        
-         $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', '=',$request->pengajuan_uuid)->first();
-       
+      $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', '=',$request->pengajuan_uuid)->first();
+         
          if ($request->file_sk->getClientOriginalName() != $pengajuan_cek->file_sk->first()->name_random) {
             $upload_file_sk        = new UploadFile();
             $upload_file_sk->file($request->file('file_sk'))
                ->path('pengajuan')
                ->uuid($request->pengajuan_uuid)
-               ->parent_id($pengajuan_cek->first()->id)
+               ->parent_id($pengajuan_cek->id)
                ->update($pengajuan_cek->file_sk_terakhir);
          }
 
@@ -209,7 +209,7 @@ class PengajuanOPDController extends Controller
             $upload_file_pengantar_opd->file($request->file('file_pengantar_opd'))
                ->path('pengajuan')
                ->uuid($request->pengajuan_uuid)
-               ->parent_id($pengajuan_cek->first()->id)
+               ->parent_id($pengajuan_cek->id)
                ->update($pengajuan_cek->file_pengantar_opd);
          } 
 
@@ -226,7 +226,7 @@ class PengajuanOPDController extends Controller
          // } 
 
          DB::commit();
-         return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim' .  $request->pengajuan_uuid);
+         return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
       } catch (\Exception $th) {
          DB::rollBack();
          return $this->error('Pengajuan Berkas Rekomendasi Gagal Dikirim' . $th, 400);
