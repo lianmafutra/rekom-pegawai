@@ -193,8 +193,8 @@ class PengajuanOPDController extends Controller
          );
 
        
-      $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', '=',$request->pengajuan_uuid)->first();
-         
+         $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', '=',$pengajuan_uuid)->first();
+        
          if ($request->file_sk->getClientOriginalName() != $pengajuan_cek->file_sk->first()->name_random) {
             $upload_file_sk        = new UploadFile();
             $upload_file_sk->file($request->file('file_sk'))
@@ -211,19 +211,16 @@ class PengajuanOPDController extends Controller
                ->uuid($request->pengajuan_uuid)
                ->parent_id($pengajuan_cek->id)
                ->update($pengajuan_cek->file_pengantar_opd);
+         }   
+
+         if ($request->file_konversi_nip->getClientOriginalName() != ($pengajuan_cek->file_konversi->first() != null ? $pengajuan_cek->file_konversi->first()->name_random : null))  {
+            $upload_file_konversi_nip        = new UploadFile();
+            $upload_file_konversi_nip->file($request->file('file_konversi_nip'))
+               ->path('pengajuan')
+               ->uuid($request->pengajuan_uuid)
+               ->parent_id($pengajuan_cek->first()->id)
+               ->update($pengajuan_cek->file_konversi_nip);
          } 
-
-  
-
-         // if ($request->file_konversi_nip->getClientOriginalName() !=  {
-         //    return $this->error('tidak sama', 400);
-         //    // $upload_file_konversi_nip        = new UploadFile();
-         //    // $upload_file_konversi_nip->file($request->file('file_konversi_nip'))
-         //    //    ->path('pengajuan')
-         //    //    ->uuid($request->pengajuan_uuid)
-         //    //    ->parent_id($pengajuan_cek->first()->id)
-         //    //    ->update($pengajuan_cek->file_konversi_nip);
-         // } 
 
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
