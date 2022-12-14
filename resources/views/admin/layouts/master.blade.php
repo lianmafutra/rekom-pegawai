@@ -89,6 +89,7 @@
                 title: @json(Session::get('success'))
             })
         }
+        
         if (@json(Session::has('error'))) {
             Toast.fire({
                 icon: 'error',

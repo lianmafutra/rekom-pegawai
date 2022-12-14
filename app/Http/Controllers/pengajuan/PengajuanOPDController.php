@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanOPDStoreRequest;
 use App\Http\Services\Pegawai\PegawaiService;
 use App\Http\Services\Pegawai\PengajuanService;
+use App\Models\File;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Models\User;
@@ -155,6 +156,7 @@ class PengajuanOPDController extends Controller
 
    public function revisi($pengajuan_uuid, Pengajuan $pengajuan, User $user)
    {
+    
       abort_if(Gate::denies('pengajuan revisi'), 403);
       $x['title']       = 'Revisi Pengajuan';
       $x['url_foto']    = Config::get('global.url.bkd.foto');
@@ -169,22 +171,10 @@ class PengajuanOPDController extends Controller
 
    public function updateRevisi(Request $request)
    {
-      $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $request->pengajuan_uuid)->first();
-  
-      if ($request->file_sk->getClientOriginalName() != $pengajuan_cek->file_sk->get(0)->name_random) {
-      
-       
-      }
-      else{
-         return $this->error("tidak sama", 400);
-
-      }
-
-
 
       try {
-
          DB::beginTransaction();
+      
 
          // default opd ,kirim ke admin inspektorat (penerima id)
          $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";
@@ -192,10 +182,8 @@ class PengajuanOPDController extends Controller
          // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
 
-
-
          // Update data pengajuan ke DB
-         $pengajuanUPdate =   $this->pengajuanService->updatePengajuan($pegawai_cache, $request);
+        $this->pengajuanService->updatePengajuan($pegawai_cache, $request);
 
          //Insert data histori pengajuan ke DB
          $this->pengajuanService->storeHistori(
@@ -204,18 +192,38 @@ class PengajuanOPDController extends Controller
             $admin_inspektorat_uuid
          );
 
-         $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $request->pengajuan_uuid);
-
-         if ($request->file_sk->getClientOriginalName() != $pengajuan_cek->first()->name_random) {
+       
+         $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', '=',$request->pengajuan_uuid)->first();
+       
+         if ($request->file_sk->getClientOriginalName() != $pengajuan_cek->file_sk->first()->name_random) {
             $upload_file_sk        = new UploadFile();
             $upload_file_sk->file($request->file('file_sk'))
                ->path('pengajuan')
                ->uuid($request->pengajuan_uuid)
-               ->parent_id($pengajuan_cek->first()->id)->save();
+               ->parent_id($pengajuan_cek->first()->id)
+               ->update($pengajuan_cek->file_sk_terakhir);
          }
 
+         if ($request->file_pengantar_opd->getClientOriginalName() != $pengajuan_cek->file_pengantar->first()->name_random) {
+            $upload_file_pengantar_opd        = new UploadFile();
+            $upload_file_pengantar_opd->file($request->file('file_pengantar_opd'))
+               ->path('pengajuan')
+               ->uuid($request->pengajuan_uuid)
+               ->parent_id($pengajuan_cek->first()->id)
+               ->update($pengajuan_cek->file_pengantar_opd);
+         } 
 
+  
 
+         // if ($request->file_konversi_nip->getClientOriginalName() !=  {
+         //    return $this->error('tidak sama', 400);
+         //    // $upload_file_konversi_nip        = new UploadFile();
+         //    // $upload_file_konversi_nip->file($request->file('file_konversi_nip'))
+         //    //    ->path('pengajuan')
+         //    //    ->uuid($request->pengajuan_uuid)
+         //    //    ->parent_id($pengajuan_cek->first()->id)
+         //    //    ->update($pengajuan_cek->file_konversi_nip);
+         // } 
 
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim' .  $request->pengajuan_uuid);

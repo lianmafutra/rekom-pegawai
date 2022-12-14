@@ -52,7 +52,7 @@
                                 <div class="tab-content">
                                     @if ($data->count() == 0)
                                         <center>
-                                            <h5>Anda Belum Memiliki Pengajuan Berkas</h5>
+                                            <h5>Belum Ada Pengajuan Rekomendasi</h5>
                                         </center>
                                     @else
                                         <div class="card-body table-responsive">

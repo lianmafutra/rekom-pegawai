@@ -173,6 +173,7 @@
             $("#rekom_jenis").val(@json($pengajuan->rekom_jenis))
             $("#keperluan_id").val(@json($pengajuan->keperluan_id))
             $("#catatan").val(@json($pengajuan->catatan))
+
             // Filepond
             FilePond.registerPlugin(
                 FilePondPluginFileEncode,
@@ -181,6 +182,7 @@
             const file_sk = FilePond.create(document.querySelector('#file_sk'));
             const file_konversi_nip = FilePond.create(document.querySelector('#file_konversi_nip'));
             const file_pengantar_opd = FilePond.create(document.querySelector('#file_pengantar_opd'));
+
             if (@json($pengajuan->file_sk) != null) {
                 file_sk.setOptions({
                     storeAsFile: true,
@@ -190,6 +192,7 @@
                     }]
                 });
             }
+
             if (@json($pengajuan->file_konversi_nip) !== null) {
                 file_konversi_nip.setOptions({
                     storeAsFile: true,
@@ -199,6 +202,7 @@
                     }]
                 });
             }
+
             if (@json($pengajuan->file_pengantar) != null) {
                 file_pengantar_opd.setOptions({
                     storeAsFile: true,
@@ -213,6 +217,7 @@
                 dateFormat: "d-m-Y",
                 locale: "id",
             });
+
             $("#btn_kirim_revisi").click(function(e) {
                 e.preventDefault();
                 Swal.fire({
@@ -255,21 +260,21 @@
                     },
                     success: (response) => {
                         if (response) {
-                           //  this.reset()
-                           //  Swal.fire({
-                           //      icon: 'success',
-                           //      title: 'Berhasil Mengirim Revisi Berkas',
-                           //      html: 'Berkas anda akan segera di verifikasi oleh Dinas Inspektorat Kota Jambi ',
-                           //      showCancelButton: true,
-                           //      allowEscapeKey: false,
-                           //      showCancelButton: false,
-                           //      allowOutsideClick: false,
-                           //  }).then((result) => {
-                           //      if (result.isConfirmed) {
-                           //          window.location.href = @json(route('pengajuan.index'))
-                           //      }
-                           //  })
-                           //  swal.hideLoading()
+                            this.reset()
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil Mengirim Revisi Berkas',
+                                html: 'Berkas anda akan segera di verifikasi oleh Dinas Inspektorat Kota Jambi ',
+                                showCancelButton: true,
+                                allowEscapeKey: false,
+                                showCancelButton: false,
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = @json(route('pengajuan.index'))
+                                }
+                            })
+                            swal.hideLoading()
                         }
                     },
                     error: function(response) {
