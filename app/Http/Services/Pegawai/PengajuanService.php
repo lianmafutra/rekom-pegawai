@@ -153,11 +153,10 @@ class PengajuanService
                ]);
                break;
             default:
-
                break;
          }
       } catch (\Throwable $th) {
-         throw new CustomException("Terjadi Kesalahan saat Menginput Data Histori" . $th);
+         throw $th;
       }
    }
 
