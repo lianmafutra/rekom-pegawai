@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Config\PengajuanAksi;
 use App\Models\PengajuanHistori;
 use App\Exceptions\CustomException;
+use App\Models\File;
 use App\Utils\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -82,7 +83,8 @@ class PengajuanService
 
    public function updatePengajuan($pegawai_cache, $request)
    {
-      try{
+      try {
+
          $data = Pengajuan::where('uuid', $request->pengajuan_uuid)->firstOrFail();
          $data->nip                 = $pegawai_cache['nipbaru'];
          $data->gldepan             = $pegawai_cache['gldepan'];
@@ -99,15 +101,20 @@ class PengajuanService
          $data->pangkat             = $pegawai_cache['pangkat'];
          $data->photo               = $pegawai_cache['photo'];
          $data->nomor_pengantar     = $request->nomor_pengantar;
-         $data->file_sk_terakhir    = Str::uuid()->toString();
-         $data->file_pengantar_opd  = Str::uuid()->toString();
-         $data->file_konversi_nip   = $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL;
          $data->rekom_jenis         = $request->rekom_jenis;
          $data->keperluan_id        = $request->keperluan_id;
          $data->pengirim_id         = auth()->user()->id;
          $data->penerima_id         = $this->getPenerimaId();
          $data->penerima_opd_id     = $this->getPenerimaOpdId();
          $data->catatan             = $request->catatan;
+
+         if ($data->file_konversi_nip == null) {
+            $data->file_konversi_nip   = $request->has('file_konversi_nip') ? Str::uuid()->toString() : NULL;
+         }
+         if (!$request->has('file_konversi_nip')) {
+            File::where('file_id',  $data->file_konversi_nip)->delete();
+            $data->file_konversi_nip = NULL;
+         }
          $data->save();
 
          return $data;
