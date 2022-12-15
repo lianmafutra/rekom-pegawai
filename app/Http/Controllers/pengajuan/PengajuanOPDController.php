@@ -124,7 +124,8 @@ class PengajuanOPDController extends Controller
                ->file($request->file('file_konversi_nip'))
                ->path('pengajuan')
                ->uuid($pengajuanStore->file_konversi_nip)
-               ->parent_id($pengajuanStore->id)->save();
+               ->parent_id($pengajuanStore->id)
+               ->save();
          }
 
 
@@ -156,7 +157,7 @@ class PengajuanOPDController extends Controller
 
    public function revisi($pengajuan_uuid, Pengajuan $pengajuan, User $user)
    {
-    
+
       abort_if(Gate::denies('pengajuan revisi'), 403);
       $x['title']       = 'Revisi Pengajuan';
       $x['url_foto']    = Config::get('global.url.bkd.foto');
@@ -174,12 +175,8 @@ class PengajuanOPDController extends Controller
      
       try {
          DB::beginTransaction();
-         $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])
-         ->where('uuid', '=', $request->pengajuan_uuid)->first();
 
-         $data = File::where('file_id', '=', $pengajuan_cek->file_sk_terakhir);
 
-         return $this->success( $data);
 
          // default opd ,kirim ke admin inspektorat (penerima id)
          $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";
@@ -188,7 +185,8 @@ class PengajuanOPDController extends Controller
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
 
          // Update data pengajuan ke DB
-        $this->pengajuanService->updatePengajuan($pegawai_cache, $request);
+         $pengajuanUpdate =  $this->pengajuanService->updatePengajuan($pegawai_cache, $request);
+       
 
          //Insert data histori pengajuan ke DB
          $this->pengajuanService->storeHistori(
@@ -197,37 +195,28 @@ class PengajuanOPDController extends Controller
             $admin_inspektorat_uuid
          );
 
-       
-     
-         
-        
-         if ($request->file_sk->getClientOriginalName() != $pengajuan_cek->file_sk->first()->name_random) {
-            $upload_file_sk        = new UploadFile();
-            $upload_file_sk->file($request->file('file_sk'))
-               ->path('pengajuan')
-               ->uuid($request->pengajuan_uuid)
-               ->parent_id($pengajuan_cek->id)
-               ->update($pengajuan_cek->file_sk_terakhir);
-         }
+         // Upload File Syarat Rekomendasi
 
-         if ($request->file_pengantar_opd->getClientOriginalName() != $pengajuan_cek->file_pengantar->first()->name_random) {
-            $upload_file_pengantar_opd        = new UploadFile();
-            $upload_file_pengantar_opd->file($request->file('file_pengantar_opd'))
-               ->path('pengajuan')
-               ->uuid($request->pengajuan_uuid)
-               ->parent_id($pengajuan_cek->id)
-               ->update($pengajuan_cek->file_pengantar_opd);
-         }   
+         $upload = new uploadFile();
 
-         // if ($request->file_konversi_nip->getClientOriginalName() != ($pengajuan_cek->file_konversi->first() != null ? $pengajuan_cek->file_konversi->first()->name_random : null))  {
-         //    $upload_file_konversi_nip        = new UploadFile();
-         //    $upload_file_konversi_nip->file($request->file('file_konversi_nip'))
-         //       ->path('pengajuan')
-         //       ->uuid($request->pengajuan_uuid)
-         //       ->parent_id($pengajuan_cek->first()->id)
-         //       ->update($pengajuan_cek->file_konversi_nip);
-         // } 
+         $upload->file($request->file('file_sk'))
+            ->path('pengajuan')
+            ->uuid($pengajuanUpdate->file_sk_terakhir)
+            ->parent_id($pengajuanUpdate->id)
+            ->update($pengajuanUpdate->file_sk_terakhir);
 
+         $upload->file($request->file('file_pengantar_opd'))
+            ->path('pengajuan')
+            ->uuid($pengajuanUpdate->file_pengantar_opd)
+            ->parent_id($pengajuanUpdate->id)
+            ->update($pengajuanUpdate->file_pengantar_opd);
+
+         $upload->file($request->file('file_konversi_nip'))
+            ->path('pengajuan')
+            ->uuid($pengajuanUpdate->file_konversi_nip)
+            ->parent_id($pengajuanUpdate->id)
+            ->update($pengajuanUpdate->file_konversi_nip);
+          
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
       } catch (\Exception $th) {

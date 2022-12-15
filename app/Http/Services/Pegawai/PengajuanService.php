@@ -11,7 +11,9 @@ use Illuminate\Support\Str;
 use App\Config\PengajuanAksi;
 use App\Models\PengajuanHistori;
 use App\Exceptions\CustomException;
+use App\Models\File;
 use App\Utils\ApiResponse;
+use App\Utils\uploadFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -82,7 +84,7 @@ class PengajuanService
 
    public function updatePengajuan($pegawai_cache, $request)
    {
-      try{
+      try {
          $data = Pengajuan::where('uuid', $request->pengajuan_uuid)->firstOrFail();
          $data->nip                 = $pegawai_cache['nipbaru'];
          $data->gldepan             = $pegawai_cache['gldepan'];
@@ -99,9 +101,7 @@ class PengajuanService
          $data->pangkat             = $pegawai_cache['pangkat'];
          $data->photo               = $pegawai_cache['photo'];
          $data->nomor_pengantar     = $request->nomor_pengantar;
-         $data->file_sk_terakhir    = Str::uuid()->toString();
-         $data->file_pengantar_opd  = Str::uuid()->toString();
-         $data->file_konversi_nip   = $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL;
+         $data->file_konversi_nip   = $request->has('file_konversi_nip') ? Str::uuid()->toString() : NULL;
          $data->rekom_jenis         = $request->rekom_jenis;
          $data->keperluan_id        = $request->keperluan_id;
          $data->pengirim_id         = auth()->user()->id;
@@ -156,6 +156,53 @@ class PengajuanService
          throw $th;
       }
    }
+
+   public function updateFile($new_file_name, $pengajuan_uuid, $jenis_file)
+   {
+      $old_file_name = '';
+      $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])
+         ->where('uuid', '=', $pengajuan_uuid)->first();
+   
+      switch ($jenis_file) {
+         case 'file_sk':
+            $old_file_name = File::where('file_id', '=', $pengajuan_cek->file_sk_terakhir)->first();
+            if (  $old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
+               (new uploadFile())
+                   ->file($new_file_name)
+                   ->path('pengajuan')
+                   ->uuid( $pengajuan_uuid)
+                   ->parent_id($pengajuan_cek->id)
+                   ->update($pengajuan_cek->file_sk_terakhir);
+             }
+            break;
+         case 'file_pengantar':
+            $old_file_name = File::where('file_id', '=', $pengajuan_cek->file_pengantar_opd)->first();
+            if (  $old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
+               (new uploadFile())
+                  ->file($new_file_name)
+                  ->path('pengajuan')
+                  ->uuid( $pengajuan_uuid)
+                  ->parent_id($pengajuan_cek->id)
+                  ->update($pengajuan_cek->file_pengantar_opd);
+            }
+            break;
+         case 'file_konversi':
+            $old_file_name = File::where('file_id', '=', $pengajuan_cek->file_konversi_nip)->first();
+            
+      if (  $old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
+         (new uploadFile())
+            ->file($new_file_name)
+            ->path('pengajuan')
+            ->uuid( $pengajuan_uuid)
+            ->parent_id($pengajuan_cek->id)
+            ->update($pengajuan_cek->file_konversi_nip);
+      }
+            break;
+         default:
+            break;
+      }
+   }
+
 
    /**
     *@desc update DB 'tgl_proses' pengajuan setiap proses disposisi ,berguna untuk tracking pengajuan yang belum di respon oleh user penerima
