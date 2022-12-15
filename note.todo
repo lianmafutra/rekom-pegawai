@@ -13,3 +13,6 @@ New Task:
 
    bug
    ☐ BUg file konversi nip insert db tetap ada nama meski file kosong
+
+   tail -f storage/logs/laravel.log  
+   echo "" > storage/logs/laravel.log
