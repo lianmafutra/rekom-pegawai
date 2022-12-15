@@ -1,18 +1,21 @@
 <?php
+
 namespace App\Utils;
+
 use App\Models\File;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Log;
 use Throwable;
-class uploadFile
+
+class uploadFile implements uploadFileBuilder
 {
-   protected $file;
    protected $path;
    protected $uuid;
    protected $parent_id;
+   protected $file;
+
    public function file($file)
    {
       $this->file =  $file;
@@ -97,7 +100,7 @@ class uploadFile
                   ]);
                   Log::info('create');
                } else {
-                   File::where('file_id', $file_id)->update(
+                  File::where('file_id', $file_id)->update(
                      [
                         'name_origin'    => $name_ori,
                         'name_random'    => $name_uniqe,
@@ -109,7 +112,7 @@ class uploadFile
                }
                $this->file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $this->path, $name_uniqe);
                DB::commit();
-            }else{
+            } else {
                Log::info('Abaikan');
             }
          }

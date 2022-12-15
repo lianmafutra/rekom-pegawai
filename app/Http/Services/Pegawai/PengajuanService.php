@@ -85,34 +85,34 @@ class PengajuanService
    {
       try {
 
-         $data = Pengajuan::where('uuid', $request->pengajuan_uuid)->firstOrFail();
-         $data->nip                 = $pegawai_cache['nipbaru'];
-         $data->gldepan             = $pegawai_cache['gldepan'];
-         $data->glblk              = $pegawai_cache['glblk'];
-         $data->nama                = $pegawai_cache['nama'];
-         $data->kunker              = $pegawai_cache['kunker'];
-         $data->nunker              = $pegawai_cache['nunker'];
-         $data->kjab               = $pegawai_cache['kjab'];
-         $data->njab                = $pegawai_cache['njab'];
-         $data->keselon             = $pegawai_cache['keselon'];
-         $data->neselon             = $pegawai_cache['neselon'];
-         $data->kgolru              = $pegawai_cache['kgolru'];
-         $data->ngolru              = $pegawai_cache['ngolru'];
-         $data->pangkat             = $pegawai_cache['pangkat'];
-         $data->photo               = $pegawai_cache['photo'];
-         $data->nomor_pengantar     = $request->nomor_pengantar;
-         $data->rekom_jenis         = $request->rekom_jenis;
-         $data->keperluan_id        = $request->keperluan_id;
-         $data->pengirim_id         = auth()->user()->id;
-         $data->penerima_id         = $this->getPenerimaId();
-         $data->penerima_opd_id     = $this->getPenerimaOpdId();
-         $data->catatan             = $request->catatan;
+         $data                  = Pengajuan::where('uuid', $request->pengajuan_uuid)->firstOrFail();
+         $data->nip             = $pegawai_cache['nipbaru'];
+         $data->gldepan         = $pegawai_cache['gldepan'];
+         $data->glblk           = $pegawai_cache['glblk'];
+         $data->nama            = $pegawai_cache['nama'];
+         $data->kunker          = $pegawai_cache['kunker'];
+         $data->nunker          = $pegawai_cache['nunker'];
+         $data->kjab            = $pegawai_cache['kjab'];
+         $data->njab            = $pegawai_cache['njab'];
+         $data->keselon         = $pegawai_cache['keselon'];
+         $data->neselon         = $pegawai_cache['neselon'];
+         $data->kgolru          = $pegawai_cache['kgolru'];
+         $data->ngolru          = $pegawai_cache['ngolru'];
+         $data->pangkat         = $pegawai_cache['pangkat'];
+         $data->photo           = $pegawai_cache['photo'];
+         $data->nomor_pengantar = $request->nomor_pengantar;
+         $data->rekom_jenis     = $request->rekom_jenis;
+         $data->keperluan_id    = $request->keperluan_id;
+         $data->pengirim_id     = auth()->user()->id;
+         $data->penerima_id     = $this->getPenerimaId();
+         $data->penerima_opd_id = $this->getPenerimaOpdId();
+         $data->catatan         = $request->catatan;
 
          if ($data->file_konversi_nip == null) {
-            $data->file_konversi_nip   = $request->has('file_konversi_nip') ? Str::uuid()->toString() : NULL;
+            $data->file_konversi_nip = $request->has('file_konversi_nip') ? Str::uuid()->toString() : NULL;
          }
          if (!$request->has('file_konversi_nip')) {
-            File::where('file_id',  $data->file_konversi_nip)->delete();
+            File:: where('file_id',  $data->file_konversi_nip)->delete();
             $data->file_konversi_nip = NULL;
          }
          $data->save();
