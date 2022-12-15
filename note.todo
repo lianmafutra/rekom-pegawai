@@ -10,9 +10,26 @@ New Task:
    ✔ Delete Pengajuan Superadmin @done (12/12/2022, 2:37:54 PM)
    ☐ logo index link belum tepat
    ☐ Data waktu sinkron terakhir tampil di form pengajuan opd
+   ☐ Notif untuk tiap role user 
+   ☐ Notif Whastapp 
+   ☐ Filter Pengajuan Admin
+   ☐ Cetak Surat Rekom (Domp PDF)
+   ☐ Admin Inspektorat bisa input pengajuan internal 
+   ☐ Master Data user di admin inspektorat
+   ☐ sync otomatis trigger ketika cache pegawai null
+   ☐ CLone all photo BKD ke server kominfo
+   ☐ chat pesan warna disposisi
+   ☐ Verifikasi Data Tampilan , API sudah
+   ☐ Dashboard Home
+
+Question:
+   ☐ Apakah bisa user disposisi balek ?
+
 
    bug
-   ☐ BUg file konversi nip insert db tetap ada nama meski file kosong
+   ✔ BUg file konversi nip insert db tetap ada nama meski file kosong @done (12/15/2022, 7:40:19 PM)
+
+
 
    tail -f storage/logs/laravel.log  
    echo "" > storage/logs/laravel.log
