@@ -174,7 +174,12 @@ class PengajuanOPDController extends Controller
      
       try {
          DB::beginTransaction();
-      
+         $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])
+         ->where('uuid', '=', $request->pengajuan_uuid)->first();
+
+         $data = File::where('file_id', '=', $pengajuan_cek->file_sk_terakhir);
+
+         return $this->success( $data);
 
          // default opd ,kirim ke admin inspektorat (penerima id)
          $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";
@@ -193,7 +198,8 @@ class PengajuanOPDController extends Controller
          );
 
        
-         $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', '=', $request->pengajuan_uuid)->first();
+     
+         
         
          if ($request->file_sk->getClientOriginalName() != $pengajuan_cek->file_sk->first()->name_random) {
             $upload_file_sk        = new UploadFile();
