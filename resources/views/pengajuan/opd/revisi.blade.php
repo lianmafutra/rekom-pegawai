@@ -260,6 +260,7 @@
                     },
                     success: (response) => {
                         if (response) {
+                           console.log(response)
                             this.reset()
                             Swal.fire({
                                 icon: 'success',
@@ -270,9 +271,9 @@
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = @json(route('pengajuan.index'))
-                                }
+                              //   if (result.isConfirmed) {
+                              //       window.location.href = @json(route('pengajuan.index'))
+                              //   }
                             })
                             swal.hideLoading()
                         }

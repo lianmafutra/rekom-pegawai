@@ -7,8 +7,6 @@ use App\Models\File;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class uploadFile
@@ -105,6 +103,8 @@ class uploadFile
 
            $update = File::where('file_id', $file_id)->update(
                   [
+                     'file_id'        => $this->uuid,
+                     // 'name_origin'    => $name_ori,
                      'name_origin'    => $name_ori,
                      'name_random'    => $name_uniqe,
                      'path'           => $custom_path,

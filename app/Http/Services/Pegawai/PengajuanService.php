@@ -13,7 +13,7 @@ use App\Models\PengajuanHistori;
 use App\Exceptions\CustomException;
 use App\Utils\ApiResponse;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log;
 
 class PengajuanService
 {
@@ -82,38 +82,35 @@ class PengajuanService
 
    public function updatePengajuan($pegawai_cache, $request)
    {
-    
-    
+      try{
+         $data = Pengajuan::where('uuid', $request->pengajuan_uuid)->firstOrFail();
+         $data->nip                 = $pegawai_cache['nipbaru'];
+         $data->gldepan             = $pegawai_cache['gldepan'];
+         $data->glblk              = $pegawai_cache['glblk'];
+         $data->nama                = $pegawai_cache['nama'];
+         $data->kunker              = $pegawai_cache['kunker'];
+         $data->nunker              = $pegawai_cache['nunker'];
+         $data->kjab               = $pegawai_cache['kjab'];
+         $data->njab                = $pegawai_cache['njab'];
+         $data->keselon             = $pegawai_cache['keselon'];
+         $data->neselon             = $pegawai_cache['neselon'];
+         $data->kgolru              = $pegawai_cache['kgolru'];
+         $data->ngolru              = $pegawai_cache['ngolru'];
+         $data->pangkat             = $pegawai_cache['pangkat'];
+         $data->photo               = $pegawai_cache['photo'];
+         $data->nomor_pengantar     = $request->nomor_pengantar;
+         $data->file_sk_terakhir    = Str::uuid()->toString();
+         $data->file_pengantar_opd  = Str::uuid()->toString();
+         $data->file_konversi_nip   = $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL;
+         $data->rekom_jenis         = $request->rekom_jenis;
+         $data->keperluan_id        = $request->keperluan_id;
+         $data->pengirim_id         = auth()->user()->id;
+         $data->penerima_id         = $this->getPenerimaId();
+         $data->penerima_opd_id     = $this->getPenerimaOpdId();
+         $data->catatan             = $request->catatan;
+         $data->save();
 
-      try {
-         $pengajuan = Pengajuan::where('uuid', $request->pengajuan_uuid)
-         ->update([
-            'nip'                 => $pegawai_cache['nipbaru'],
-            'gldepan'             => $pegawai_cache['gldepan'],
-            'glblk'               => $pegawai_cache['glblk'],
-            'nama'                => $pegawai_cache['nama'],
-            'kunker'              => $pegawai_cache['kunker'],
-            'nunker'              => $pegawai_cache['nunker'],
-            'kjab'                => $pegawai_cache['kjab'],
-            'njab'                => $pegawai_cache['njab'],
-            'keselon'             => $pegawai_cache['keselon'],
-            'neselon'             => $pegawai_cache['neselon'],
-            'kgolru'              => $pegawai_cache['kgolru'],
-            'ngolru'              => $pegawai_cache['ngolru'],
-            'pangkat'             => $pegawai_cache['pangkat'],
-            'photo'               => $pegawai_cache['photo'],
-            'nomor_pengantar'     => $request->nomor_pengantar,
-            'tgl_surat_pengantar' => NUll,
-            'file_konversi_nip'   => $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL,
-            'rekom_jenis'         => $request->rekom_jenis,
-            'keperluan_id'        => $request->keperluan_id,
-            'pengirim_id'         => auth()->user()->id,
-            'penerima_id'         => $this->getPenerimaId(),
-            'penerima_opd_id'     => $this->getPenerimaOpdId(),
-            'catatan'             => $request->catatan,
-         ]);
-        
-         return $pengajuan;
+         return $data;
       } catch (\Throwable $th) {
          throw $th;
       }
@@ -136,7 +133,7 @@ class PengajuanService
             case PengajuanAksi::SELESAI:
             case PengajuanAksi::VERIFIKASI_DATA:
             case PengajuanAksi::PROSES_SURAT:
-               
+
                $penerima     = User::with('opd')->where('uuid', $penerima_uuid)->first();
                PengajuanHistori::create([
                   'pengajuan_id'      => $pengajuan_id,
@@ -174,7 +171,7 @@ class PengajuanService
                'tgl_proses' => Carbon::now()
             ]);
       } catch (\Throwable $th) {
-         throw new CustomException("Kesalahan Mengupdate Data" .$th);
+         throw new CustomException("Kesalahan Mengupdate Data" . $th);
       }
    }
 
