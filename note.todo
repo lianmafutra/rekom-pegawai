@@ -1,11 +1,3 @@
-
-todo
-+ tambah status verifikasi disposisi ketika posisi di admin kasubag dan inspektorat
-+ ketika sudah melakukan verifikasi data tampilkan status verifikasi di menu detail admin OPD
-+ Menu hapus pengajuan hanya untuk superadmin 
-
-+ alert ketika admin opd ingin melanjutkan maka harus virifkasi data dulu / optional
-
 New Task:
    ✔ Delete Pengajuan Superadmin @done (12/12/2022, 2:37:54 PM)
    ☐ logo index link belum tepat
@@ -21,10 +13,10 @@ New Task:
    ☐ chat pesan warna disposisi
    ☐ Verifikasi Data Tampilan , API sudah
    ☐ Dashboard Home
+   ✔ scroll histori pengajuan @done (12/16/2022, 10:05:37 AM)
 
 Question:
    ☐ Apakah bisa user disposisi balek ?
-
 
    bug
    ✔ BUg file konversi nip insert db tetap ada nama meski file kosong @done (12/15/2022, 7:40:19 PM)

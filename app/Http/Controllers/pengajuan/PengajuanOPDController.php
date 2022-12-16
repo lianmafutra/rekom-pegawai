@@ -216,20 +216,7 @@ class PengajuanOPDController extends Controller
             ->uuid($pengajuanUpdate->uuid)
             ->parent_id($pengajuanUpdate->id)
             ->update($pengajuanUpdate->file_konversi_nip);
-
-
-         $upload->file($request->file('file_pengantar_opd'))
-            ->path('pengajuan')
-            ->uuid($pengajuanUpdate->file_pengantar_opd)
-            ->parent_id($pengajuanUpdate->id)
-            ->update($pengajuanUpdate->file_pengantar_opd);
-
-         $upload->file($request->file('file_konversi_nip'))
-            ->path('pengajuan')
-            ->uuid($pengajuanUpdate->file_konversi_nip)
-            ->parent_id($pengajuanUpdate->id)
-            ->update($pengajuanUpdate->file_konversi_nip);
-          
+            
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
       } catch (\Exception $th) {

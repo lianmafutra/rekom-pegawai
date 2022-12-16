@@ -5,6 +5,31 @@
 @endpush
 @section('content')
     <style>
+        .timeline {
+            max-height: 962px;
+            overflow-y: scroll;
+            margin: 0 0 45px;
+            padding: 0;
+            position: relative;
+        }
+
+        .timeline::-webkit-scrollbar-track {
+            border: 1px solid rgb(184, 184, 184);  
+            padding: 2px 0;
+            background-color: #e4e4e4;
+        }
+
+        .timeline::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .timeline::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+            background-color: rgba(175, 175, 175, 0.747);
+            /* border: 1px solid #000; */
+        }
+
         tr td:first-child {
             color: #313131;
             font-weight: bold;

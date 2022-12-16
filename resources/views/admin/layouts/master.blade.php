@@ -8,7 +8,7 @@
     <link rel="icon" href="{{ asset(Setting::getValue('app_favicon')) }}" type="image/png" />
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/fontawesome-free/css/all.min.css') }}">
- 
+
     <link rel="stylesheet" href="{{ asset('template/admin/dist/css/adminlte.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
@@ -30,7 +30,7 @@
         }
     @endphp
     <div class="wrapper">
-      
+
         <!-- Navbar -->
         @include('admin.layouts.navbar')
         <!-- /.navbar -->
@@ -53,7 +53,7 @@
     @include('admin.layouts.script')
     <!-- jQuery UI 1.11.4 -->
     <script src="{{ asset('template/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-   
+
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
@@ -70,11 +70,11 @@
 
 
     <script>
-         $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         const Toast = Swal.mixin({
             toast: true,
@@ -89,7 +89,31 @@
                 title: @json(Session::get('success'))
             })
         }
-        
+
+        if (@json(Session::has('success-modal'))) {
+            Swal.fire({
+                icon: 'success',
+                title: @json(Session::get('success-modal.title')),
+                html: @json(Session::get('success-modal.message')),
+                showCancelButton: true,
+                allowEscapeKey: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+            })
+        }
+
+        if (@json(Session::has('error-modal'))) {
+            Swal.fire({
+                icon: 'error',
+                title: @json(Session::get('success-modal.title')),
+                html: @json(Session::get('success-modal.message')),
+                showCancelButton: true,
+                allowEscapeKey: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+            })
+        }
+
         if (@json(Session::has('error'))) {
             Toast.fire({
                 icon: 'error',

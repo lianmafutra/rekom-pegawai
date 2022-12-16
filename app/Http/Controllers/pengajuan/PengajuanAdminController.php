@@ -75,8 +75,9 @@ class PengajuanAdminController extends Controller
                6,
                $user_pengirim_opd_uuid
             );
+
+            $message = 'Pengajuan Berkas berhasil diselesaikan';
          } else if ($request->aksi_id == 8) {
-            
 
             $penerima  = Pengajuan::with('pengirim')
                ->where('uuid', '=', $request->pengajuan_uuid)
@@ -90,6 +91,7 @@ class PengajuanAdminController extends Controller
                $user_pengirim_opd_uuid, 
                $request->pesan
             );
+            $message = '';
 
          } else {
             $this->pengajuanService->storeHistori(
@@ -107,12 +109,13 @@ class PengajuanAdminController extends Controller
                $request->penerima_uuid
             );
          }
+         $message = '';
        
          DB::commit();
-         return redirect()->back()->with('success', 'Berhasil ', 200)->send();
+         return redirect()->back()->with('success-modal',['title' => 'Berhasil', 'message' => $message], 200)->send();
       } catch (\Throwable $th) {
          DB::rollback();
-         return redirect()->back()->with('error', 'Gagal : ' . $th->getMessage(), 400)->send();
+         return redirect()->back()->with('error-modal', 'Gagal : ' . $th->getMessage(), 400)->send();
       }
    }
 
