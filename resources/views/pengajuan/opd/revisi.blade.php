@@ -12,6 +12,7 @@
             font-size: 11px;
             color: #9459fd;
         }
+
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -23,6 +24,7 @@
             margin-right: auto;
             position: absolute
         }
+
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -33,12 +35,14 @@
             object-fit: cover;
             height: 300px;
         }
+
         .form-control {
             font-size: 14px !important;
         }
+
         /* .filepond--file {
-                                                                                    background: #28a745;
-                                                                                } */
+                                                                                        background: #28a745;
+                                                                                    } */
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
@@ -69,8 +73,7 @@
                                             <div class="form-group">
                                                 <input hidden name="penerima_uuid"
                                                     value="26cabc5d-7c32-4e97-83f0-a02a226783c5">
-                                                <input hidden name="pengajuan_uuid"
-                                                    value="{{ $pengajuan->uuid }}">
+                                                <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
                                             </div>
                                             <x-datepicker id='tgl_pengantar' label='Tanggal Pengantar Surat'
                                                 required='true' />
@@ -188,17 +191,21 @@
                     storeAsFile: true,
                     allowDownloadByUrl: true,
                     files: [{
-                        source: @json($pengajuan->file_sk ? $pengajuan->file_sk[0]->file_url : ''),
+                        source: @json($pengajuan->file_sk->first() != null  ? $pengajuan->file_sk->first()->file_url : ''),
                     }]
                 });
             }
 
+            file_konversi_nip.setOptions({
+                storeAsFile: true,
+            })
+            
             if (@json($pengajuan->file_konversi_nip) !== null) {
                 file_konversi_nip.setOptions({
                     storeAsFile: true,
                     allowDownloadByUrl: true,
                     files: [{
-                        source: @json($pengajuan->file_konversi_nip ? $pengajuan->file_konversi_nip[0]->file_url : ''),
+                        source: @json($pengajuan->file_konversi->first() != null ? $pengajuan->file_konversi->first()->file_url : ''),
                     }]
                 });
             }
@@ -208,7 +215,7 @@
                     storeAsFile: true,
                     allowDownloadByUrl: true,
                     files: [{
-                        source: @json($pengajuan->file_pengantar ? $pengajuan->file_pengantar[0]->file_url : ''),
+                        source: @json($pengajuan->file_pengantar->first() != null  ? $pengajuan->file_pengantar->first()->file_url : ''),
                     }]
                 });
             }
@@ -260,7 +267,7 @@
                     },
                     success: (response) => {
                         if (response) {
-                           console.log(response)
+                            console.log(response)
                             this.reset()
                             Swal.fire({
                                 icon: 'success',
@@ -271,9 +278,9 @@
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
-                              //   if (result.isConfirmed) {
-                              //       window.location.href = @json(route('pengajuan.index'))
-                              //   }
+                                //   if (result.isConfirmed) {
+                                //       window.location.href = @json(route('pengajuan.index'))
+                                //   }
                             })
                             swal.hideLoading()
                         }
@@ -293,6 +300,7 @@
                     }
                 });
             });
+
             function printErrorMsg(msg) {
                 let dataku = [];
                 let dataku2 = [];
@@ -310,6 +318,7 @@
                     $('.' + element + '_err').hide();
                 });
             }
+
             function getDifference(a, b) {
                 return a.filter(element => {
                     return !b.includes(element);
@@ -329,6 +338,7 @@
                 getDataPegawai(nip);
             });
             getDataPegawai(@json($pengajuan->nip))
+
             function getDataPegawai(nip) {
                 $('.profile-user-img').attr("src", "");
                 $('.loading').css('display', 'block')

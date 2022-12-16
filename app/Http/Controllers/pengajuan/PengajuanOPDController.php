@@ -1,5 +1,5 @@
 <?php
-
+// 
 namespace App\Http\Controllers\pengajuan;
 
 use App\Config\PengajuanAksi;
@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class PengajuanOPDController extends Controller
@@ -157,7 +158,7 @@ class PengajuanOPDController extends Controller
 
    public function revisi($pengajuan_uuid, Pengajuan $pengajuan, User $user)
    {
-
+     
       abort_if(Gate::denies('pengajuan revisi'), 403);
       $x['title']       = 'Revisi Pengajuan';
       $x['url_foto']    = Config::get('global.url.bkd.foto');
@@ -172,11 +173,9 @@ class PengajuanOPDController extends Controller
 
    public function updateRevisi(Request $request)
    {
-     
+
       try {
          DB::beginTransaction();
-
-
 
          // default opd ,kirim ke admin inspektorat (penerima id)
          $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";
@@ -185,25 +184,39 @@ class PengajuanOPDController extends Controller
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
 
          // Update data pengajuan ke DB
-         $pengajuanUpdate =  $this->pengajuanService->updatePengajuan($pegawai_cache, $request);
-       
+         $pengajuanUpdate = $this->pengajuanService->updatePengajuan($pegawai_cache, $request);
 
-         //Insert data histori pengajuan ke DB
+         //Insert data histori pengajuan ke DB dengan status revisi
          $this->pengajuanService->storeHistori(
             $request->pengajuan_uuid,
             PengajuanAksi::REVISI,
             $admin_inspektorat_uuid
          );
 
-         // Upload File Syarat Rekomendasi
+         //Upload Syarat File 
+         $UpdateFile = new UploadFile();
 
-         $upload = new uploadFile();
-
-         $upload->file($request->file('file_sk'))
+         $UpdateFile
+            ->file($request->file('file_sk'))
             ->path('pengajuan')
-            ->uuid($pengajuanUpdate->file_sk_terakhir)
+            ->uuid($pengajuanUpdate->uuid)
             ->parent_id($pengajuanUpdate->id)
             ->update($pengajuanUpdate->file_sk_terakhir);
+
+         $UpdateFile
+            ->file($request->file('file_pengantar_opd'))
+            ->path('pengajuan')
+            ->uuid($pengajuanUpdate->uuid)
+            ->parent_id($pengajuanUpdate->id)
+            ->update($pengajuanUpdate->file_pengantar_opd);
+
+         $UpdateFile
+            ->file($request->file('file_konversi_nip'))
+            ->path('pengajuan')
+            ->uuid($pengajuanUpdate->uuid)
+            ->parent_id($pengajuanUpdate->id)
+            ->update($pengajuanUpdate->file_konversi_nip);
+
 
          $upload->file($request->file('file_pengantar_opd'))
             ->path('pengajuan')
@@ -221,7 +234,7 @@ class PengajuanOPDController extends Controller
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
       } catch (\Exception $th) {
          DB::rollBack();
-         return $this->error('Pengajuan Berkas Rekomendasi Gagal Dikirim' . $th, 400);
+         return $this->error('Pengajuan Berkas Rekomendasi Gagal Dikirim', 400);
       }
    }
 
