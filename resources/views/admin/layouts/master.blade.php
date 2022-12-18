@@ -8,13 +8,12 @@
     <link rel="icon" href="{{ asset(Setting::getValue('app_favicon')) }}" type="image/png" />
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/fontawesome-free/css/all.min.css') }}">
-
     <link rel="stylesheet" href="{{ asset('template/admin/dist/css/adminlte.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
+    
 
     @stack('style')
     @stack('css')
@@ -67,7 +66,6 @@
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
-
 
     <script>
         $.ajaxSetup({

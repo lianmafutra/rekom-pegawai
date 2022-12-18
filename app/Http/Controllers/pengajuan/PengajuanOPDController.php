@@ -132,7 +132,7 @@ class PengajuanOPDController extends Controller
 
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
-      } catch (\Exception $th) {
+      } catch (\Throwable $th) {
          DB::rollBack();
          return $this->error('Pengajuan Berkas Rekomendasi Gagal Dikirim' . $th, 400);
       }
