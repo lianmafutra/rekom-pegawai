@@ -1,14 +1,15 @@
 <style>
-   .bs-example{
-       margin: 20px;
-   }
-   .accordion .fa{
-       margin-right: 0.5rem;
+    .bs-example {
+        margin: 20px;
+    }
+
+    .accordion .fa {
+        margin-right: 0.5rem;
         font-size: 24px;
         font-weight: bold;
-       position: relative;
-      top: 2px;
-   }
+        position: relative;
+        top: 2px;
+    }
 </style>
 <div class="modal fade" id="modal_verifikasi">
     <div class="modal-dialog modal-lg">
@@ -31,34 +32,88 @@
                                 <div class="konten_verifikasi">
                                     {{-- content from Ajax --}}
                                     <div class="bs-example">
-                                       <div class="accordion" id="accordionExample">
-                                          
-                                           <div class="card">
-                                               <div class="card-header" id="headingTwo">
-                                                   <h2 class="mb-0">
-                                                       <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"><i class="fa fa-angle-right"></i>Pelanggaran Hukuman Disiplin</button>
-                                                   </h2>
-                                               </div>
-                                               <div id="collapseTwo" class="collapse " aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                                   <div class="card-body bg_pelanggaran" style="background: aliceblue">
-                                                       <p>Bootstrap is a sleek, intuitive, and powerful front-end framework for faster and easier web development. It is a collection of CSS and HTML conventions. <a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank">Learn more.</a></p>
-                                                   </div>
-                                               </div>
-                                           </div>
-                                           <div class="card">
-                                               <div class="card-header" id="headingThree">
-                                                   <h2 class="mb-0">
-                                                       <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"><i class="fa fa-angle-right"></i>Pelanggaran Temuan </button>                     
-                                                   </h2>
-                                               </div>
-                                               <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                                   <div class="card-body" style="background: aliceblue">
-                                                       <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="https://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
-                                                   </div>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>
+                                        <div class="accordion" id="accordionExample">
+
+                                            <div class="card">
+                                                <div class="card-header" id="headingTwo">
+                                                    <h2 class="mb-0">
+                                                        <button type="button" class="btn btn-link collapsed"
+                                                            data-toggle="collapse" data-target="#collapseTwo"><i
+                                                                class="fa fa-angle-right"></i>Pelanggaran Hukuman
+                                                            Disiplin</button>
+                                                    </h2>
+                                                </div>
+                                                <div id="collapseTwo" class="collapse " aria-labelledby="headingTwo"
+                                                    data-parent="#accordionExample">
+                                                    <div class="card-body bg_pelanggaran" style="background: aliceblue">
+                                                        <table class="table table-bordered" style="width:100%">
+                                                            <tr>
+                                                                <th>NIP</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Nama:</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Ketentuan</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Alasan</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Hukuman</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Tgl Input</th>
+                                                                <td></td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header" id="headingThree">
+                                                    <h2 class="mb-0">
+                                                        <button type="button" class="btn btn-link collapsed"
+                                                            data-toggle="collapse" data-target="#collapseThree"><i
+                                                                class="fa fa-angle-right"></i>Pelanggaran Temuan
+                                                        </button>
+                                                    </h2>
+                                                </div>
+                                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                                    data-parent="#accordionExample">
+                                                    <div class="card-body" style="background: aliceblue">
+                                                        <table class="table table-bordered" style="width:100%">
+                                                            <tr>
+                                                                <th>NIP</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Nama:</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>No LHP</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Tahun Temuan</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Tgl Input</th>
+                                                                <td></td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -75,8 +130,7 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-       
+    $(document).ready(function() {
+
     });
 </script>
-
