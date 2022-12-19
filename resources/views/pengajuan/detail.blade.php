@@ -433,7 +433,7 @@
                                 break;
                             case 'tolak':
                                 data_tracking =
-                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan} <div style="margin-top:10px" class="alert alert-secondary alert-dismissible">
+                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
                                   
                                     ${$item.pesan}
                                     </div>`
