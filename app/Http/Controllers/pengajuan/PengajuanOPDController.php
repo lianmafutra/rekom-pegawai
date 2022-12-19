@@ -47,8 +47,6 @@ class PengajuanOPDController extends Controller
 
 
       if (request()->ajax()) {
-
-
          return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
@@ -82,33 +80,25 @@ class PengajuanOPDController extends Controller
    public function store(PengajuanOPDStoreRequest $request)
    {
       abort_if(Gate::denies('pengajuan store'), 403);
-
       try {
-
          DB::beginTransaction();
-
          // default opd ,kirim ke admin inspektorat (penerima id)
          $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";
-
          // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
-
          // Insert data pengajuan ke DB
          $pengajuanStore = $this->pengajuanService->storePengajuan($pegawai_cache, $request);
-
          // Insert data histori pengajuan ke DB
          $this->pengajuanService->storeHistori(
             $pengajuanStore->uuid,
             PengajuanAksi::KIRIM_BERKAS,
             $admin_inspektorat_uuid
          );
-
          // upload 3 file syarat pengajuan
-
          $upload_file_sk        = new UploadFile();
          $upload_file_pengantar = new UploadFile();
          $upload_file_konversi  = new UploadFile();
-
+         
          $upload_file_sk->file($request->file('file_sk'))
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_sk_terakhir)
@@ -128,8 +118,6 @@ class PengajuanOPDController extends Controller
                ->parent_id($pengajuanStore->id)
                ->save();
          }
-
-
          DB::commit();
          return $this->success('Pengajuan Berkas Rekomendasi Berhasil Dikirim');
       } catch (\Throwable $th) {

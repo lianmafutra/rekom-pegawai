@@ -14,7 +14,7 @@
         }
 
         .timeline::-webkit-scrollbar-track {
-            border: 1px solid rgb(184, 184, 184);  
+            border: 1px solid rgb(184, 184, 184);
             padding: 2px 0;
             background-color: #e4e4e4;
         }
@@ -330,19 +330,8 @@
     <script>
         $(document).ready(function() {
 
-         
-        $(".collapse.show").each(function(){
-        	$(this).prev(".card-header").find(".fa").addClass("fa-angle-down").removeClass("fa-angle-right");
-        });
-        
-       
-        $(".collapse").on('show.bs.collapse', function(){
-        	$(this).prev(".card-header").find(".fa").removeClass("fa-angle-right").addClass("fa-angle-down");
-        }).on('hide.bs.collapse', function(){
-        	$(this).prev(".card-header").find(".fa").removeClass("fa-angle-down").addClass("fa-angle-right");
-        });
 
-        
+
             $('.btn_view_file').click(function(e) {
                 e.preventDefault();
                 let url = $(this).attr('data-url');
@@ -374,13 +363,46 @@
                 $('#modal_tolak').modal('show')
             });
             $("#btn_verifikasi").click(function() {
+
                 $('#modal_verifikasi').modal('show')
                 let nip = $('#nip').text()
                 $.ajax({
                     url: `{{ url('admin/pegawai/verifikasi/pelanggaran/${nip}') }}`,
                     type: 'GET',
+                    beforeSend: function() {
+                        $('#konten_verifikasi').empty();
+                        $('.loading_verifikasi').show()
+                    },
                     success: function(json) {
-                        console.log(json)
+
+                        setTimeout(function() {
+                            $('#konten_verifikasi').append(json.html).ready(function() {
+                                $(".collapse.show").each(function() {
+                                    $(this).prev(".card-header").find(
+                                            ".fa")
+                                        .addClass("fa-angle-down")
+                                        .removeClass(
+                                            "fa-angle-right");
+                                });
+                                $(".collapse").on('show.bs.collapse',
+                            function() {
+                                    $(this).prev(".card-header").find(
+                                            ".fa")
+                                        .removeClass("fa-angle-right")
+                                        .addClass(
+                                            "fa-angle-down");
+                                }).on('hide.bs.collapse', function() {
+                                    $(this).prev(".card-header").find(
+                                            ".fa")
+                                        .removeClass("fa-angle-down")
+                                        .addClass(
+                                            "fa-angle-right");
+                                });
+                            })
+                            $('.loading_verifikasi').hide()
+                        }, 1000);
+
+                        
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         alert("Gagal Verifikasi Data, silahkan coba lagi ...")

@@ -47,7 +47,7 @@
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="card-body table-responsive">
-                                        <table id="tabel_rekom" class="table table-bordered  " style="width:100%">
+                                        <table id="tabel_rekom" class="table table-bordered" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
