@@ -2,7 +2,6 @@
     .bs-example {
         margin: 20px;
     }
-
     .accordion .fa {
         margin-right: 0.5rem;
         font-size: 24px;
@@ -26,9 +25,8 @@
                         <div class="row">
                             <div style="min-height: 100px" class="col-md-12">
                               <div id="konten_verifikasi">
-                                       
+                                 {{-- data from ajax --}}
                               </div>
-                                
                             </div>
                         </div>
                         <div class="overlay loading_verifikasi" style="background-color:rgb(219 219 219 / 70%)">
