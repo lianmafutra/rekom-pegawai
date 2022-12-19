@@ -11,10 +11,14 @@ use Throwable;
 
 class uploadFile implements uploadFileBuilder
 {
+
+
+
    protected $path;
    protected $uuid;
    protected $parent_id;
    protected $file;
+  
 
    public function file($file)
    {
