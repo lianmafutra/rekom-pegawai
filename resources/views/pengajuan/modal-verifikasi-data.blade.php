@@ -25,20 +25,10 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div style="min-height: 100px" class="col-md-12">
-                                <center>
-                                    {{-- <h4 style="color: green">Data Pelanggaran tidak ditemukan dalam database</h4> --}}
-                                    <h6 style="color: red">1 Data Pelanggaran Ditemukan dalam database</h6>
-                                </center>
-                                <div class="bs-example">
-                                 <div class="accordion" id="accordionExample">
-                                    <div id="konten_verifikasi">
+                              <div id="konten_verifikasi">
                                        
-                                   
-                                    </div>
-
-                                  
-                                 </div>
-                             </div>
+                              </div>
+                                
                             </div>
                         </div>
                         <div class="overlay loading_verifikasi" style="background-color:rgb(219 219 219 / 70%)">
