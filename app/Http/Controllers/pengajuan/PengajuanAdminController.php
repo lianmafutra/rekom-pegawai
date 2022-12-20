@@ -13,6 +13,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Gate;
 
@@ -21,12 +22,18 @@ class PengajuanAdminController extends Controller
 {
 
    private $pengajuanService;
-   public function __construct(PengajuanService $pengajuanService){
+   public function __construct(PengajuanService $pengajuanService)
+   {
       $this->pengajuanService = $pengajuanService;
    }
 
    public function index()
    {
+
+    
+
+    
+
       abort_if(Gate::denies('pengajuan verifikasi index'), 403);
 
       $x['title'] = 'Pengajuan Verifikasi';
@@ -47,7 +54,7 @@ class PengajuanAdminController extends Controller
                return view('pengajuan.admin.action', compact('data'));
             })
             ->editColumn('status', function ($data) {
-              $status = $this->pengajuanService->cekPengajuanStatus($data->uuid);
+               $status = $this->pengajuanService->cekPengajuanStatus($data->uuid);
                return view('pengajuan.status', compact('status'));
             })
             ->rawColumns(['action'])
@@ -88,11 +95,10 @@ class PengajuanAdminController extends Controller
             $this->pengajuanService->storeHistori(
                $request->pengajuan_uuid,
                8,
-               $user_pengirim_opd_uuid, 
+               $user_pengirim_opd_uuid,
                $request->pesan
             );
             $message = '';
-
          } else {
             $this->pengajuanService->storeHistori(
                $request->pengajuan_uuid,
@@ -110,9 +116,9 @@ class PengajuanAdminController extends Controller
             );
          }
          $message = '';
-       
+
          DB::commit();
-         return redirect()->back()->with('success-modal',['title' => 'Berhasil', 'message' => $message], 200)->send();
+         return redirect()->back()->with('success-modal', ['title' => 'Berhasil', 'message' => $message], 200)->send();
       } catch (\Throwable $th) {
          DB::rollback();
          return redirect()->back()->with('error-modal', 'Gagal : ' . $th->getMessage(), 400)->send();
