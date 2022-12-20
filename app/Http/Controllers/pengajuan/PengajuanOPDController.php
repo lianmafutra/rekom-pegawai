@@ -95,23 +95,23 @@ class PengajuanOPDController extends Controller
             $admin_inspektorat_uuid
          );
          // upload 3 file syarat pengajuan
-         $upload_file_sk        = new UploadFile();
-         $upload_file_pengantar = new UploadFile();
-         $upload_file_konversi  = new UploadFile();
+         $uploadFile = new UploadFile();
          
-         $upload_file_sk->file($request->file('file_sk'))
+         $uploadFile->file($request->file('file_sk'))
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_sk_terakhir)
-            ->parent_id($pengajuanStore->id)->save();
-
-         $upload_file_pengantar
+            ->parent_id($pengajuanStore->id)
+            ->save();
+            
+         $uploadFile
             ->file($request->file('file_pengantar_opd'))
             ->path('pengajuan')
             ->uuid($pengajuanStore->file_pengantar_opd)
-            ->parent_id($pengajuanStore->id)->save();
+            ->parent_id($pengajuanStore->id)
+            ->save();
 
          if ($request->hasFile('file_konversi_nip')) {
-            $upload_file_konversi //optional
+            $uploadFile //optional
                ->file($request->file('file_konversi_nip'))
                ->path('pengajuan')
                ->uuid($pengajuanStore->file_konversi_nip)

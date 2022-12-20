@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpWord\TemplateProcessor;
 use Throwable;
 
 class uploadFile implements uploadFileBuilder
@@ -18,6 +20,7 @@ class uploadFile implements uploadFileBuilder
    protected $uuid;
    protected $parent_id;
    protected $file;
+   protected $save;
   
 
    public function file($file)
@@ -40,8 +43,13 @@ class uploadFile implements uploadFileBuilder
       $this->parent_id =  $parent_id;
       return $this;
    }
+
+
+
+
    public function save()
    {
+     
       $name_uniqe = null;
       $custom_path = null;
       $uuid = null;
@@ -68,6 +76,7 @@ class uploadFile implements uploadFileBuilder
             $this->file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $this->path, $name_uniqe);
             DB::commit();
          }
+         return $this;
       } catch (\Throwable $th) {
          DB::rollBack();
          throw $th;
@@ -126,4 +135,6 @@ class uploadFile implements uploadFileBuilder
          throw $th;
       }
    }
+
+  
 }
