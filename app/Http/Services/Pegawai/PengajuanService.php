@@ -269,7 +269,7 @@ class PengajuanService
             elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             break;
          case  Role::isInspektur:
-            if ($status == PengajuanAksi::VERIFIKASI_DATA) $aksi = ['teruskan'];
+            if ($status == PengajuanAksi::VERIFIKASI_DATA) $aksi = ['setujui'];
             elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             break;
          default:
@@ -304,12 +304,5 @@ class PengajuanService
       }
    }
 
-   function generateFileRekom()
-   {
-      // data user
-      // jenis rekom 
-      // jenis keperluan
-      //file TTD
-      // file barcode
-   }
+   
 }

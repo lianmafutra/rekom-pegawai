@@ -2,6 +2,7 @@
 @push('css')
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.css') }}">
 @endpush
 @section('content')
     <style>
@@ -129,7 +130,6 @@
         </div>
         <!-- /.content-header -->
         <!-- Main content -->
-
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -323,15 +323,18 @@
     @include('pengajuan.modal-selesai')
     @include('pengajuan.modal-tolak')
     @include('pengajuan.modal-verifikasi-data')
+    @include('pengajuan.modal-setujui')
 @endsection
 @push('js')
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-
-
-
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $('.btn_view_file').click(function(e) {
                 e.preventDefault();
                 let url = $(this).attr('data-url');
@@ -352,18 +355,143 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });
+            })
             $("#btn_teruskan").click(function() {
                 $('#modal_teruskan').modal('show')
-            });
+            })
             $("#btn_selesai").click(function() {
                 $('#modal_selesai').modal('show')
-            });
+            })
             $("#btn_tolak").click(function() {
                 $('#modal_tolak').modal('show')
-            });
-            $("#btn_verifikasi").click(function() {
+            })
+            $("#btn_setujui").click(function() {
+                $('#modal_setujui').modal('show')
+            })
 
+            $("#btn_submit_setujui").click(function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Konfirmasi Setujui Permohonan',
+                    text: 'Apakah anda yakin ingin menyetujui permohonan ini ?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Lanjutkan',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#form_setujui").submit();
+                    }
+                })
+            });
+
+
+
+            $("#form_setujui").submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: @json(route('pengajuan.aksi.cetak')),
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+
+                    success: (response) => {
+                        if (response) {
+                            this.reset()
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil Mengirim Berkas',
+                                html: 'Berkas anda akan segera di verifikasi oleh Dinas Inspektorat Kota Jambi ',
+                                showCancelButton: true,
+                                allowEscapeKey: false,
+                                showCancelButton: false,
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                swal.hideLoading()
+                            })
+                            swal.hideLoading()
+                        }
+                    },
+                    error: function(response) {
+
+
+
+                        $('.error').hide();
+
+
+                        swal.hideLoading()
+
+                        let text = '';
+                        printErrorMsg(response.responseJSON.errors);
+
+                        if (response.status == 422) {
+                            text = "Periksa kembali inputan anda"
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan...',
+                            text: response.responseJSON.error,
+                        })
+                    }
+
+
+
+                });
+            });
+
+            function printErrorMsg(msg) {
+                let dataku = [];
+                let dataku2 = [];
+                $.each(msg, function(key, value) {
+                    $('.text-danger').each(function() {
+                        let id = $(this).attr("class").split(" ").pop()
+                            .slice(0, -4)
+                        dataku.push(id)
+                    });
+                    dataku2.push(key)
+                    $('.' + key + '_err').text(value);
+                    $('.' + key + '_err').show();
+
+
+
+                });
+                let uniqueChars = [...new Set(dataku)];
+
+                getDifference(uniqueChars, dataku2).forEach(element => {
+                    $('.' + element + '_err').hide();
+                });
+
+
+            }
+
+            function getDifference(a, b) {
+                return a.filter(element => {
+                    return !b.includes(element);
+                });
+            }
+
+            $("#show_hide_password a").on('click', function(event) {
+                event.preventDefault();
+                if ($('#show_hide_password input').attr("type") == "text") {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password i').addClass("fa-eye-slash");
+                    $('#show_hide_password i').removeClass("fa-eye");
+                } else if ($('#show_hide_password input').attr("type") == "password") {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password i').removeClass("fa-eye-slash");
+                    $('#show_hide_password i').addClass("fa-eye");
+                }
+            });
+
+
+            $("#btn_verifikasi").click(function() {
                 $('#modal_verifikasi').modal('show')
                 let nip = $('#nip').text()
                 $.ajax({
@@ -374,7 +502,6 @@
                         $('.loading_verifikasi').show()
                     },
                     success: function(json) {
-
                         setTimeout(function() {
                             $('#konten_verifikasi').append(json.html).ready(function() {
                                 $(".collapse.show").each(function() {
@@ -385,13 +512,13 @@
                                             "fa-angle-right");
                                 });
                                 $(".collapse").on('show.bs.collapse',
-                            function() {
-                                    $(this).prev(".card-header").find(
-                                            ".fa")
-                                        .removeClass("fa-angle-right")
-                                        .addClass(
-                                            "fa-angle-down");
-                                }).on('hide.bs.collapse', function() {
+                                    function() {
+                                        $(this).prev(".card-header").find(
+                                                ".fa")
+                                            .removeClass("fa-angle-right")
+                                            .addClass(
+                                                "fa-angle-down");
+                                    }).on('hide.bs.collapse', function() {
                                     $(this).prev(".card-header").find(
                                             ".fa")
                                         .removeClass("fa-angle-down")
@@ -401,21 +528,17 @@
                             })
                             $('.loading_verifikasi').hide()
                         }, 1000);
-
-                        
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         alert("Gagal Verifikasi Data, silahkan coba lagi ...")
                     }
                 })
             });
-
             $.ajax({
                 url: @json(route('pengajuan.histori', $pengajuan->uuid)),
                 type: 'GET',
                 success: function(json) {
                     $('.loading_histori').hide()
-
                     json.data.histori.forEach($item => {
                         let data_tracking = '';
                         switch ($item.aksi.status) {
@@ -434,7 +557,6 @@
                             case 'tolak':
                                 data_tracking =
                                     `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
-                                  
                                     ${$item.pesan}
                                     </div>`
                                 break;
@@ -448,7 +570,6 @@
                            <div class="timeline-item">
                               <div class="timeline-body">
                                     ${data_tracking} 
-                                     
                               </div>
                               <div class="dropdown-divider"></div>
                               <div class="timeline-footer">
@@ -462,15 +583,9 @@
                     alert("Gagal Mengambil data histori, silahkan coba lagi ...")
                 }
             })
-
         });
-
         $('.select2bs4').select2({
             theme: 'bootstrap4',
         })
-        $('.horizontalLine').css({
-            left: $('.timeline-badge').first().position().left,
-            width: $('.timeline-item-last').position().left
-        });
     </script>
 @endpush

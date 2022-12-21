@@ -3,6 +3,7 @@
 use App\Http\Controllers\MasterRekomController;
 use App\Http\Controllers\Pegawai\PegawaiSyncController;
 use App\Http\Controllers\Pengajuan\PengajuanAdminController;
+use App\Http\Controllers\Pengajuan\PengajuanAksiController;
 use App\Http\Controllers\pengajuan\PengajuanOPDController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
    });
    Route::resource('master-rekom', MasterRekomController::class);
+
+   Route::post('pengajuan/aksi/cetak-rekom', [PengajuanAksiController::class, 'cetakRekom'])->name('pengajuan.aksi.cetak');
 
    Route::resource('pengajuan', PengajuanOPDController::class);
    Route::get('pengajuan/revisi/{uuid}',[PengajuanOPDController::class, 'revisi'])->name('pengajuan.revisi');

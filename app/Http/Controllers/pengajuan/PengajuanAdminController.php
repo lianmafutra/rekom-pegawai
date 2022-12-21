@@ -30,10 +30,6 @@ class PengajuanAdminController extends Controller
    public function index()
    {
 
-    
-
-    
-
       abort_if(Gate::denies('pengajuan verifikasi index'), 403);
 
       $x['title'] = 'Pengajuan Verifikasi';
@@ -108,7 +104,6 @@ class PengajuanAdminController extends Controller
          }
 
          if ($user->getRoleName() == Role::isInspektur) {
-
             $this->pengajuanService->storeHistori(
                $request->pengajuan_uuid,
                PengajuanAksi::PROSES_SURAT,
@@ -170,7 +165,6 @@ class PengajuanAdminController extends Controller
          compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi'])
       );
    }
-
 
    public function destroy($uuid)
    {

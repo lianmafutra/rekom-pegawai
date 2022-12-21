@@ -86,8 +86,10 @@ class PengajuanOPDController extends Controller
          $admin_inspektorat_uuid = "26cabc5d-7c32-4e97-83f0-a02a226783c5";
          // Ambil data pegawai dari cache ( API BKD )
          $pegawai_cache = $this->pegawaiService->filterByNIP($request->pegawai)[0];
+         
          // Insert data pengajuan ke DB
          $pengajuanStore = $this->pengajuanService->storePengajuan($pegawai_cache, $request);
+
          // Insert data histori pengajuan ke DB
          $this->pengajuanService->storeHistori(
             $pengajuanStore->uuid,

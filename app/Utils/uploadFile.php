@@ -58,14 +58,11 @@ class uploadFile implements uploadFileBuilder
             DB::beginTransaction();
             $name_ori = $this->file->getClientOriginalName();
             $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension());
-            $tahun       = Carbon::now()->format('Y');
-            $bulan       = Carbon::now()->format('m');
-            $custom_path = $tahun . '/' . $bulan . '/' . $this->path;
-            $path        = storage_path('app/public/' . $custom_path);
-            if (!FacadesFile::isDirectory($path)) {
-               FacadesFile::makeDirectory($path, 0777, true, true);
-            }
-            File::create([
+            
+            $custom_path = $this->getPath($this->path);
+            Log::info('Path file = ' .$custom_path);
+
+            $file = File::create([
                'file_id'        => $this->uuid,
                'parent_file_id' => $this->parent_id,
                'name_origin'    => $name_ori,
@@ -73,7 +70,9 @@ class uploadFile implements uploadFileBuilder
                'path'           => $custom_path,
                'size'           => $this->file->getSize(),
             ]);
-            $this->file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $this->path, $name_uniqe);
+            Log::info($file);
+            $this->file->storeAs('public/'.$custom_path, $name_uniqe);
+          
             DB::commit();
          }
          return $this;
@@ -82,6 +81,7 @@ class uploadFile implements uploadFileBuilder
          throw $th;
       }
    }
+
    public function update($file_id)
    {
       $name_uniqe = null;
@@ -95,13 +95,10 @@ class uploadFile implements uploadFileBuilder
                DB::beginTransaction();
                $name_ori = $this->file->getClientOriginalName();
                $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension());
-               $tahun       = Carbon::now()->format('Y');
-               $bulan       = Carbon::now()->format('m');
-               $custom_path = $tahun . '/' . $bulan . '/' . $this->path;
-               $path        = storage_path('app/public/' . $custom_path);
-               if (!FacadesFile::isDirectory($path)) {
-                  FacadesFile::makeDirectory($path, 0777, true, true);
-               }
+     
+               
+              $custom_path = $this->getPath($this->path);
+
                if ($old_file == NULL) {
                   File::create([
                      'file_id'        => $file_id,
@@ -123,7 +120,7 @@ class uploadFile implements uploadFileBuilder
                   );
                   Log::info('update');
                }
-               $this->file->storeAs('public/' . $tahun . '/' . $bulan . '/' . $this->path, $name_uniqe);
+               $this->file->storeAs('public/'.$custom_path, $name_uniqe);
                DB::commit();
             } else {
                Log::info('Abaikan');
@@ -134,6 +131,17 @@ class uploadFile implements uploadFileBuilder
          DB::rollBack();
          throw $th;
       }
+   }
+
+   public function getPath($folder){
+      $tahun       = Carbon::now()->format('Y');
+      $bulan       = Carbon::now()->format('m');
+      $custom_path = $tahun . '/' . $bulan . '/' . $folder;
+      $path        = storage_path('app/public/' . $custom_path);
+      if (!FacadesFile::isDirectory($path)) {
+         FacadesFile::makeDirectory($path, 0777, true, true);
+      }
+      return $custom_path;
    }
 
   

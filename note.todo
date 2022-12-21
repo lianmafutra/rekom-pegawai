@@ -10,7 +10,7 @@ New Task:
    ☐ Master Data user di admin inspektorat
    ☐ sync otomatis trigger ketika cache pegawai null
    ☐ CLone all photo BKD ke server kominfo
-   ☐ chat pesan warna disposisi
+   ✔ chat pesan warna disposisi @done (12/21/2022, 8:33:34 AM)
    ✔ Verifikasi Data Tampilan , API sudah @done (12/19/2022, 11:02:10 AM)
    ☐ Dashboard Home
    ✔ scroll histori pengajuan @done (12/16/2022, 10:05:37 AM)
@@ -22,6 +22,10 @@ Question:
    ✔ BUg file konversi nip insert db tetap ada nama meski file kosong @done (12/15/2022, 7:40:19 PM)
 
 
+   
+   cetak rekom
 
-   tail -f storage/logs/laravel.log  
-   echo "" > storage/logs/laravel.log
+   pemohon opd, nama, nip, pangkat, jabatan, unit kerja
+   pengirim opd, penanda tangan,
+   surat no, sifat, lampiran, hal, tanggal, jenis_rekom
+   jenis_ttd 

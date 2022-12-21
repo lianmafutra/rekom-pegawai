@@ -8,7 +8,9 @@ return [
          'foto'    => 'https://bkd.jambikota.go.id/simpeg/photo/'
       ]
    ],
-   // Rekom Jenis Pengajuan 
+
+   'env'                 => env('ENV', ''),
+
    'rekom_jenis'=>[
       'DISIPLIN' => 'Bebas Hukuman Disiplin',
       'TEMUAN'   => 'Bebas Temuan'
@@ -31,6 +33,7 @@ return [
       'is_admin_opd'         => 'admin_opd',
       'is_admin_kasubag'     => 'admin_kasubag',
       'is_inspektur'         => 'inspektur'
-   ]
-    
+   ],
+
+ 
 ];

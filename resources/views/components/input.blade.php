@@ -5,6 +5,6 @@
                 @endif
     </label>
     <input id="{{ $id }}" type="text" class="form-control" name="{{ $id }}"
-        placeholder="Nomor Surat Pengantar" value="">
+        placeholder="" value="">
     <span class="text-danger error-text {{ $id }}_err"></span>
 </div>
