@@ -31,14 +31,13 @@ class PengajuanAksiController extends Controller
          ->ttd(SuratTtd::TTD_MANUAL)
          ->cetak();
 
-         return $this->success($suratCetak);
+         // return $this->success($suratCetak);
 
          DB::commit();
       } catch (\Throwable $th) {
          return $this->error('gagal' .$th, 400);
-
          DB::rollBack();
-         throw $th;
+         
       }
 
     }
