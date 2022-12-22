@@ -4,6 +4,7 @@ namespace App\Http\Services\Surat;
 
 use App\Config\SuratTtd;
 use App\Exceptions\CustomException;
+use App\Http\Services\Pegawai\PegawaiService;
 use App\Utils\RemoveSpace;
 use App\Utils\uploadFile;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,7 @@ class SuratCetak
    protected $surat;
 
 
-   public function pengajuan(string $pengajuan)
+   public function pengajuan($pengajuan)
    {
       $this->pengajuan = $pengajuan;
       return $this;
@@ -51,6 +52,7 @@ class SuratCetak
          $path_surat = '';
          $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo('surat-rekom', PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . 'docx');
          $path_rekom = 'public/' . $uploadFile->getPath('surat_rekom');
+         $user_ttd = (new PegawaiService())->filterByNIP(auth()->user()->nip)[0];
 
          // --------- get path template docx sesuai jenis TTD surat rekom  --------- //
          switch ($this->ttd) {
@@ -61,14 +63,37 @@ class SuratCetak
                $path_surat = Storage::path('public/template/surat_rekom_digital.docx');
                break;
          }
-
+         // dd($this->pengajuan->njab);
          // -- generate file word dan parsing data -- //
          $templateProcessor = new TemplateProcessor($path_surat);
          $templateProcessor->setValues([
-            'nama' => 'Lian Mafutra',
+
+            'nama'    => htmlspecialchars($this->pengajuan->nama),1, $this->pengajuan->nama,
+            'nip'     => htmlspecialchars($this->pengajuan->nip),1, $this->pengajuan->nip,
+            'pangkat' => htmlspecialchars($this->pengajuan->pangkat . '(' . $this->pengajuan->ngolru . ')'), 1,
+            'jabatan' => htmlspecialchars($this->pengajuan->njab),1,
+            'opd'     => htmlspecialchars($this->pengajuan->nunker),1,
+
+            'tgl_cetak'    => 'Lian Mafutra',
+            'tgl_kirim'    => 'Lian Mafutra',
+            'jenis_rekom'  => htmlspecialchars($this->pengajuan->getRekomJenisNamaAttribute(),), 1,
+            'kode_surat'   => htmlspecialchars($this->pengajuan->keperluan->kode_surat),1,
+            'no_pengantar' => htmlspecialchars($this->pengajuan->nomor_pengantar),1,
+            'perihal'      => htmlspecialchars($this->pengajuan->keperluan->nama),1,
+
+            'nama_ttd'    => htmlspecialchars($user_ttd['nama']),1,
+            'jabatan_ttd' => htmlspecialchars($user_ttd['pangkat'] . '/' . $user_ttd['ngolru']), 1,
+            'nip_ttd'     => htmlspecialchars($user_ttd['nipbaru'],),1,
+
          ]);
+
          $path_doc = Storage::path($path_rekom . '/' . $name_uniqe);
          $templateProcessor->saveAs($path_doc);
+
+
+         if ($path_doc == null || $path_doc == '') {
+            throw new CustomException('Gagal generate Word', 400);
+         }
 
          // -- convert file word to pdf (hasil surat rekom)-- //
          if (config('global.env') == 'dev') {
@@ -79,8 +104,7 @@ class SuratCetak
 
          if (!$result_code) {
             // delete file docx if succes convert
-            Storage::delete($path_rekom . '/' . $name_uniqe);
-        
+            // Storage::delete($path_rekom . '/' . $name_uniqe);
          } else {
             throw new CustomException('Gagal Convert ke PDF', 400);
          }

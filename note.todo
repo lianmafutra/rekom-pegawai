@@ -5,7 +5,7 @@ New Task:
    ☐ Notif untuk tiap role user 
    ☐ Notif Whastapp 
    ☐ Filter Pengajuan Admin
-   ☐ Cetak Surat Rekom (Domp PDF)
+   ✔ Cetak Surat Rekom (Domp PDF) ganti ke phpoffice @done (12/22/2022, 9:25:42 AM)
    ☐ Admin Inspektorat bisa input pengajuan internal 
    ☐ Master Data user di admin inspektorat
    ☐ sync otomatis trigger ketika cache pegawai null
@@ -14,6 +14,7 @@ New Task:
    ✔ Verifikasi Data Tampilan , API sudah @done (12/19/2022, 11:02:10 AM)
    ☐ Dashboard Home
    ✔ scroll histori pengajuan @done (12/16/2022, 10:05:37 AM)
+   ☐ Rekom jenis config value salah 
 
 Question:
    ☐ Apakah bisa user disposisi balek ?

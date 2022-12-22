@@ -42,7 +42,7 @@ class PengajuanOPDController extends Controller
       abort_if(Gate::denies('pengajuan index'), 403);
 
       $x['title'] = 'Pengajuan OPD';
-      $data    = Pengajuan::with('keperluan')->latest()->get();
+      $data    = Pengajuan::with('keperluan')->latest();
       $pegawai = Cache::get('pegawai');
 
 

@@ -405,6 +405,7 @@
                     success: (response) => {
                         if (response) {
                             this.reset()
+                            $('.error').hide();
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil Mengirim Berkas',
@@ -420,11 +421,8 @@
                         }
                     },
                     error: function(response) {
-
-
-
+                    
                         $('.error').hide();
-
 
                         swal.hideLoading()
 
@@ -434,15 +432,15 @@
                         if (response.status == 422) {
                             text = "Periksa kembali inputan anda"
                         }
+                        if (response.status == 400) {
+                            text = response.responseJSON.error
+                        }
                         Swal.fire({
                             icon: 'error',
                             title: 'Terjadi Kesalahan...',
-                            text: response.responseJSON.error,
+                            text: text,
                         })
                     }
-
-
-
                 });
             });
 

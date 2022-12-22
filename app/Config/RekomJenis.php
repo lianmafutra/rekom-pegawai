@@ -9,11 +9,11 @@ Enum RekomJenis
     /**
      *@desc jenis rekom pengajuan pelanggaran Hukuman
      */
-    const HUKUMAN      = 'HUKUMAN';
+    const HUKUMAN      = 'Rekomendasi Hukuman Disiplin';
 
     /**
     *@desc jenis rekom pengajuan pelanggaran Disiplin
     */
-  const DISIPLIN     = 'DISIPLIN';
+  const DISIPLIN     = 'Rekomendasi Bebas Temuan';
   
 }

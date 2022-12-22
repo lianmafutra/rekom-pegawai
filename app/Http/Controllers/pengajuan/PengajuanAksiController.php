@@ -7,6 +7,7 @@ use App\Config\SuratTtd;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CetakRekomRequest;
 use App\Http\Services\Surat\SuratCetak;
+use App\Models\Pengajuan;
 use App\Models\User;
 use App\Utils\ApiResponse;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class PengajuanAksiController extends Controller
 
    use ApiResponse;
 
-    public function cetakRekom(CetakRekomRequest $request, User $user, SuratCetak $suratCetak){
+    public function cetakRekom(CetakRekomRequest $request, User $user, SuratCetak $suratCetak, Pengajuan $pengajuan){
 
       // abort_if(Gate::denies('rekom cetak'), 403);
 
@@ -25,7 +26,7 @@ class PengajuanAksiController extends Controller
          DB::beginTransaction();
         
          $suratCetak
-         ->pengajuan($request->pengajuan_uuid)
+         ->pengajuan( $pengajuan->getPengajuanWithData($request->pengajuan_uuid))
          ->surat('','', '', '','')
          ->rekomJenis('')
          ->ttd(SuratTtd::TTD_MANUAL)

@@ -39,7 +39,7 @@ class PengajuanAdminController extends Controller
             'penerima_id',
             '=',
             auth()->user()->id
-         )->latest()->get();
+         )->latest();
 
       $pegawai = Cache::get('pegawai');
 
