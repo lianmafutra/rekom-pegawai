@@ -10,6 +10,7 @@ use App\Utils\uploadFile;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\TemplateProcessor;
 use NcJoes\OfficeConverter\OfficeConverter;
+use Illuminate\Support\Str;
 
 class SuratCetak
 {
@@ -49,6 +50,7 @@ class SuratCetak
 
       $uploadFile = new uploadFile();
       try {
+
          $path_surat = '';
          $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo('surat-rekom', PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . 'docx');
          $path_rekom = 'public/' . $uploadFile->getPath('surat_rekom');
@@ -68,24 +70,24 @@ class SuratCetak
          $templateProcessor = new TemplateProcessor($path_surat);
          $templateProcessor->setValues([
 
-            'nama'    => htmlspecialchars($this->pengajuan->nama),1, $this->pengajuan->nama,
-            'nip'     => htmlspecialchars($this->pengajuan->nip),1, $this->pengajuan->nip,
-            'pangkat' => htmlspecialchars($this->pengajuan->pangkat . '(' . $this->pengajuan->ngolru . ')'), 1,
-            'jabatan' => htmlspecialchars($this->pengajuan->njab),1,
-            'opd'     => htmlspecialchars($this->pengajuan->nunker),1,
+            'nama'    => $this->clean_word($this->pengajuan->nama . ', ' . $this->pengajuan->glblk),
+            'nip'     => $this->clean_word($this->pengajuan->nip),
+            'pangkat' => $this->pengajuan->pangkat . ' (' . $this->pengajuan->ngolru . ')',
+            'jabatan' => $this->clean_word($this->pengajuan->njab),
+            'opd'     => $this->clean_word($this->pengajuan->nunker),
 
             'tgl_cetak'    => 'Lian Mafutra',
-            'tgl_kirim'    => 'Lian Mafutra',
-            'jenis_rekom'  => htmlspecialchars($this->pengajuan->getRekomJenisNamaAttribute(),), 1,
-            'kode_surat'   => htmlspecialchars($this->pengajuan->keperluan->kode_surat),1,
-            'no_pengantar' => htmlspecialchars($this->pengajuan->nomor_pengantar),1,
-            'perihal'      => htmlspecialchars($this->pengajuan->keperluan->nama),1,
+            'tgl_pengantar' => $this->clean_word($this->pengajuan->tgl_surat_pengantar),
+            'jenis_rekom'  => $this->clean_word($this->pengajuan->getRekomJenisNamaAttribute(),),
+            'kode_surat'   => $this->clean_word($this->pengajuan->keperluan->kode_surat),
+            'no_pengantar' => $this->clean_word($this->pengajuan->nomor_pengantar),
+            'perihal'      => $this->clean_word($this->pengajuan->keperluan->nama),
 
-            'nama_ttd'    => htmlspecialchars($user_ttd['nama']),1,
-            'jabatan_ttd' => htmlspecialchars($user_ttd['pangkat'] . '/' . $user_ttd['ngolru']), 1,
-            'nip_ttd'     => htmlspecialchars($user_ttd['nipbaru'],),1,
-
+            'nama_ttd'    => htmlspecialchars($user_ttd['nama'] . ', ' . $user_ttd['glblk']),
+            'jabatan_ttd' => $user_ttd['pangkat'] . '/' . $user_ttd['ngolru'],
+            'nip_ttd'     => $this->clean_word($user_ttd['nipbaru']),
          ]);
+         $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd_inspektur.png'), 'width' => 100, 'height' => 100, 'ratio' => false));
 
          $path_doc = Storage::path($path_rekom . '/' . $name_uniqe);
          $templateProcessor->saveAs($path_doc);
@@ -112,5 +114,10 @@ class SuratCetak
       } catch (\Throwable $th) {
          throw $th;
       }
+   }
+
+   private function clean_word($string)
+   {
+      return htmlspecialchars(ucwords(strtolower($string)));
    }
 }
