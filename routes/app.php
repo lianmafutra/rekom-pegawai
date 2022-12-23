@@ -28,6 +28,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    Route::post('pengajuan/aksi/cetak-rekom', [PengajuanAksiController::class, 'cetakRekom'])->name('pengajuan.aksi.cetak');
 
+   
    Route::resource('pengajuan', PengajuanOPDController::class);
    Route::get('pengajuan/revisi/{uuid}',[PengajuanOPDController::class, 'revisi'])->name('pengajuan.revisi');
    Route::put('pengajuan/revisi/update',[PengajuanOPDController::class, 'updateRevisi'])->name('pengajuan.revisi.update');
@@ -35,3 +36,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::get('pengajuan/histori/{uuid}', [PengajuanOPDController::class, 'histori'])->name('pengajuan.histori');
 
 });
+
+
+Route::get('pengajuan/aksi/verifikasi/QR/{uuid}', [PengajuanAksiController::class, 'verifikasiQR'])->name('pengajuan.aksi.verifikasi');
