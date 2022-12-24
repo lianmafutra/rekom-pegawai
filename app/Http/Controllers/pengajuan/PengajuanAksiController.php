@@ -65,10 +65,9 @@ class PengajuanAksiController extends Controller
 
 
       $pengajuan = Pengajuan::where('uuid', $pengajuan_uuid)->first();
-      if ($pengajuan) {
-         return dd($pengajuan);
-      } else {
-         return dd('Data Pengajuan tidak ditemukan dalam sistem');
-      }
+    
+      $x['title'] = 'Validasi Berkas';
+       
+      return view('pengajuan.verifikasi.QR-verifikasi', $x, compact('pengajuan'));
    }
 }
