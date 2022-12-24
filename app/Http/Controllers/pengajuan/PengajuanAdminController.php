@@ -6,6 +6,7 @@ use App\Config\PengajuanAksi;
 use App\Config\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Services\Pegawai\PengajuanService;
+use App\Models\File;
 use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Models\User;
@@ -154,6 +155,9 @@ class PengajuanAdminController extends Controller
       $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
 
       $user_kirim = $pengajuan->getUserKirim();
+      $file_rekom_hasil = $pengajuan->getFileRekomHasil();
+    
+     
 
       $pengajuan = $pengajuan->getPengajuanWithData($uuid);
 
@@ -162,7 +166,7 @@ class PengajuanAdminController extends Controller
       return view(
          'pengajuan.detail',
          $x,
-         compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi'])
+         compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi', 'file_rekom_hasil'])
       );
    }
 

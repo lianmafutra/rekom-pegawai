@@ -37,7 +37,7 @@ class Pengajuan extends Model
       return url('storage/profile/' . $this->foto);
    }
 
-  
+
 
    public function getRekomJenisNamaAttribute()
    {
@@ -63,10 +63,30 @@ class Pengajuan extends Model
       return $this->hasMany(File::class, 'file_id', 'file_konversi_nip');
    }
 
+   public function file_rekom()
+   {
+      return $this->hasOne(File::class, 'file_id', 'file_rekom_hasil');
+   }
+
+
+   public function getFileRekomHasil()
+   {
+
+      $file = $this->with('file_rekom')->first()->file_rekom;
+      return  'http://' .
+         request()->getHttpHost() .
+         '/storage/' .
+         $file->path .
+         '/' .
+         $file->name_random;
+   }
+
    public function keperluan()
    {
       return $this->belongsTo(Keperluan::class);
    }
+
+
 
 
    public function pengirim()
@@ -81,7 +101,7 @@ class Pengajuan extends Model
 
    public function getPengajuanWithData($pengajuan_uuid)
    {
-      return Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi'])->where('uuid', $pengajuan_uuid)->first();
+      return Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi', 'file_rekom'])->where('uuid', $pengajuan_uuid)->first();
    }
 
 

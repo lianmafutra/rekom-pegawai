@@ -280,7 +280,7 @@
                                                                 </a>
                                                             @endif
                                                         </td>
-                                                    </tr>
+                                               
                                                 </tbody>
                                             </table>
                                     </div>
@@ -368,6 +368,11 @@
             $("#btn_setujui").click(function() {
                 $('#modal_setujui').modal('show')
             })
+            $("#btn_file_rekom").click(function() {
+               viewFile(@json($file_rekom_hasil));
+            })
+
+            
 
             $("#btn_submit_setujui").click(function(e) {
                 e.preventDefault();
