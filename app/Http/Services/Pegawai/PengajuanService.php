@@ -13,6 +13,7 @@ use App\Models\PengajuanHistori;
 use App\Exceptions\CustomException;
 use App\Models\File;
 use App\Utils\ApiResponse;
+use App\Utils\ShortUrl;
 use App\Utils\uploadFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -75,6 +76,7 @@ class PengajuanService
             'file_pengantar_opd'  => Str::uuid()->toString(),
             'file_konversi_nip'   => $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL,
             'catatan'             => $request->catatan,
+            
          ]);
          return $pengajuan;
       } catch (\Throwable $th) {

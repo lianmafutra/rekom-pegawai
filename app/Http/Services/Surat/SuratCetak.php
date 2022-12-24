@@ -8,6 +8,7 @@ use App\Http\Services\Pegawai\PegawaiService;
 use App\Models\File;
 use App\Models\Pengajuan;
 use App\Utils\RemoveSpace;
+use App\Utils\ShortUrl;
 use App\Utils\TempFile;
 use App\Utils\uploadFile;
 use Illuminate\Support\Facades\Storage;
@@ -26,19 +27,15 @@ class SuratCetak
    protected $path_rekom;
    protected $custom_path;
    protected $name_uniq;
-   
+
 
    public function __construct()
    {
-     
       $this->uploadFile = new uploadFile();
       $this->custom_path = $this->uploadFile->getPath('surat_rekom');
-      $this->path_rekom = 'public/' .$this->custom_path . '/';
-      $this->name_uniq =  RemoveSpace::removeDoubleSpace(pathinfo('surat-rekom', PATHINFO_FILENAME) . '-' . now()->timestamp . '.'.'pdf');
+      $this->path_rekom = 'public/' . $this->custom_path . '/';
+      $this->name_uniq =  RemoveSpace::removeDoubleSpace(pathinfo('surat-rekom', PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . 'pdf');
    }
-
-
-
 
    public function setPengajuan($pengajuan)
    {
@@ -58,15 +55,24 @@ class SuratCetak
       return $this;
    }
 
+   private function clean_word($string)
+   {
+      return htmlspecialchars(ucwords(strtolower($string)));
+   }
+
    public function cetaksurat()
    {
-   
+
       try {
          $path_surat = '';
-       
-        
-         $user_ttd = (new PegawaiService())->filterByNIP(auth()->user()->nip)[0];
 
+         $pengajuan = Pengajuan::where('uuid', $this->pengajuan->uuid);
+         $pengajuan->update([
+               'short_url' =>(new ShortUrl())->generate($pengajuan->first()->id),
+         ]);
+   
+
+         $user_ttd = (new PegawaiService())->filterByNIP(auth()->user()->nip)[0];
 
          // --------- get path template docx sesuai jenis TTD surat rekom  --------- //
          switch ($this->ttd) {
@@ -100,13 +106,13 @@ class SuratCetak
             'nip_ttd'     => $this->clean_word($user_ttd['nipbaru']),
          ]);
 
-         $url    = urlencode("akjdkladnaklndl");
+         $url    = urlencode(route('pengajuan.aksi.link',  $pengajuan->first()->short_url));
          $image  = 'http://chart.apis.google.com/chart?chs=' . 150 . 'x' . 150 . '&cht=qr&chl=' . $url;
          $file = file_get_contents($image);
 
          $file = new TempFile($file);
 
-         $templateProcessor->setImageValue('qrcode', array('path' =>  $file->getFileName(), 'width' => 100, 'height' => 100, 'ratio' => false));
+         $templateProcessor->setImageValue('qrcode', array('path' =>  $file->getFileName(), 'width' => 150, 'height' => 150, 'ratio' => false));
          $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd_inspektur.png'), 'width' => 100, 'height' => 100, 'ratio' => false));
 
          $file_path_temp = $templateProcessor->save("php://output");
@@ -137,39 +143,36 @@ class SuratCetak
 
    public function updatefileRekom()
    {
-         // update tabel pengajuan kolom file_rekom_hasil dan insert ke tabel file 
-         $pengajuan = Pengajuan::where('uuid', $this->pengajuan->uuid);
-           
-         $uuid = Str::uuid()->toString();
 
-         if($pengajuan->first()->file_rekom_hasil == null) {
-            File::create([
-               'file_id'        => $uuid,
-               'parent_file_id' => $pengajuan->first()->id,
-               'name_origin'    => $this->name_uniq,
-               'name_random'    => $this->name_uniq,
-               'path'           => $this->custom_path,
-            ]);
+      // update tabel pengajuan kolom file_rekom_hasil dan insert ke tabel file 
+      $pengajuan = Pengajuan::where('uuid', $this->pengajuan->uuid);
 
-            $pengajuan->update([
-               'file_rekom_hasil' =>  $uuid
-            ]);
-            
-         }else{
-            File::where('file_id', $pengajuan->first()->file_rekom_hasil)
-            ->update([
+      $uuid = Str::uuid()->toString();
+
+      if ($pengajuan->first()->file_rekom_hasil == null) {
+
+         $pengajuan->update([
+            'file_rekom_hasil' => $uuid,
+         ]);
+
+         File::create([
+            'file_id'        => $uuid,
+            'parent_file_id' => $pengajuan->first()->id,
+            'name_origin'    => $this->name_uniq,
+            'name_random'    => $this->name_uniq,
+            'path'           => $this->custom_path,
+         ]);
+      } else {
+         File::where('file_id', $pengajuan->first()->file_rekom_hasil)
+            ->update(
+               [
                   'name_origin'    => $this->name_uniq,
                   'name_random'    => $this->name_uniq,
                   'path'           => $this->custom_path,
                ]
             );
-         }
-         
-        return $this;
-   }
+      }
 
-   private function clean_word($string)
-   {
-      return htmlspecialchars(ucwords(strtolower($string)));
+      return $this;
    }
 }

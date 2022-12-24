@@ -39,3 +39,4 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
 
 Route::get('pengajuan/aksi/verifikasi/QR/{uuid}', [PengajuanAksiController::class, 'verifikasiQR'])->name('pengajuan.aksi.verifikasi');
+Route::get('link/{id}', [PengajuanAksiController::class, 'shortUrl'])->name('pengajuan.aksi.link');

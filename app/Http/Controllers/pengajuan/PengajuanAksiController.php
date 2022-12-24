@@ -32,28 +32,38 @@ class PengajuanAksiController extends Controller
 
       try {
          DB::beginTransaction();
-         $suratCetak = new SuratCetak();
-         $suratCetak
+       (new SuratCetak())
             ->setPengajuan($pengajuan->getPengajuanWithData($request->pengajuan_uuid))
             ->setRekomJenis('')
             ->setTTD(SuratTtd::TTD_MANUAL)
             ->cetaksurat()
             ->updatefileRekom();
-           
 
             DB::commit();
          return $this->success('Sukses');
-
-       
       } catch (\Throwable $th) {
-         return $this->error('gagal' . $th, 400);
          DB::rollBack();
+         return $this->error('gagal' . $th, 400);
+      }
+   }
+
+   public function shortUrl($id)
+   {
+
+      $pengajuan = Pengajuan::where('short_url', $id)->first();
+
+      if ($pengajuan) {
+         return redirect()->route('pengajuan.aksi.verifikasi',  $pengajuan->uuid);
+      } else {
+         return dd('Data Pengajuan tidak ditemukan dalam sistem');
       }
    }
 
 
-   public function verifikasiQR($pengajuan_uuid,)
+   public function verifikasiQR($pengajuan_uuid)
    {
+
+
       $pengajuan = Pengajuan::where('uuid', $pengajuan_uuid)->first();
       if ($pengajuan) {
          return dd($pengajuan);
