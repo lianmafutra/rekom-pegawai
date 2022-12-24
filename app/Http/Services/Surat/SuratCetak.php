@@ -5,10 +5,14 @@ namespace App\Http\Services\Surat;
 use App\Config\SuratTtd;
 use App\Exceptions\CustomException;
 use App\Http\Services\Pegawai\PegawaiService;
+use App\Models\File;
+use App\Models\Pengajuan;
 use App\Utils\RemoveSpace;
+use App\Utils\TempFile;
 use App\Utils\uploadFile;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Illuminate\Support\Str;
 
 class SuratCetak
 {
@@ -18,41 +22,52 @@ class SuratCetak
    protected $pengajuan;
    protected $ttd;
    protected $surat;
+   protected $uploadFile;
+   protected $path_rekom;
+   protected $custom_path;
+   protected $name_uniq;
+   
+
+   public function __construct()
+   {
+     
+      $this->uploadFile = new uploadFile();
+      $this->custom_path = $this->uploadFile->getPath('surat_rekom');
+      $this->path_rekom = 'public/' .$this->custom_path . '/';
+      $this->name_uniq =  RemoveSpace::removeDoubleSpace(pathinfo('surat-rekom', PATHINFO_FILENAME) . '-' . now()->timestamp . '.'.'pdf');
+   }
 
 
-   public function pengajuan($pengajuan)
+
+
+   public function setPengajuan($pengajuan)
    {
       $this->pengajuan = $pengajuan;
       return $this;
    }
 
-   public function surat($no, $surat, $lampiran, $hal, $tanggal)
-   {
-      return $this;
-   }
-
-   public function rekomJenis(string $rekomJenis)
+   public function setRekomJenis(string $rekomJenis)
    {
       $this->rekomJenis = $rekomJenis;
       return $this;
    }
 
-   public function ttd(string $ttd)
+   public function setTTD(string $ttd)
    {
       $this->ttd = $ttd;
       return $this;
    }
 
-   public function cetak()
+   public function cetaksurat()
    {
-    
-      $uploadFile = new uploadFile();
+   
       try {
          $path_surat = '';
-         $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo('surat-rekom', PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . 'docx');
-         $path_rekom = 'public/' . $uploadFile->getPath('surat_rekom').'/';
-         $user_ttd = (new PegawaiService())->filterByNIP(auth()->user()->nip)[0];
+       
         
+         $user_ttd = (new PegawaiService())->filterByNIP(auth()->user()->nip)[0];
+
+
          // --------- get path template docx sesuai jenis TTD surat rekom  --------- //
          switch ($this->ttd) {
             case SuratTtd::TTD_MANUAL:
@@ -84,28 +99,33 @@ class SuratCetak
             'jabatan_ttd' => $user_ttd['pangkat'] . '/' . $user_ttd['ngolru'],
             'nip_ttd'     => $this->clean_word($user_ttd['nipbaru']),
          ]);
-       
-         $templateProcessor->setImageValue('qrcode', array('path' => '', 'width' => 100, 'height' => 100, 'ratio' => false));
+
+         $url    = urlencode("akjdkladnaklndl");
+         $image  = 'http://chart.apis.google.com/chart?chs=' . 150 . 'x' . 150 . '&cht=qr&chl=' . $url;
+         $file = file_get_contents($image);
+
+         $file = new TempFile($file);
+
+         $templateProcessor->setImageValue('qrcode', array('path' =>  $file->getFileName(), 'width' => 100, 'height' => 100, 'ratio' => false));
          $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd_inspektur.png'), 'width' => 100, 'height' => 100, 'ratio' => false));
-        
+
          $file_path_temp = $templateProcessor->save("php://output");
          $filename_temp = pathinfo($file_path_temp)['filename'];
-      
+
          if ($filename_temp == null || $filename_temp == '' || $filename_temp == []) {
             throw new CustomException('Gagal generate file Word', 400);
          }
 
-   
-
          // -- convert file word to pdf (hasil surat rekom)-- //
          if (config('global.env') == 'dev') {
-            exec('cd "C:\Program Files\LibreOffice\program\" && soffice --headless --convert-to pdf ' . $file_path_temp . ' --outdir ' .  Storage::path($path_rekom), $output, $result_code);
+            exec('cd "C:\Program Files\LibreOffice\program\" && soffice --headless --convert-to pdf ' .    $file_path_temp . ' --outdir ' .  Storage::path($this->path_rekom), $output, $result_code);
          } elseif (config('global.env') == 'prod') {
             // koding convert production linux
          }
 
          if (!$result_code) {
-            rename(Storage::path($path_rekom . $filename_temp.'.pdf'), Storage::path($path_rekom . $name_uniqe. '.pdf'));
+            unlink(sys_get_temp_dir() . '/' . $filename_temp . '.tmp');
+            rename(Storage::path($this->path_rekom . $filename_temp . '.pdf'), Storage::path($this->path_rekom . $this->name_uniq . '.pdf'));
          } else {
             throw new CustomException('Gagal Convert ke PDF', 400);
          }
@@ -113,6 +133,39 @@ class SuratCetak
       } catch (\Throwable $th) {
          throw $th;
       }
+   }
+
+   public function updatefileRekom()
+   {
+         // update tabel pengajuan kolom file_rekom_hasil dan insert ke tabel file 
+         $pengajuan = Pengajuan::where('uuid', $this->pengajuan->uuid);
+           
+         $uuid = Str::uuid()->toString();
+
+         if($pengajuan->first()->file_rekom_hasil == null) {
+            File::create([
+               'file_id'        => $uuid,
+               'parent_file_id' => $pengajuan->first()->id,
+               'name_origin'    => $this->name_uniq,
+               'name_random'    => $this->name_uniq,
+               'path'           => $this->custom_path,
+            ]);
+
+            $pengajuan->update([
+               'file_rekom_hasil' =>  $uuid
+            ]);
+            
+         }else{
+            File::where('file_id', $pengajuan->first()->file_rekom_hasil)
+            ->update([
+                  'name_origin'    => $this->name_uniq,
+                  'name_random'    => $this->name_uniq,
+                  'path'           => $this->custom_path,
+               ]
+            );
+         }
+         
+        return $this;
    }
 
    private function clean_word($string)
