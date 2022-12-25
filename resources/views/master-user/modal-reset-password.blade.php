@@ -30,7 +30,7 @@
                    <div class="form-group">
                        <label>Password Baru</label>
                        <input hidden id="user_id" name="user_id"></input>
-                       <input name="password_baru" class="form-control" rows="3" placeholder="Masukkan Password baru"></input>
+                       <input name="password_baru" class="input form-control" rows="3" placeholder="Masukkan Password baru"></input>
                    </div>
                </div>
                <div class="modal-footer">
