@@ -366,13 +366,14 @@
                 $('#modal_tolak').modal('show')
             })
             $("#btn_setujui").click(function() {
+
                 $('#modal_setujui').modal('show')
             })
             $("#btn_file_rekom").click(function() {
                viewFile(@json($file_rekom_hasil));
             })
 
-            
+          
 
             $("#btn_submit_setujui").click(function(e) {
                 e.preventDefault();
@@ -406,21 +407,33 @@
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-
+                    beforeSend: function() {
+                        Swal.fire({
+                            title: 'Memprose Data...',
+                            html: 'Mohon Tunggu...',
+                            allowEscapeKey: false,
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        });
+                    },
                     success: (response) => {
                         if (response) {
                             this.reset()
+                            $('#modal_setujui').modal('hide')
                             $('.error').hide();
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Berhasil Mengirim Berkas',
-                                html: 'Berkas anda akan segera di verifikasi oleh Dinas Inspektorat Kota Jambi ',
+                                title: 'Berhasil Menyetujui Berkas',
+                                html: 'Berkas diteruskan ke admin inspektorat untuk segera diproses',
                                 showCancelButton: true,
                                 allowEscapeKey: false,
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
                                 swal.hideLoading()
+                                location.reload();
                             })
                             swal.hideLoading()
                         }

@@ -5,7 +5,6 @@
             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">{{ Setting::getValue('app_short_name') }}</span>
     </a>
-
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar Menu -->
@@ -19,8 +18,6 @@
                         <p>Dashboard</p>
                     </a>
                 </li>@php $i = 1; @endphp
-
-
                 @canany(['read user', 'read role', 'read permission'])
                     <li class="nav-header ml-2">ACCESS</li>
                 @endcanany
@@ -51,7 +48,6 @@
                         </a>
                     </li>
                 @endcan
-
                 @can('read setting')
                     <li class="nav-header ml-2">SETTINGS</li>
                     <li class="nav-item">
@@ -71,7 +67,6 @@
                         </a>
                     </li>
                 @endcan
-
                 @can('pengajuan menu')
                     <li class="nav-item">
                         @can('pengajuan verifikasi index')
@@ -82,7 +77,6 @@
                                 @if ($global_jumlah_notif)
                                     <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
                                 @endif
-
                             </a>
                         @endcan
                         @can('pengajuan index')
@@ -100,12 +94,18 @@
                             class="nav-link {{ request()->routeIs('master-rekom*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-shield"></i>
                             <p> Master Rekom</p>
-
                         </a>
-
-
                     </li>
                 @endcan
+                  {{-- @can('master user admin')
+                    <li class="nav-item">
+                        <a href="{{ route('master-user.index') }}"
+                            class="nav-link {{ request()->routeIs('master-user*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p> Master User </p>
+                        </a>
+                    </li>
+                @endcan --}}
                 @can('profile menu')
                     <li class="nav-item">
                         <a href="{{ route('profile.index') }}"
@@ -115,8 +115,6 @@
                         </a>
                     </li>
                 @endcan
-
-
                 {{-- <li class="nav-header"></li>
                 <li class="nav-item">
                 <a href="#" class="nav-link bg-danger" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false">

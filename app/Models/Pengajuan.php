@@ -24,7 +24,7 @@ class Pengajuan extends Model
 
    public function getTglSuratPengantarAttribute()
    {
-      return Carbon::parse($this->attributes['tgl_surat_pengantar'])->format('d-m-Y');
+      return Carbon::parse($this->attributes['tgl_surat_pengantar'])->format('d/m/Y');
    }
 
    public function setTglSuratPengantarAttribute($tgl_surat_pengantar)
@@ -73,12 +73,13 @@ class Pengajuan extends Model
    {
 
       $file = $this->with('file_rekom')->first()->file_rekom;
-      return  'http://' .
-         request()->getHttpHost() .
-         '/storage/' .
-         $file->path .
-         '/' .
-         $file->name_random;
+      if ($file) {
+         return  'http://' . request()->getHttpHost() .
+            '/storage/' .
+            $file->path .
+            '/' .
+            $file->name_random;
+      }
    }
 
    public function keperluan()

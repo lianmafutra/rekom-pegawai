@@ -272,6 +272,7 @@ class PengajuanService
             break;
          case  Role::isInspektur:
             if ($status == PengajuanAksi::VERIFIKASI_DATA) $aksi = ['setujui'];
+            elseif ($status == PengajuanAksi::PROSES_SURAT) $aksi = ['file_rekom'];
             elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             break;
          default:

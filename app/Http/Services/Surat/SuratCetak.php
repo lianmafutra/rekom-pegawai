@@ -34,7 +34,7 @@ class SuratCetak
       $this->uploadFile = new uploadFile();
       $this->custom_path = $this->uploadFile->getPath('surat_rekom');
       $this->path_rekom = 'public/' . $this->custom_path . '/';
-      $this->name_uniq =  RemoveSpace::removeDoubleSpace(pathinfo('surat-rekom', PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . 'pdf');
+      $this->name_uniq =  RemoveSpace::removeDoubleSpace(pathinfo('surat-rekom', PATHINFO_FILENAME) . '-' . now()->timestamp);
    }
 
    public function setPengajuan($pengajuan)
@@ -158,8 +158,8 @@ class SuratCetak
          File::create([
             'file_id'        => $uuid,
             'parent_file_id' => $pengajuan->first()->id,
-            'name_origin'    => $this->name_uniq,
-            'name_random'    => $this->name_uniq,
+            'name_origin'    => $this->name_uniq . '.pdf',
+            'name_random'    => $this->name_uniq . '.pdf',
             'path'           => $this->custom_path,
          ]);
       } else {
@@ -167,7 +167,7 @@ class SuratCetak
             ->update(
                [
                   'name_origin'    => $this->name_uniq,
-                  'name_random'    => $this->name_uniq,
+                  'name_random'    => $this->name_uniq . '.pdf',
                   'path'           => $this->custom_path,
                ]
             );

@@ -27,6 +27,7 @@
                 <div class="modal-body">
                     <h6 id="nama_file"></h6>
                     <div class="embed_box">
+
                         <label>Jenis Tanda Tangan :</label>
                         <div style="padding: 20px" class="border rounded form-group">
                             <div style="margin-bottom:0px" class="form-group ">
@@ -45,16 +46,18 @@
                             </div>
                         </div>
                         <label>Password</label>
-                        <div class="input-group mb-3"  id="show_hide_password">
-                           
-                         
+                        <div class="input-group mb-3" id="show_hide_password">
+
+
                             <input name="password" type="password" class="form-control">
-                            
-                            <div class="input-group-append" >
-                                <span class="input-group-text"> <a href="" style="color: inherit"><i class="fa fa-eye-slash" aria-hidden="true"></i></a></span>
+
+                            <div class="input-group-append">
+                                <span class="input-group-text"> <a href="" style="color: inherit"><i
+                                            class="fa fa-eye-slash" aria-hidden="true"></i></a></span>
                             </div>
-                        
-                          <span style="font-size: 12px" class="text-danger error-text password_err error invalid-feedback"></span>
+
+                            <span style="font-size: 12px"
+                                class="text-danger error-text password_err error invalid-feedback"></span>
                         </div>
                         <div hidden style="margin-top: 20px" class="form-group">
                             <label>Diteruskan Kepada :</label>
@@ -70,10 +73,10 @@
                     </div>
                 </div>
                 <div class="modal-footer ">
+                    {{-- <a id="btn_preview_surat" class="btn  btn-warning">Preview Surat </a> --}}
                     <button id="btn_submit_setujui" type="submit" class="btn  btn-primary">Ok, Setujui </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
