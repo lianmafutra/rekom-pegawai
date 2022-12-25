@@ -79,11 +79,7 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+                                                                                                                                                                                                       
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
             })
@@ -121,31 +117,14 @@
                     },
                 ]
             });
-            $(".btn_terapkan_filter").click(function() {
-                select_rekom = $('#select_rekom_rekom').val();
-                if (select_rekom == 'DISIPLIN') {
-                    showTableDisiplin()
-                    $('#filter_text').html("Filter berdasarkan data : <span class=filter_result>" +
-                        @json(config('global.rekom_jenis.DISIPLIN')) + "</span>")
-                }
-                if (select_rekom == 'TEMUAN') {
-                    $('#filter_text').html("Filter berdasarkan data : <span class=filter_result>" +
-                        @json(config('global.rekom_jenis.TEMUAN')) + "</span>")
-                    showTableTemuan()
-                }
-                if (select_rekom == '') {
-                    $('#filter_text').hide()
-                    resetKolomTabelRekom();
-                }
-                rekom_jenis = $('#select_rekom_rekom').val();
-                tabel_user.draw();
-            });
+           
 
           
             $('body').on('click', '.btn_reset_password', function(e) {
-                clearInput()
                 e.preventDefault();
+             
                 $('#modal_reset_password').modal('show')
+                   clearInput()
                 let name = $(this).attr('data-name');
                 let id = $(this).attr('data-id');
                 $('#user_id').val(id)
