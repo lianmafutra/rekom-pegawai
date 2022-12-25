@@ -97,15 +97,15 @@
                         </a>
                     </li>
                 @endcan
-                  {{-- @can('master user admin')
+                  @can('master user')
                     <li class="nav-item">
                         <a href="{{ route('master-user.index') }}"
                             class="nav-link {{ request()->routeIs('master-user*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user-shield"></i>
+                            <i class="nav-icon fas fa-users"></i>
                             <p> Master User </p>
                         </a>
                     </li>
-                @endcan --}}
+                @endcan
                 @can('profile menu')
                     <li class="nav-item">
                         <a href="{{ route('profile.index') }}"

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MasterRekomController;
+use App\Http\Controllers\MasterUserController;
 use App\Http\Controllers\Pegawai\PegawaiSyncController;
 use App\Http\Controllers\Pengajuan\PengajuanAdminController;
 use App\Http\Controllers\Pengajuan\PengajuanAksiController;
@@ -30,6 +31,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    
    Route::resource('pengajuan', PengajuanOPDController::class);
+   Route::resource('master-user', MasterUserController::class);
    Route::get('pengajuan/revisi/{uuid}',[PengajuanOPDController::class, 'revisi'])->name('pengajuan.revisi');
    Route::put('pengajuan/revisi/update',[PengajuanOPDController::class, 'updateRevisi'])->name('pengajuan.revisi.update');
 
