@@ -5,11 +5,11 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endpush
 @section('content')
-<style>
-   .filter_result{
-      color: blue
-   }
-</style>
+    <style>
+        .filter_result {
+            color: blue
+        }
+    </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -37,11 +37,11 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <a href="#" class="btn btn-sm btn-primary" id="btn_input_data"><i
-                                            class="fas fa-plus"></i> Input Data</a>
-                                    <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
-                                            class="fas fa-filter"></i> Filter Data</a> 
-                                            <a id="filter_text" style="font-size: 12px; margin-left: 10px"> </a>
+                                    {{-- <a href="#" class="btn btn-sm btn-primary" id="btn_input_data"><i
+                                            class="fas fa-plus"></i> Tambah User</a> --}}
+                                    {{-- <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
+                                            class="fas fa-filter"></i> Filter Data</a>  --}}
+                                    <a id="filter_text" style="font-size: 12px; margin-left: 10px"> </a>
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -55,7 +55,6 @@
                                                     <th>Nama</th>
                                                     <th>OPD</th>
                                                     <th>Last Login</th>
-                                                   
                                                     <th>#Aksi</th>
                                                 </tr>
                                             </thead>
@@ -71,7 +70,7 @@
         </section>
         <!-- /.content -->
     </div>
-  
+    @include('master-user.modal-reset-password')
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -80,26 +79,23 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script>
         $(document).ready(function() {
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
             })
-
             let rekom_jenis;
             let tabel_user = $("#tabel_user").DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
                     url: @json(route('master-user.index')),
-                  //   data: function(e) {
-                  //       e.rekom_jenis = rekom_jenis
-                  //   }
+                    //   data: function(e) {
+                    //       e.rekom_jenis = rekom_jenis
+                    //   }
                 },
                 columns: [{
                         data: "DT_RowIndex",
@@ -125,31 +121,26 @@
                     },
                 ]
             });
-            
-      
-
             $(".btn_terapkan_filter").click(function() {
                 select_rekom = $('#select_rekom_rekom').val();
                 if (select_rekom == 'DISIPLIN') {
                     showTableDisiplin()
-                    $('#filter_text').html("Filter berdasarkan data : <span class=filter_result>"+ @json(config('global.rekom_jenis.DISIPLIN'))+"</span>")
+                    $('#filter_text').html("Filter berdasarkan data : <span class=filter_result>" +
+                        @json(config('global.rekom_jenis.DISIPLIN')) + "</span>")
                 }
                 if (select_rekom == 'TEMUAN') {
-                     $('#filter_text').html("Filter berdasarkan data : <span class=filter_result>"+ @json(config('global.rekom_jenis.TEMUAN'))+"</span>")
+                    $('#filter_text').html("Filter berdasarkan data : <span class=filter_result>" +
+                        @json(config('global.rekom_jenis.TEMUAN')) + "</span>")
                     showTableTemuan()
                 }
                 if (select_rekom == '') {
-                  $('#filter_text').hide()
-                  resetKolomTabelRekom();
+                    $('#filter_text').hide()
+                    resetKolomTabelRekom();
                 }
-
                 rekom_jenis = $('#select_rekom_rekom').val();
                 tabel_user.draw();
-
             });
-          
 
-       
             function openCenteredWindow(url) {
                 const width = 800
                 const height = 700
@@ -160,15 +151,52 @@
                 const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
                 return window.open(url, '_blank', features).focus();
             }
-            $("#btn_filter").click(function() {
-                $('#modal_filter').modal('show')
-            });
-        
-            $("#btn_input_data").click(function() {
-                $('#modal_jenis_rekom').modal('show')
+            $('body').on('click', '.btn_reset_password', function(e) {
+                e.preventDefault();
+                $('#modal_reset_password').modal('show')
+                let name = $(this).attr('data-name');
+                let id = $(this).attr('data-id');
+                $('#user_id').val(id)
             });
 
-           
+            $("#form_reset_password").submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: @json(route('master-user.password.reset')),
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        showLoading()
+                    },
+                    success: (response) => {
+                        if (response) {
+                            this.reset()
+                            $('#modal_reset_password').modal('hide')
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil Mereset Password User',
+                                showCancelButton: true,
+                                allowEscapeKey: false,
+                                showCancelButton: false,
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                swal.hideLoading()
+                                tabel_user.ajax.reload();
+                            })
+                            swal.hideLoading()
+                        }
+                    },
+                    error: function(response) {
+                        showError(response)
+                    }
+                });
+            });
+
 
             $('body').on('click', '.btn_hapus', function(e) {
                 let nama = $(this).attr('data-nama');
@@ -186,8 +214,10 @@
                         $(this).find('#form-delete').submit();
                     }
                 })
+
             });
+
+
         });
     </script>
-   
 @endpush

@@ -220,15 +220,7 @@
                     processData: false,
                     dataType: 'json',
                     beforeSend: function() {
-                        Swal.fire({
-                            title: 'Mengirim Data...',
-                            html: 'Mohon Tunggu...',
-                            allowEscapeKey: false,
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading()
-                            }
-                        });
+                       
                     },
                     success: (response) => {
                         if (response) {
@@ -250,49 +242,12 @@
                         }
                     },
                     error: function(response) {
-                        let text = '';
-                        printErrorMsg(response.responseJSON.errors);
-                        // console.log(response.responseJSON)
-                        if (response.status == 422) {
-                            text = "Periksa kembali inputan anda"
-                        }
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Terjadi Kesalahan...',
-                            text: text,
-                        })
+                        showError(response)
                     }
                 });
             });
 
-            function printErrorMsg(msg) {
-                let dataku = [];
-                let dataku2 = [];
-                $.each(msg, function(key, value) {
-                    $('.text-danger').each(function() {
-                        let id = $(this).attr("class").split(" ").pop().slice(0, -4)
-                        dataku.push(id)
-                    });
-                    dataku2.push(key)
-                    $('.' + key + '_err').text(value);
-                    $('.' + key + '_err').show();
-
-                });
-                let uniqueChars = [...new Set(dataku)];
-
-
-                getDifference(uniqueChars, dataku2).forEach(element => {
-                    $('.' + element + '_err').hide();
-                });
-
-
-            }
-
-            function getDifference(a, b) {
-                return a.filter(element => {
-                    return !b.includes(element);
-                });
-            }
+           
             // select2
             $('.select2bs4').select2({
                 theme: 'bootstrap4',

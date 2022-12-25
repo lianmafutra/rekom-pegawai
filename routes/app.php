@@ -31,7 +31,10 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    
    Route::resource('pengajuan', PengajuanOPDController::class);
+   
    Route::resource('master-user', MasterUserController::class);
+   Route::post('master-user/password/reset', [MasterUserController::class, 'resetPassword'])->name('master-user.password.reset');
+
    Route::get('pengajuan/revisi/{uuid}',[PengajuanOPDController::class, 'revisi'])->name('pengajuan.revisi');
    Route::put('pengajuan/revisi/update',[PengajuanOPDController::class, 'updateRevisi'])->name('pengajuan.revisi.update');
 

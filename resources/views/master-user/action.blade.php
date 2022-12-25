@@ -11,13 +11,13 @@
         <ul class="dropdown-menu">
             <li><a  href="{{ route('master-rekom.edit', $data) }}" class="btn_edit dropdown-item" >Ubah Data</a> </li>
             <div class="dropdown-divider"></div>
-            <li><a data-nama="{{ $data->name }}"  data-url="{{ route('master-rekom.destroy', $data->id) }}" class="btn_hapus dropdown-item" href="#">Hapus
+            {{-- <li><a data-nama="{{ $data->name }}"  data-url="{{ route('master-rekom.destroy', $data->id) }}" class="btn_hapus dropdown-item" href="#">Hapus
                <form hidden id="form-delete" action="{{ route('master-rekom.destroy', $data->id) }}" method="POST"> @csrf
                   @method('DELETE')
               </form>
-            </a> </li>
-            {{-- <div class="dropdown-divider"></div>
-            <li><a  href="#" class="btn_detail dropdown-item">Detail</a></li> --}}
+            </a> </li> --}}
+            {{-- <div class="dropdown-divider"></div> --}}
+            <li><a data-name="{{ $data->username }}" data-id="{{ $data->id }}"  href="#" class="btn_reset_password dropdown-item">Reset Password</a></li>
         </ul>
     </div>
 </div>

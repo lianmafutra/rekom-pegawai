@@ -445,9 +445,9 @@
                         swal.hideLoading()
 
                         let text = '';
-                        printErrorMsg(response.responseJSON.errors);
-
+                       
                         if (response.status == 422) {
+                           printErrorMsg(response.responseJSON.errors);
                             text = "Periksa kembali inputan anda"
                         }
                         if (response.status == 400) {

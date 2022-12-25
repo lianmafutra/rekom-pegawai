@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
-    
+
 
     @stack('style')
     @stack('css')
@@ -162,6 +162,65 @@
         });
     </script>
     @stack('script')
+
+    <script>
+        window.showError = function(response) {
+            $('.error').hide();
+            swal.hideLoading()
+            let text = '';
+
+            if (response.status == 422) {
+                printErrorMsg(response.responseJSON.errors);
+                text = "Periksa kembali inputan anda"
+            }
+            if (response.status == 400) {
+                text = response.responseJSON.error
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan...',
+                text: text,
+            })
+        }
+
+        function printErrorMsg(msg) {
+            let dataku = [];
+            let dataku2 = [];
+            $.each(msg, function(key, value) {
+                $('.text-danger').each(function() {
+                    let id = $(this).attr("class").split(" ").pop()
+                        .slice(0, -4)
+                    dataku.push(id)
+                });
+                dataku2.push(key)
+                $('.' + key + '_err').text(value);
+                $('.' + key + '_err').show();
+            });
+            let uniqueChars = [...new Set(dataku)];
+            getDifference(uniqueChars, dataku2).forEach(element => {
+                $('.' + element + '_err').hide();
+            });
+        }
+
+
+        function getDifference(a, b) {
+            return a.filter(element => {
+                return !b.includes(element);
+            });
+        }
+
+        window.showLoading = function() {
+            Swal.fire({
+                title: 'Mengirim Data...',
+                html: 'Mohon Tunggu...',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
