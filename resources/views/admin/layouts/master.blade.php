@@ -220,6 +220,10 @@
                 }
             });
         }
+
+        window.clearInput = function() {
+            $(':input').val('');
+        }
     </script>
 </body>
 

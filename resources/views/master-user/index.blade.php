@@ -141,17 +141,9 @@
                 tabel_user.draw();
             });
 
-            function openCenteredWindow(url) {
-                const width = 800
-                const height = 700
-                const pos = {
-                    x: (screen.width / 2) - (width / 2),
-                    y: (screen.height / 2) - (height / 2)
-                };
-                const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
-                return window.open(url, '_blank', features).focus();
-            }
+          
             $('body').on('click', '.btn_reset_password', function(e) {
+                clearInput()
                 e.preventDefault();
                 $('#modal_reset_password').modal('show')
                 let name = $(this).attr('data-name');
