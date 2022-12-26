@@ -582,7 +582,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nip` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nip` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `opd_id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `kontak` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -596,7 +596,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `uuid` (`uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -605,7 +605,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'superadmin','',1,'Lian Mafutra',NULL,NULL,NULL,'$2y$10$0TCZyv09VXo58L2.JmjSeen0p126nwBE9LkBK41zy1TQ0.ftCASLG','60o9kk52jc6fxbxo7lcSKNtWkA3uelisN1SeJSZsNtm2n5JfN3vRh9QZrfqg','4eebbb1b-bb61-480c-b449-9d80111a7645','2022-11-23 09:04:52','2022-12-25 10:34:33'),(2,'diskominfo','',20,'Admin Diskominfo',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$kdxyX7AINaejy65ir2mFeey2NZ3AO5PtToypHfnA1uFp.WRK76Vg6','2SrC7nHcafkqC91FFD3fv0wY4kd2Z7nffVt48dG4gAqfFf8IePvEZSSr0vH2','cf8398a1-134e-4a90-a2e7-f194f452b6b4','2022-11-23 09:04:52','2022-12-25 11:13:18'),(3,'admin_inspektorat','',36,'Admin Inspektorat',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','0gBdaSJ7CdckEhjmN8QtDjYo549mYmHG8JqFOEktyztEY0ES3hJRthcxJzqO','26cabc5d-7c32-4e97-83f0-a02a226783c5','2022-11-23 09:04:52','2022-12-03 08:57:08'),(4,'inspektur','197406071994032002',36,'Inspektur',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$kYfNDorzKArShXobEk6.aepj8o4ohx8OS24ZfpliTlZtneBFg6Vnu','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','743bf273-b7c0-44f2-aba4-eb6d39a12f28','2022-11-23 09:04:52','2022-12-06 02:58:24'),(5,'admin_kasubag','',36,'Admin Kasubag',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$IehZzFG0Kp7zN/lD02a9Ney/9vkja/2.HWGje0W4ekDJyKKQHmUpK','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','a14f74ec-1e3c-4a04-b507-25f1bf750b07','2022-11-23 09:04:52','2022-12-06 02:54:00');
+INSERT INTO `users` VALUES (1,'superadmin','',1,'Lian Mafutra',NULL,NULL,NULL,'$2y$10$0TCZyv09VXo58L2.JmjSeen0p126nwBE9LkBK41zy1TQ0.ftCASLG','60o9kk52jc6fxbxo7lcSKNtWkA3uelisN1SeJSZsNtm2n5JfN3vRh9QZrfqg','4eebbb1b-bb61-480c-b449-9d80111a7645','2022-11-23 09:04:52','2022-12-25 10:34:33'),(2,'diskominfo','',20,'Admin Diskominfo',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$I5FfNBRhcFLQEeA.ynqJy.Qh0F0ovpSyqcdaAurNUIR.K1If5C86W','2SrC7nHcafkqC91FFD3fv0wY4kd2Z7nffVt48dG4gAqfFf8IePvEZSSr0vH2','cf8398a1-134e-4a90-a2e7-f194f452b6b4','2022-11-23 09:04:52','2022-12-26 02:04:37'),(3,'admin_inspektorat','',36,'Admin Inspektorat',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$PinWMz5nJozdtn.VeWlMl..sTelKRTDDRvhaEdPBnjq86wfWq5dVu','0gBdaSJ7CdckEhjmN8QtDjYo549mYmHG8JqFOEktyztEY0ES3hJRthcxJzqO','26cabc5d-7c32-4e97-83f0-a02a226783c5','2022-11-23 09:04:52','2022-12-03 08:57:08'),(4,'inspektur','197406071994032002',36,'Inspektur',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$kYfNDorzKArShXobEk6.aepj8o4ohx8OS24ZfpliTlZtneBFg6Vnu','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','743bf273-b7c0-44f2-aba4-eb6d39a12f28','2022-11-23 09:04:52','2022-12-06 02:58:24'),(5,'admin_kasubag','',36,'Admin Kasubag',NULL,'New Project (7)-1669714010.png','2022/11/profile','$2y$10$IehZzFG0Kp7zN/lD02a9Ney/9vkja/2.HWGje0W4ekDJyKKQHmUpK','loobYdX33z0jkZlkC7SIM94VpY0RmPZcLZ8NIrlEJmwuzgbHo90YIbyUeZow','a14f74ec-1e3c-4a04-b507-25f1bf750b07','2022-11-23 09:04:52','2022-12-06 02:54:00');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -618,4 +618,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-25 18:23:52
+-- Dump completed on 2022-12-26 13:45:18
