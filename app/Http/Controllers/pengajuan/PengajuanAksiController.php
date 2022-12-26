@@ -11,22 +11,18 @@ use App\Http\Services\Surat\SuratCetak;
 use App\Models\Pengajuan;
 use App\Models\User;
 use App\Utils\ApiResponse;
-use Illuminate\Auth\Access\Gate;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate as FacadesGate;
+use Illuminate\Support\Facades\Gate;
 
 class PengajuanAksiController extends Controller
 {
 
    use ApiResponse;
 
-
-
-
    public function cetakRekom(CetakRekomRequest $request, User $user, Pengajuan $pengajuan)
    {
 
-      abort_if(FacadesGate::denies('rekom cetak'), 403);
+      abort_if(Gate::denies('rekom cetak'), 403);
       try {
          DB::beginTransaction();
 

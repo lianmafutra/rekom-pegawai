@@ -6,5 +6,5 @@
     </label>
     <input id="{{ $id }}" type="text" class="form-control" name="{{ $id }}"
         placeholder="" value="">
-    <span class="text-danger error-text {{ $id }}_err"></span>
+    <span class="text-danger error error-text {{ $id }}_err"></span>
 </div>

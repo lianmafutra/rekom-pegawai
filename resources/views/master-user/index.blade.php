@@ -168,7 +168,7 @@
                 });
             });
 
-
+            
             $('body').on('click', '.btn_hapus', function(e) {
                 let nama = $(this).attr('data-nama');
                 Swal.fire({

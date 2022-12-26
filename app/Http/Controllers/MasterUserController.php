@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Utils\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class MasterUserController extends Controller
 {
@@ -70,13 +70,15 @@ class MasterUserController extends Controller
 
    public function resetPassword(Request $request)
    {
-      try {
+         Validator::make($request->all(), [
+            'password_baru' => 'required|min:5',
+         ])->validate();
 
-        User::where('id', $request->user_id)->update([
+      try {
+         User::where('id', $request->user_id)->update([
             'password' => bcrypt($request->password_baru)
-        ]);
-        
-        return $this->success('Berhasil Mereset Password User');
+         ]);
+         return $this->success('Berhasil Mereset Password User');
       } catch (\Throwable $th) {
          return $this->error('Gagal Mereset Password User', 400);
       }
