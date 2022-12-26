@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OPD;
 use App\Models\User;
 use App\Utils\ApiResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class MasterUserController extends Controller
 
       abort_if(Gate::denies('master user'), 403);
       $x['title'] = 'Master Data User';
+      $x['opd'] = OPD::get();
       $data    = User::with('opd')->get();
       if (request()->ajax()) {
          return  datatables()->of($data)
@@ -41,7 +43,22 @@ class MasterUserController extends Controller
 
    public function store(Request $request)
    {
-      //
+
+      // dd($request->all());
+      Validator::make($request->all(), [
+         'username'            => 'required|min:5',
+         'password'            => 'required|min:5',
+      ])->validate();
+      try {
+         User::create([
+            'username' => $request->username,
+            'opd_id' => $request->opd_id,
+            'password' => bcrypt($request->password)
+         ]);
+         return $this->success('Berhasil Membuat User Baru');
+      } catch (\Throwable $th) {
+         return $this->error('Gagal Membuat User Baru'. $th, 400);
+      }
    }
 
 

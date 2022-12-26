@@ -20,13 +20,16 @@ class Select2 extends Component
 
    public $label;
 
-    public function __construct($required, $id, $label)
+   public $placeholder;
+
+    public function __construct($required, $id, $label, $placeholder)
     {
     
       $this->required = $required;
     
       $this->id = $id;
       $this->label = $label;
+      $this->placeholder = $placeholder;
    }
 
     /**

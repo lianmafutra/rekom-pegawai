@@ -6,7 +6,7 @@
             @endif
         </label>
         <select id="{{ $id }}" name="{{ $id }}" required type=""
-            class="select2 select2-{{ $id }} form-control select2bs4" data-placeholder="-- Pilih Pegawai --"
+            class="select2 select2-{{ $id }} form-control select2bs4" data-placeholder="{{ $placeholder }}"
             style="width: 100%;">
             <option></option>
                 {{ $slot }}

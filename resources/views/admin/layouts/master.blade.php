@@ -146,6 +146,7 @@
         });
         window.clearInput = function() {
             $('.input').val('');
+
             $('.error').hide();
         }
         window.showError = function(response) {

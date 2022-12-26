@@ -37,8 +37,8 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    {{-- <a href="#" class="btn btn-sm btn-primary" id="btn_input_data"><i
-                                            class="fas fa-plus"></i> Tambah User</a> --}}
+                                    <a href="#" class="btn_tambah_user btn btn-sm btn-primary" id="btn_input_data"><i
+                                            class="fas fa-plus"></i> Tambah User</a>
                                     {{-- <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
                                             class="fas fa-filter"></i> Filter Data</a>  --}}
                                     <a id="filter_text" style="font-size: 12px; margin-left: 10px"> </a>
@@ -71,6 +71,7 @@
         <!-- /.content -->
     </div>
     @include('master-user.modal-reset-password')
+    @include('master-user.modal-tambah-user')
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -79,7 +80,7 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script>
         $(document).ready(function() {
-                                                                                                                                                                                                       
+
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
             })
@@ -117,14 +118,35 @@
                     },
                 ]
             });
-           
 
-          
+            $('.btn_tambah_user').click(function(e) {
+                e.preventDefault();
+                clearInput()
+                $('#modal_tambah_user').modal('show')
+            });
+
+
+            $("#show_hide_password1 a").on('click', function(event) {
+                event.preventDefault();
+                if ($('#show_hide_password1 input').attr("type") == "text") {
+                    $('#show_hide_password1 input').attr('type', 'password');
+                    $('#show_hide_password1 i').addClass("fa-eye-slash");
+                    $('#show_hide_password1 i').removeClass("fa-eye");
+                } else if ($('#show_hide_password1 input').attr("type") == "password") {
+                    $('#show_hide_password1 input').attr('type', 'text');
+                    $('#show_hide_password1 i').removeClass("fa-eye-slash");
+                    $('#show_hide_password1 i').addClass("fa-eye");
+                }
+            });
+
+            
+
+
             $('body').on('click', '.btn_reset_password', function(e) {
                 e.preventDefault();
-             
+
                 $('#modal_reset_password').modal('show')
-                   clearInput()
+
                 let name = $(this).attr('data-name');
                 let id = $(this).attr('data-id');
                 $('#user_id').val(id)
@@ -168,7 +190,46 @@
                 });
             });
 
-            
+            $("#form_tambah_user").submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: @json(route('master-user.store')),
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        showLoading()
+                    },
+                    success: (response) => {
+                        if (response) {
+                            this.reset()
+                            $('#modal_tambah_user').modal('hide')
+                            Swal.fire({
+                                icon: 'success',
+                                title: response.message,
+                                showCancelButton: true,
+                                allowEscapeKey: false,
+                                showCancelButton: false,
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                swal.hideLoading()
+                                tabel_user.ajax.reload();
+                            })
+                            swal.hideLoading()
+                        }
+                    },
+                    error: function(response) {
+                        showError(response)
+                    }
+                });
+            });
+
+          
+
             $('body').on('click', '.btn_hapus', function(e) {
                 let nama = $(this).attr('data-nama');
                 Swal.fire({
