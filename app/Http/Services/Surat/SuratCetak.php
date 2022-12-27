@@ -11,6 +11,7 @@ use App\Utils\RemoveSpace;
 use App\Utils\ShortUrl;
 use App\Utils\TempFile;
 use App\Utils\uploadFile;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Str;
@@ -88,13 +89,13 @@ class SuratCetak
          $templateProcessor = new TemplateProcessor($path_surat);
          $templateProcessor->setValues([
             // Data Pemohon
-            'nama'    => $this->clean_word($this->pengajuan->nama . ', ' . $this->pengajuan->glblk),
+            'nama'    =>  htmlspecialchars($this->pengajuan->nama . ', ' . $this->pengajuan->glblk),
             'nip'     => $this->clean_word($this->pengajuan->nip),
             'pangkat' => $this->pengajuan->pangkat . ' (' . $this->pengajuan->ngolru . ')',
             'jabatan' => $this->clean_word($this->pengajuan->njab),
             'opd'     => $this->clean_word($this->pengajuan->nunker),
             // Data Surat
-            'tgl_cetak'     => 'Lian Mafutra',
+            'tgl_cetak'     => Carbon::now()->translatedFormat('F Y'),
             'tgl_pengantar' => $this->clean_word($this->pengajuan->tgl_surat_pengantar),
             'jenis_rekom'   => $this->clean_word($this->pengajuan->getRekomJenisNamaAttribute()),
             'kode_surat'    => $this->clean_word($this->pengajuan->keperluan->kode_surat),

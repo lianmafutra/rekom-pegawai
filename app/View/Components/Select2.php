@@ -22,7 +22,7 @@ class Select2 extends Component
 
    public $placeholder;
 
-    public function __construct($required, $id, $label, $placeholder)
+    public function __construct($required, $id, $label, $placeholder='')
     {
     
       $this->required = $required;
