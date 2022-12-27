@@ -23,11 +23,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
       Route::get('/', [PengajuanAdminController::class, 'index'])->name('index');
       Route::delete('destroy/{uuid}', [PengajuanAdminController::class, 'destroy'])->name('destroy');
       Route::post('kirim', [PengajuanAdminController::class, 'kirim'])->name('kirim');
+      
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
    });
    Route::resource('master-rekom', MasterRekomController::class);
 
    Route::post('pengajuan/aksi/cetak-rekom', [PengajuanAksiController::class, 'cetakRekom'])->name('pengajuan.aksi.cetak');
+   Route::post('pengajuan/aksi/meneruskan', [PengajuanAksiController::class, 'meneruskan'])->name('pengajuan.aksi.meneruskan');
 
    
    Route::resource('pengajuan', PengajuanOPDController::class);

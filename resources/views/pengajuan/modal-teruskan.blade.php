@@ -22,7 +22,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('pengajuan.verifikasi.kirim') }}" method="POST">
+            <form action="{{ route('pengajuan.aksi.meneruskan') }}" method="POST">
                @csrf
             
                 <div class="modal-body">
@@ -31,10 +31,9 @@
                         <div class="form-group">
                             <label>Kepada :</label>
                             <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
-                            <input hidden name="aksi_id" value="4">
                             <select name="penerima_uuid" class="select2 select2-pegawai form-control select2bs4" style="width: 100%;">
                                 @foreach ($user_kirim as $item)
-                              
+
                                     <option value="{{ $item->uuid }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>

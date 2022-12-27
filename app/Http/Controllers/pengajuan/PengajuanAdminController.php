@@ -65,7 +65,7 @@ class PengajuanAdminController extends Controller
       try {
 
          DB::beginTransaction();
-         if ($request->aksi_id == 6) {
+         if ($request->aksi_id == PengajuanAksi::SELESAI) {
 
             // OPD asal Pengirim
             $penerima  = Pengajuan::with('pengirim')
@@ -81,7 +81,7 @@ class PengajuanAdminController extends Controller
             );
 
             $message = 'Pengajuan Berkas berhasil diselesaikan';
-         } else if ($request->aksi_id == 8) {
+         } else if ($request->aksi_id == PengajuanAksi::TOLAK) {
 
             $penerima  = Pengajuan::with('pengirim')
                ->where('uuid', '=', $request->pengajuan_uuid)
@@ -91,7 +91,7 @@ class PengajuanAdminController extends Controller
 
             $this->pengajuanService->storeHistori(
                $request->pengajuan_uuid,
-               8,
+               PengajuanAksi::TOLAK,
                $user_pengirim_opd_uuid,
                $request->pesan
             );
@@ -103,14 +103,13 @@ class PengajuanAdminController extends Controller
                $request->penerima_uuid
             );
          }
-
-         if ($user->getRoleName() == Role::isInspektur) {
-            $this->pengajuanService->storeHistori(
-               $request->pengajuan_uuid,
-               PengajuanAksi::PROSES_SURAT,
-               $request->penerima_uuid
-            );
-         }
+         // if ($user->getRoleName() == Role::isInspektur) {
+         //    $this->pengajuanService->storeHistori(
+         //       $request->pengajuan_uuid,
+         //       PengajuanAksi::PROSES_SURAT,
+         //       $request->penerima_uuid
+         //    );
+         // }
          $message = '';
 
          DB::commit();

@@ -11,6 +11,7 @@ use App\Http\Services\Surat\SuratCetak;
 use App\Models\Pengajuan;
 use App\Models\User;
 use App\Utils\ApiResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -18,6 +19,11 @@ class PengajuanAksiController extends Controller
 {
 
    use ApiResponse;
+   private $pengajuanService;
+   public function __construct(PengajuanService $pengajuanService)
+   {
+      $this->pengajuanService = $pengajuanService;
+   }
 
    public function cetakRekom(CetakRekomRequest $request, User $user, Pengajuan $pengajuan)
    {
@@ -42,6 +48,23 @@ class PengajuanAksiController extends Controller
          DB::rollBack();
          return $this->error('gagal' . $th, 400);
       }
+   }
+
+
+   public function meneruskan(Request $request){
+      try {
+         $this->pengajuanService->storeHistori(
+            $request->pengajuan_uuid,
+            PengajuanAksi::MENERUSKAN,
+            $request->penerima_uuid
+         );
+         DB::commit();
+         return redirect()->back()->with('success-modal', ['title' => 'Berhasil', 'message' => 'Berhasil Meneruskan Berkas'], 200)->send();
+      } catch (\Throwable $th) {
+         DB::rollback();
+         return redirect()->back()->with('error-modal', 'Gagal : ' . $th->getMessage(), 400)->send();
+      }
+     
    }
 
    public function shortUrl($id)
