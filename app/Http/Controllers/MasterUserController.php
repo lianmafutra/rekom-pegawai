@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MasterUserRequest;
+use App\Http\Services\Pegawai\PegawaiService;
 use App\Models\OPD;
 use App\Models\User;
 use App\Utils\ApiResponse;
@@ -15,13 +16,16 @@ class MasterUserController extends Controller
 
    use ApiResponse;
 
-   public function index()
+   public function index(PegawaiService $pegawaiService)
    {
 
       abort_if(Gate::denies('master user'), 403);
-      $x['title'] = 'Master Data User';
-      $x['opd'] = OPD::get();
-      $data    = User::whereNotIn('id', [1])->with('opd');
+      $x['title']    = 'Master Data User';
+      $x['opd']      = OPD::get();
+      $x['user_ttd'] = $pegawaiService->filterByOPD('4002000000');
+         $data       = User::whereNotIn('id', [1])->with('opd');
+   
+
       if (request()->ajax()) {
          return  datatables()->of($data)
             ->addIndexColumn()
@@ -32,11 +36,33 @@ class MasterUserController extends Controller
             ->make(true);
       }
 
+
+
       return view('master-user.index', $x);
+   }
+
+   public function indexPenandaTangan()
+   {
+      $data    = User::where('is_penanda_tangan', 'TRUE')->with('opd');
+
+      if (request()->ajax()) {
+         return  datatables()->of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($data) {
+               return view('master-user.action-user-ttd', compact('data'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+      }
    }
 
 
    public function create()
+   {
+      //
+   }
+
+   public function show()
    {
       //
    }

@@ -16,7 +16,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Master Data User</h1>
+                        <h1 class="m-0">- Master Data User</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -39,6 +39,8 @@
                                 <h3 class="card-title">
                                     <a href="#" class="btn_tambah_user btn btn-sm btn-primary" id="btn_input_data"><i
                                             class="fas fa-plus"></i> Tambah User</a>
+                                            {{-- <a href="#" class="btn_tambah_user btn btn-sm btn-warning" id="btn_input_data"><i
+                                             class="fas fa-plus"></i> Atur User Penanda Tangan</a> --}}
                                     {{-- <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
                                             class="fas fa-filter"></i> Filter Data</a>  --}}
                                     <a id="filter_text" style="font-size: 12px; margin-left: 10px"> </a>
@@ -68,11 +70,54 @@
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
+
+        <div class="content-header">
+         <div class="container-fluid">
+             <div class="row mb-2">
+                 <div class="col-sm-6">
+                     <h1 class="m-0">- User Penanda Tangan</h1>
+                 </div><!-- /.col -->
+               
+             </div><!-- /.row -->
+         </div>
+         <!-- /.container-fluid -->
+     </div>
+     <section class="content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card">
+                     
+                      <div class="card-body">
+                          <div class="tab-content">
+                              <div class="card-body table-responsive">
+                                  <table id="tabel_user_ttd" class="table table-bordered" style="width:100%">
+                                      <thead>
+                                          <tr>
+                                              <th>#</th>
+                                              <th>NIP</th>
+                                              <th>Username</th>
+                                              <th>Nama</th>
+                                              <th>TTD</th>
+                                              <th>#Aksi</th>
+                                          </tr>
+                                      </thead>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- /.row -->
+      </div><!-- /.container-fluid -->
+  </section>
         <!-- /.content -->
     </div>
     @include('master-user.modal-reset-password')
     @include('master-user.modal-tambah-user')
     @include('master-user.modal-edit-user')
+    @include('master-user.modal-edit-user-ttd')
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -120,6 +165,45 @@
                 ]
             });
 
+            let tabel_user_ttd = $("#tabel_user_ttd").DataTable({
+                serverSide: true,
+                processing: true,
+                searching: false,
+                lengthChange: false,
+                paging: false,
+                info: false,
+                ordering: false,
+                ajax: {
+                    url: @json(route('master-user.ttd')),
+                    //   data: function(e) {
+                    //       e.rekom_jenis = rekom_jenis
+                    //   }
+                },
+                columns: [{
+                        data: "DT_RowIndex",
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
+                        data: 'nip',
+                    },
+                      {
+                          data: 'username',
+                      },
+                    {
+                        data: 'name',
+                    },
+                    {
+                        data: 'img_ttd',
+                    },
+                    {
+                        data: "action",
+                        orderable: false,
+                        searchable: false,
+                    },
+                ]
+            });
+
             $('.btn_tambah_user').click(function(e) {
                 e.preventDefault();
                 clearInput()
@@ -156,6 +240,29 @@
                 e.preventDefault();
                 clearInput()
                 $('#modal_edit_user').modal('show')
+
+                let url = $(this).attr('data-url');
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'json',
+                    success: (response) => {
+                        console.log(response)
+                        $('#user_id_edit').val(response.data.id)
+                        $('#opd_id_edit').val(response.data.opd_id).trigger("change");
+                        $('#username_edit').val(response.data.username)
+                    },
+                    error: function(response) {
+                        showError(response)
+                    }
+                });
+
+            });
+
+            $('body').on('click', '.btn_edit_ttd', function(e) {
+                e.preventDefault();
+              
+                $('#modal_edit_user_ttd').modal('show')
 
                 let url = $(this).attr('data-url');
                 $.ajax({
