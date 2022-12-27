@@ -146,8 +146,9 @@
         });
         window.clearInput = function() {
             $('.input').val('');
-
+            // $('.select2').val(null).trigger("change");
             $('.error').hide();
+          
         }
         window.showError = function(response) {
             $('.error').hide();

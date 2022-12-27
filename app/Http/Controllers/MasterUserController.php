@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MasterUserRequest;
 use App\Models\OPD;
 use App\Models\User;
 use App\Utils\ApiResponse;
@@ -20,7 +21,7 @@ class MasterUserController extends Controller
       abort_if(Gate::denies('master user'), 403);
       $x['title'] = 'Master Data User';
       $x['opd'] = OPD::get();
-      $data    = User::with('opd')->get();
+      $data    = User::whereNotIn('id', [1])->with('opd');
       if (request()->ajax()) {
          return  datatables()->of($data)
             ->addIndexColumn()
@@ -41,42 +42,43 @@ class MasterUserController extends Controller
    }
 
 
-   public function store(Request $request)
+   public function store(MasterUserRequest $request)
    {
 
-      // dd($request->all());
-      Validator::make($request->all(), [
-         'username'            => 'required|min:5',
-         'password'            => 'required|min:5',
-      ])->validate();
       try {
          User::create([
             'username' => $request->username,
             'opd_id' => $request->opd_id,
+            // 'name' => $request->name,
             'password' => bcrypt($request->password)
          ]);
+
          return $this->success('Berhasil Membuat User Baru');
       } catch (\Throwable $th) {
-         return $this->error('Gagal Membuat User Baru'. $th, 400);
+         return $this->error('Gagal Membuat User Baru' . $th, 400);
       }
-   }
-
-
-   public function show($id)
-   {
-      //
    }
 
 
    public function edit($id)
    {
-      //
+      $user = User::where('id', $id)->first();
+      return $this->success('Data User OPD', $user);
    }
 
 
-   public function update(Request $request, $id)
+   public function update(MasterUserRequest $request, $id)
    {
-      //
+      try {
+         User::where('id', $id)->update([
+            'username' => $request->username,
+            'opd_id' => $request->opd_id,
+         ]);
+
+         return $this->success('Berhasil Merubah User Baru');
+      } catch (\Throwable $th) {
+         return $this->error('Gagal Merubah User Baru' . $th, 400);
+      }
    }
 
 
@@ -87,9 +89,9 @@ class MasterUserController extends Controller
 
    public function resetPassword(Request $request)
    {
-         Validator::make($request->all(), [
-            'password_baru' => 'required|min:5',
-         ])->validate();
+      Validator::make($request->all(), [
+         'password_baru' => 'required|min:5',
+      ])->validate();
 
       try {
          User::where('id', $request->user_id)->update([

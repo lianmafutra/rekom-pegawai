@@ -52,7 +52,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Username</th>
-                                                    <th>Nama</th>
+                                                    {{-- <th>Nama</th> --}}
                                                     <th>OPD</th>
                                                     <th>Last Login</th>
                                                     <th>#Aksi</th>
@@ -72,6 +72,7 @@
     </div>
     @include('master-user.modal-reset-password')
     @include('master-user.modal-tambah-user')
+    @include('master-user.modal-edit-user')
 @endsection
 @push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -102,9 +103,9 @@
                     {
                         data: 'username',
                     },
-                    {
-                        data: 'name',
-                    },
+                    //   {
+                    //       data: 'name',
+                    //   },
                     {
                         data: 'opd.nunker',
                     },
@@ -139,17 +140,39 @@
                 }
             });
 
-            
+
 
 
             $('body').on('click', '.btn_reset_password', function(e) {
                 e.preventDefault();
-
                 $('#modal_reset_password').modal('show')
-
                 let name = $(this).attr('data-name');
                 let id = $(this).attr('data-id');
                 $('#user_id').val(id)
+            });
+
+
+            $('body').on('click', '.btn_edit', function(e) {
+                e.preventDefault();
+                clearInput()
+                $('#modal_edit_user').modal('show')
+
+                let url = $(this).attr('data-url');
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'json',
+                    success: (response) => {
+                        console.log(response)
+                        $('#user_id_edit').val(response.data.id)
+                        $('#opd_id_edit').val(response.data.opd_id).trigger("change");
+                        $('#username_edit').val(response.data.username)
+                    },
+                    error: function(response) {
+                        showError(response)
+                    }
+                });
+
             });
 
             $("#form_reset_password").submit(function(e) {
@@ -228,7 +251,50 @@
                 });
             });
 
-          
+            $("#form_edit_user").submit(function(e) {
+                e.preventDefault();
+                let id = $('#user_id_edit').val();
+                let url =  "{{ route("master-user.update", ":id") }}";
+                let result = url.replace(':id', id);
+             
+                const formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: result,
+                    data: formData,
+                 
+                    contentType: false,
+                    processData: false,
+
+                    beforeSend: function() {
+                        showLoading()
+                    },
+                    success: (response) => {
+                        if (response) {
+                            this.reset()
+                           
+                            Swal.fire({
+                                icon: 'success',
+                                title: response.message,
+                                showCancelButton: true,
+                                allowEscapeKey: false,
+                                showCancelButton: false,
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                swal.hideLoading()
+                                tabel_user.ajax.reload();
+                                $('#modal_edit_user').modal('hide')
+                            })
+                            swal.hideLoading()
+                        }
+                    },
+                    error: function(response) {
+                        showError(response)
+                    }
+                });
+            });
+
+
 
             $('body').on('click', '.btn_hapus', function(e) {
                 let nama = $(this).attr('data-nama');
