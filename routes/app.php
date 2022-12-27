@@ -22,16 +22,18 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::prefix('pengajuan/verifikasi')->name('pengajuan.verifikasi.')->middleware(['auth'])->group(function () {
       Route::get('/', [PengajuanAdminController::class, 'index'])->name('index');
       Route::delete('destroy/{uuid}', [PengajuanAdminController::class, 'destroy'])->name('destroy');
-      Route::post('kirim', [PengajuanAdminController::class, 'kirim'])->name('kirim');
-      
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
    });
    Route::resource('master-rekom', MasterRekomController::class);
 
-   Route::post('pengajuan/aksi/cetak-rekom', [PengajuanAksiController::class, 'cetakRekom'])->name('pengajuan.aksi.cetak');
-   Route::post('pengajuan/aksi/meneruskan', [PengajuanAksiController::class, 'meneruskan'])->name('pengajuan.aksi.meneruskan');
-   Route::post('pengajuan/aksi/tolak', [PengajuanAksiController::class, 'tolak'])->name('pengajuan.aksi.tolak');
-   Route::post('pengajuan/aksi/selesai', [PengajuanAksiController::class, 'selesai'])->name('pengajuan.aksi.selesai');
+
+   Route::prefix('pengajuan/aksi')->name('pengajuan.aksi.')->middleware(['auth'])->group(function () {
+      Route::post('cetak-rekom', [PengajuanAksiController::class, 'cetakRekom'])->name('cetak');
+      Route::post('meneruskan', [PengajuanAksiController::class, 'meneruskan'])->name('meneruskan');
+      Route::post('tolak', [PengajuanAksiController::class, 'tolak'])->name('tolak');
+      Route::post('selesai', [PengajuanAksiController::class, 'selesai'])->name('selesai');
+   });
+  
 
    
    Route::resource('pengajuan', PengajuanOPDController::class);

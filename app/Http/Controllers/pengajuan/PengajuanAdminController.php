@@ -60,65 +60,7 @@ class PengajuanAdminController extends Controller
       return view('pengajuan.admin.index', $x, compact('data'));
    }
 
-   public function kirim(Request $request, User $user)
-   {
-      try {
 
-         DB::beginTransaction();
-         if ($request->aksi_id == PengajuanAksi::SELESAI) {
-
-            // OPD asal Pengirim
-            $penerima  = Pengajuan::with('pengirim')
-               ->where('uuid', '=', $request->pengajuan_uuid)
-               ->first();
-
-            $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
-
-            $this->pengajuanService->storeHistori(
-               $request->pengajuan_uuid,
-               6,
-               $user_pengirim_opd_uuid
-            );
-
-            $message = 'Pengajuan Berkas berhasil diselesaikan';
-         } else if ($request->aksi_id == PengajuanAksi::TOLAK) {
-
-            // $penerima  = Pengajuan::with('pengirim')
-            //    ->where('uuid', '=', $request->pengajuan_uuid)
-            //    ->first();
-
-            // $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
-
-            // $this->pengajuanService->storeHistori(
-            //    $request->pengajuan_uuid,
-            //    PengajuanAksi::TOLAK,
-            //    $user_pengirim_opd_uuid,
-            //    $request->pesan
-            // );
-            // $message = '';
-         } else {
-            $this->pengajuanService->storeHistori(
-               $request->pengajuan_uuid,
-               $request->aksi_id,
-               $request->penerima_uuid
-            );
-         }
-         // if ($user->getRoleName() == Role::isInspektur) {
-         //    $this->pengajuanService->storeHistori(
-         //       $request->pengajuan_uuid,
-         //       PengajuanAksi::PROSES_SURAT,
-         //       $request->penerima_uuid
-         //    );
-         // }
-         $message = '';
-
-         DB::commit();
-         return redirect()->back()->with('success-modal', ['title' => 'Berhasil', 'message' => $message], 200)->send();
-      } catch (\Throwable $th) {
-         DB::rollback();
-         return redirect()->back()->with('error-modal', 'Gagal : ' . $th->getMessage(), 400)->send();
-      }
-   }
 
    public function detail($uuid, Pengajuan $pengajuan, User $user)
    {
