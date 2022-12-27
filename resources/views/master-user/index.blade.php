@@ -262,10 +262,8 @@
                     type: 'POST',
                     url: result,
                     data: formData,
-                 
                     contentType: false,
                     processData: false,
-
                     beforeSend: function() {
                         showLoading()
                     },

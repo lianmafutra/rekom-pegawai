@@ -117,6 +117,7 @@ class SuratCetak
          $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd_inspektur.png'), 'width' => 100, 'height' => 100, 'ratio' => false));
 
          $file_path_temp = $templateProcessor->save("php://output");
+         
          $filename_temp = pathinfo($file_path_temp)['filename'];
 
          if ($filename_temp == null || $filename_temp == '' || $filename_temp == []) {

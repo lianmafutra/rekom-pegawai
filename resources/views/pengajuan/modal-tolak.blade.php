@@ -22,11 +22,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('pengajuan.verifikasi.kirim') }}" method="POST">
+            <form action="{{ route('pengajuan.aksi.tolak') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
-                    <input hidden name="aksi_id" value="8">
+                  
                     <p>Berkas akan dikembalikan ke OPD Pengirim, Tuliskan Informasi Pesan Penolakan</p>
                     <div class="form-group">
                         <label></label>

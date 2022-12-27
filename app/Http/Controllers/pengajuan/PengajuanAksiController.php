@@ -39,8 +39,8 @@ class PengajuanAksiController extends Controller
             ->cetaksurat()
             ->updatefileRekom();
 
-            (new PengajuanService())->storeHistori($request->pengajuan_uuid,PengajuanAksi::MENERUSKAN,$request->penerima_uuid);
-            (new PengajuanService())->storeHistori($request->pengajuan_uuid,PengajuanAksi::PROSES_SURAT,$request->penerima_uuid);
+         (new PengajuanService())->storeHistori($request->pengajuan_uuid, PengajuanAksi::MENERUSKAN, $request->penerima_uuid);
+         (new PengajuanService())->storeHistori($request->pengajuan_uuid, PengajuanAksi::PROSES_SURAT, $request->penerima_uuid);
 
          DB::commit();
          return $this->success('Sukses');
@@ -51,7 +51,8 @@ class PengajuanAksiController extends Controller
    }
 
 
-   public function meneruskan(Request $request){
+   public function meneruskan(Request $request)
+   {
       try {
          $this->pengajuanService->storeHistori(
             $request->pengajuan_uuid,
@@ -64,7 +65,55 @@ class PengajuanAksiController extends Controller
          DB::rollback();
          return redirect()->back()->with('error-modal', 'Gagal : ' . $th->getMessage(), 400)->send();
       }
-     
+   }
+
+   public function tolak(Request $request)
+   {
+      try {
+         $penerima  = Pengajuan::with('pengirim')
+            ->where('uuid', '=', $request->pengajuan_uuid)
+            ->first();
+
+         $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
+
+         $this->pengajuanService->storeHistori(
+            $request->pengajuan_uuid,
+            PengajuanAksi::TOLAK,
+            $user_pengirim_opd_uuid,
+            $request->pesan
+         );
+
+         DB::commit();
+         return redirect()->back()->with('success-modal', ['title' => 'Berhasil', 'message' => 'Berhasil Menolak Berkas'], 200)->send();
+      } catch (\Throwable $th) {
+         DB::rollback();
+         return redirect()->back()->with('error-modal', 'Gagal : Menolak Berkas', 400)->send();
+      }
+   }
+
+
+   public function selesai(Request $request)
+   {
+      try {
+         // OPD asal Pengirim
+         $penerima  = Pengajuan::with('pengirim')
+            ->where('uuid', '=', $request->pengajuan_uuid)
+            ->first();
+
+         $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
+
+         $this->pengajuanService->storeHistori(
+            $request->pengajuan_uuid,
+            PengajuanAksi::SELESAI,
+            $user_pengirim_opd_uuid
+         );
+
+         DB::commit();
+         return redirect()->back()->with('success-modal', ['title' => 'Berhasil', 'message' => 'Pengajuan Berkas berhasil diselesaikan'], 200)->send();
+      } catch (\Throwable $th) {
+         DB::rollback();
+         return redirect()->back()->with('error-modal', 'Gagal : Menolak Berkas', 400)->send();
+      }
    }
 
    public function shortUrl($id)

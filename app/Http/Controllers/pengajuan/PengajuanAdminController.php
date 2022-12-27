@@ -83,19 +83,19 @@ class PengajuanAdminController extends Controller
             $message = 'Pengajuan Berkas berhasil diselesaikan';
          } else if ($request->aksi_id == PengajuanAksi::TOLAK) {
 
-            $penerima  = Pengajuan::with('pengirim')
-               ->where('uuid', '=', $request->pengajuan_uuid)
-               ->first();
+            // $penerima  = Pengajuan::with('pengirim')
+            //    ->where('uuid', '=', $request->pengajuan_uuid)
+            //    ->first();
 
-            $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
+            // $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
 
-            $this->pengajuanService->storeHistori(
-               $request->pengajuan_uuid,
-               PengajuanAksi::TOLAK,
-               $user_pengirim_opd_uuid,
-               $request->pesan
-            );
-            $message = '';
+            // $this->pengajuanService->storeHistori(
+            //    $request->pengajuan_uuid,
+            //    PengajuanAksi::TOLAK,
+            //    $user_pengirim_opd_uuid,
+            //    $request->pesan
+            // );
+            // $message = '';
          } else {
             $this->pengajuanService->storeHistori(
                $request->pengajuan_uuid,
@@ -140,23 +140,19 @@ class PengajuanAdminController extends Controller
          })
          ->first();
 
-      // jika belum ada maka insert histori pengajuan dengan status proses
-      if ($histori == null && $user->getRoleName() == Role::isAdminInspektorat) {
-         $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA, auth()->user()->uuid);
-      }
-      if ($histori == null && $user->getRoleName() == Role::isKasubag) {
-         $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA, auth()->user()->uuid);
-      }
-      if ($histori == null && $user->getRoleName() == Role::isInspektur) {
-         $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA, auth()->user()->uuid);
+      if ($status != PengajuanAksi::TOLAK) {
+         // jika belum ada maka insert histori pengajuan dengan status proses
+         if ($histori == null && $user->getRoleName() != Role::isAdminOpd) {
+            $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA, auth()->user()->uuid);
+         }
       }
 
-      $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
+   $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
 
       $user_kirim = $pengajuan->getUserKirim();
       $file_rekom_hasil = $pengajuan->getFileRekomHasil();
-    
-     
+
+
 
       $pengajuan = $pengajuan->getPengajuanWithData($uuid);
 

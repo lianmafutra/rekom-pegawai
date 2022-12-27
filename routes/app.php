@@ -30,6 +30,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    Route::post('pengajuan/aksi/cetak-rekom', [PengajuanAksiController::class, 'cetakRekom'])->name('pengajuan.aksi.cetak');
    Route::post('pengajuan/aksi/meneruskan', [PengajuanAksiController::class, 'meneruskan'])->name('pengajuan.aksi.meneruskan');
+   Route::post('pengajuan/aksi/tolak', [PengajuanAksiController::class, 'tolak'])->name('pengajuan.aksi.tolak');
+   Route::post('pengajuan/aksi/selesai', [PengajuanAksiController::class, 'selesai'])->name('pengajuan.aksi.selesai');
 
    
    Route::resource('pengajuan', PengajuanOPDController::class);
