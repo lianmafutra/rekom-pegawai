@@ -78,17 +78,44 @@
                                     <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
                                 @endif
                             </a>
-                        @endcan
-                        @can('pengajuan index')
-                            <a href="{{ route('pengajuan.index') }}"
+
+                        <li class="nav-item menu-is-opening menu-open">
+                            <a href="{{ route('pengajuan.verifikasi.index') }}"
                                 class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
-                                <p>Pengajuan</p>
-                                @if ($global_jumlah_notif)
+                                <p>Data Pengajuan</p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="pages/charts/chartjs.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Belum Direspon</p>
+                                        @if ($global_jumlah_notif)
+                                            <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/flot.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Sudah Direspon</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('pengajuan index')
+                        <a href="{{ route('pengajuan.index') }}"
+                            class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-folder"></i>
+                            <p>Pengajuan</p>
+                            @if ($global_jumlah_notif)
                                 <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
                             @endif
-                            </a>
-                        @endcan
+                        </a>
+                    @endcan
                     </li>
                 @endcan
                 @can('master rekom pegawai')
@@ -100,7 +127,7 @@
                         </a>
                     </li>
                 @endcan
-                  @can('master user')
+                @can('master user')
                     <li class="nav-item">
                         <a href="{{ route('master-user.index') }}"
                             class="nav-link {{ request()->routeIs('master-user*') ? 'active' : '' }}">

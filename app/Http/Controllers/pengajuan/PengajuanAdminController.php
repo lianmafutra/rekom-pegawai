@@ -32,13 +32,21 @@ class PengajuanAdminController extends Controller
       abort_if(Gate::denies('pengajuan verifikasi index'), 403);
 
       $x['title'] = 'Pengajuan Verifikasi';
-      $data    = Pengajuan::with('keperluan', 'histori')
-         ->whereRelation(
-            'histori',
-            'penerima_id',
-            '=',
-            auth()->user()->id
-         )->latest();
+
+      $data    = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
+         $query->where('penerima_id', '=', auth()->user()->id);
+         $query->where('tgl_aksi', '=', NULL);
+         $query->whereNotIn('pengajuan_aksi_id', [2, 5, 6]);
+      })->latest();
+      
+     
+      // $data    = Pengajuan::with('keperluan', 'histori')
+      //    ->whereRelation(
+      //       'histori',
+      //       'penerima_id',
+      //       '=',
+      //       auth()->user()->id
+      //    )->latest();
 
       $pegawai = Cache::get('pegawai');
 

@@ -62,6 +62,8 @@ class PengajuanOPDController extends Controller
       return view('pengajuan.opd.index', $x, compact('data'));
    }
 
+   
+
    public function create(User $user)
    {
 
