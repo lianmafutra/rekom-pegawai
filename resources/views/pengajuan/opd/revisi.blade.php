@@ -278,9 +278,9 @@
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
-                                //   if (result.isConfirmed) {
-                                //       window.location.href = @json(route('pengajuan.index'))
-                                //   }
+                                  if (result.isConfirmed) {
+                                      window.location.href = @json(route('pengajuan.index'))
+                                  }
                             })
                             swal.hideLoading()
                         }
