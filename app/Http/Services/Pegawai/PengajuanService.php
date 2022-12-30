@@ -23,22 +23,7 @@ class PengajuanService
 
    use ApiResponse;
 
-   public function getPenerimaId()
-   {
-
-      if (Auth::user()->hasRole(Role::isAdminOpd)) {
-         return 6;
-      }
-      if (Auth::user()->hasRole(Role::isAdminInspektorat)) {
-         return 4;
-      }
-      if (Auth::user()->hasRole(Role::isKasubag)) {
-         return 5;
-      }
-      if (Auth::user()->hasRole(Role::isInspektur)) {
-         return 6;
-      }
-   }
+  
 
    public function getPenerimaOpdId()
    {
@@ -70,7 +55,7 @@ class PengajuanService
             'rekom_jenis'         => $request->rekom_jenis,
             'keperluan_id'        => $request->keperluan_id,
             'pengirim_id'         => auth()->user()->id,
-            'penerima_id'         => $this->getPenerimaId(),
+            'penerima_id'         => 3, //admin inspektorat
             'penerima_opd_id'     => $this->getPenerimaOpdId(),
             'file_sk_terakhir'    => Str::uuid()->toString(),
             'file_pengantar_opd'  => Str::uuid()->toString(),
@@ -107,7 +92,7 @@ class PengajuanService
          $data->rekom_jenis     = $request->rekom_jenis;
          $data->keperluan_id    = $request->keperluan_id;
          $data->pengirim_id     = auth()->user()->id;
-         $data->penerima_id     = $this->getPenerimaId();
+         $data->penerima_id     = 3; //admin inspektorat
          $data->penerima_opd_id = $this->getPenerimaOpdId();
          $data->catatan         = $request->catatan;
 
@@ -235,7 +220,8 @@ class PengajuanService
 
    /**
     *@desc cek button aksi tiap role dan berdasarkan kondisi pengajuan
-    */
+    *return pengajuan aksi id
+    */ 
    function cekPengajuanStatus($pengajuan_uuid)
    {
       $status =  Pengajuan::with('histori')->whereHas('histori', function ($q) {
@@ -243,6 +229,26 @@ class PengajuanService
       })->where('uuid', $pengajuan_uuid);
       return $status->first()->histori->last()->pengajuan_aksi_id;
    }
+
+     /**
+    *@desc cek button aksi tiap role dan berdasarkan kondisi pengajuan
+    */
+    function getLastPengajuanHIstori($pengajuan_uuid)
+    {
+       $status =  Pengajuan::with('histori')->where('uuid', $pengajuan_uuid);
+       return $status->first()->histori->where('pengajuan_aksi_id', '!=', 2)->last();
+    }
+
+       /**
+    *@desc update tgl_aksi pengajuan histori untuk hitung notif per user 
+    */
+    function updateTglAksiPengajuanHistori($pengajuan_uuid)
+    {
+     $lastPengajuanHistori = $this->getLastPengajuanHIstori($pengajuan_uuid);
+      PengajuanHistori::where('id', $lastPengajuanHistori->id)->update([
+         'tgl_aksi' => Carbon::now()
+      ]);
+    }
 
 
    /**

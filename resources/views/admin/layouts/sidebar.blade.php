@@ -84,6 +84,9 @@
                                 class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>Pengajuan</p>
+                                @if ($global_jumlah_notif)
+                                <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
+                            @endif
                             </a>
                         @endcan
                     </li>

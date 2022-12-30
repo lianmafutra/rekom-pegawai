@@ -9,8 +9,10 @@ use App\Http\Requests\CetakRekomRequest;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Http\Services\Surat\SuratCetak;
 use App\Models\Pengajuan;
+use App\Models\PengajuanHistori;
 use App\Models\User;
 use App\Utils\ApiResponse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -39,6 +41,7 @@ class PengajuanAksiController extends Controller
             ->cetaksurat()
             ->updatefileRekom();
 
+         $this->pengajuanService->updateTglAksiPengajuanHistori($request->pengajuan_uuid);
          (new PengajuanService())->storeHistori($request->pengajuan_uuid, PengajuanAksi::MENERUSKAN, $request->penerima_uuid);
          (new PengajuanService())->storeHistori($request->pengajuan_uuid, PengajuanAksi::PROSES_SURAT, $request->penerima_uuid);
 
@@ -54,11 +57,15 @@ class PengajuanAksiController extends Controller
    public function meneruskan(Request $request)
    {
       try {
+
+         $this->pengajuanService->updateTglAksiPengajuanHistori($request->pengajuan_uuid);
+
          $this->pengajuanService->storeHistori(
             $request->pengajuan_uuid,
             PengajuanAksi::MENERUSKAN,
             $request->penerima_uuid
          );
+
          DB::commit();
          return redirect()->back()->with('success-modal', ['title' => 'Berhasil', 'message' => 'Berhasil Meneruskan Berkas'], 200)->send();
       } catch (\Throwable $th) {
@@ -76,6 +83,7 @@ class PengajuanAksiController extends Controller
 
          $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
 
+         $this->pengajuanService->updateTglAksiPengajuanHistori($request->pengajuan_uuid);
          $this->pengajuanService->storeHistori(
             $request->pengajuan_uuid,
             PengajuanAksi::TOLAK,
@@ -102,6 +110,7 @@ class PengajuanAksiController extends Controller
 
          $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
 
+         $this->pengajuanService->updateTglAksiPengajuanHistori($request->pengajuan_uuid);
          $this->pengajuanService->storeHistori(
             $request->pengajuan_uuid,
             PengajuanAksi::SELESAI,
