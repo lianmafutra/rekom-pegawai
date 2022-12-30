@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link href="{{ asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
 @endpush
 @section('content')
     <style>
@@ -39,7 +40,7 @@
                                 <h3 class="card-title">
                                     <a href="#" class="btn_tambah_user btn btn-sm btn-primary" id="btn_input_data"><i
                                             class="fas fa-plus"></i> Tambah User</a>
-                                            {{-- <a href="#" class="btn_tambah_user btn btn-sm btn-warning" id="btn_input_data"><i
+                                    {{-- <a href="#" class="btn_tambah_user btn btn-sm btn-warning" id="btn_input_data"><i
                                              class="fas fa-plus"></i> Atur User Penanda Tangan</a> --}}
                                     {{-- <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
                                             class="fas fa-filter"></i> Filter Data</a>  --}}
@@ -72,47 +73,50 @@
         </section>
 
         <div class="content-header">
-         <div class="container-fluid">
-             <div class="row mb-2">
-                 <div class="col-sm-6">
-                     <h1 class="m-0">- User Penanda Tangan</h1>
-                 </div><!-- /.col -->
-               
-             </div><!-- /.row -->
-         </div>
-         <!-- /.container-fluid -->
-     </div>
-     <section class="content">
-      <div class="container-fluid">
-          <div class="row">
-              <div class="col-md-12">
-                  <div class="card">
-                     
-                      <div class="card-body">
-                          <div class="tab-content">
-                              <div class="card-body table-responsive">
-                                  <table id="tabel_user_ttd" class="table table-bordered" style="width:100%">
-                                      <thead>
-                                          <tr>
-                                              <th>#</th>
-                                              <th>NIP</th>
-                                              <th>Username</th>
-                                              <th>Nama</th>
-                                              <th>Hak Akses</th>
-                                              <th>TTD</th>
-                                              <th>#Aksi</th>
-                                          </tr>
-                                      </thead>
-                                  </table>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <!-- /.row -->
-      </div><!-- /.container-fluid -->
-  </section>
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">- User Penanda Tangan</h1>
+                    </div><!-- /.col -->
+
+                </div><!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="card-body table-responsive">
+                                        <table id="tabel_user_ttd" class="table table-bordered" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>NIP</th>
+                                                    <th>Username</th>
+                                                    <th>Nama</th>
+                                                    <th>TTD</th>
+                                                    <th>#Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
         <!-- /.content -->
     </div>
     @include('master-user.modal-reset-password')
@@ -125,12 +129,29 @@
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script>
         $(document).ready(function() {
 
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
             })
+
+            FilePond.registerPlugin(
+                FilePondPluginFileEncode,
+                FilePondPluginFileValidateType,
+                FilePondPluginFileValidateSize);
+
+            const img_ttd = FilePond.create(document.querySelector('#img_ttd'));
+            img_ttd.setOptions({
+                storeAsFile: true,
+            });
+
+
             let rekom_jenis;
             let tabel_user = $("#tabel_user").DataTable({
                 serverSide: true,
@@ -188,15 +209,13 @@
                     {
                         data: 'nip',
                     },
-                      {
-                          data: 'username',
-                      },
                     {
-                        data: 'name',
+                        data: 'username',
                     },
                     {
                         data: 'name',
                     },
+
                     {
                         data: 'img_ttd',
                     },
@@ -228,9 +247,6 @@
                 }
             });
 
-
-
-
             $('body').on('click', '.btn_reset_password', function(e) {
                 e.preventDefault();
                 $('#modal_reset_password').modal('show')
@@ -238,7 +254,6 @@
                 let id = $(this).attr('data-id');
                 $('#user_id').val(id)
             });
-
 
             $('body').on('click', '.btn_edit', function(e) {
                 e.preventDefault();
@@ -265,7 +280,7 @@
 
             $('body').on('click', '.btn_edit_ttd', function(e) {
                 e.preventDefault();
-              
+
                 $('#modal_edit_user_ttd').modal('show')
 
                 let url = $(this).attr('data-url');
@@ -365,9 +380,9 @@
             $("#form_edit_user").submit(function(e) {
                 e.preventDefault();
                 let id = $('#user_id_edit').val();
-                let url =  "{{ route("master-user.update", ":id") }}";
+                let url = "{{ route('master-user.update', ':id') }}";
                 let result = url.replace(':id', id);
-             
+
                 const formData = new FormData(this);
                 $.ajax({
                     type: 'POST',
@@ -381,7 +396,7 @@
                     success: (response) => {
                         if (response) {
                             this.reset()
-                           
+
                             Swal.fire({
                                 icon: 'success',
                                 title: response.message,

@@ -28,13 +28,23 @@
                 @method('PUT')
 
                 <div class="modal-body">
-                    <select id="opd_id_edit" name="opd_id" required class="select2  form-control select2bs4"
-                        style="width: 100%;">
-                        @foreach ($user_ttd as $item)
-                            <option value={{ $item['nipbaru'] }}>{{ $item['nama'] }} ({{ $item['nipbaru'] }})</option>
-                        @endforeach
-                    </select>
+                    <div class="form-group">
+                     <label>Nama Pegawai</label>
+                        <select id="opd_id_edit" name="opd_id" required class="select2  form-control select2bs4"
+                            style="width: 100%;">
+                            @foreach ($user_ttd as $item)
+                                <option value={{ $item['nipbaru'] }}>{{ $item['nama'] }} ({{ $item['nipbaru'] }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <x-filepond id='img_ttd' label='File TTD' required='true' max='5 MB' />
+
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Ubah</button>
                 </div>

@@ -43,8 +43,7 @@ class MasterUserController extends Controller
 
    public function indexPenandaTangan()
    {
-      $data    = User::where('is_penanda_tangan', 'TRUE')->with('opd');
-
+      $data    = User::whereIn('id', [4,5,3])->with('opd');
       if (request()->ajax()) {
          return  datatables()->of($data)
             ->addIndexColumn()
@@ -99,6 +98,24 @@ class MasterUserController extends Controller
          User::where('id', $id)->update([
             'username' => $request->username,
             'opd_id' => $request->opd_id,
+         ]);
+
+         return $this->success('Berhasil Merubah User Baru');
+      } catch (\Throwable $th) {
+         return $this->error('Gagal Merubah User Baru' . $th, 400);
+      }
+   }
+
+
+   public function updateUserTTD(Request $request)
+   {
+
+      dd($request->all());
+      try {
+         User::where('id', $request->id)->update([
+            'nip'       => $request->nip,
+            'username' => $request->username,
+            'img_ttd' => $request->img_ttd,
          ]);
 
          return $this->success('Berhasil Merubah User Baru');
