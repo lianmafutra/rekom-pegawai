@@ -236,7 +236,7 @@ class PengajuanService
     function getLastPengajuanHIstori($pengajuan_uuid)
     {
        $status =  Pengajuan::with('histori')->where('uuid', $pengajuan_uuid);
-       return $status->first()->histori->where('pengajuan_aksi_id', '!=', 2)->last();
+       return $status->first()->histori->where('pengajuan_aksi_id', '!=', 2)->where('pengajuan_aksi_id', '!=', 5)->last();
     }
 
        /**
@@ -245,6 +245,7 @@ class PengajuanService
     function updateTglAksiPengajuanHistori($pengajuan_uuid)
     {
      $lastPengajuanHistori = $this->getLastPengajuanHIstori($pengajuan_uuid);
+     
       PengajuanHistori::where('id', $lastPengajuanHistori->id)->update([
          'tgl_aksi' => Carbon::now()
       ]);

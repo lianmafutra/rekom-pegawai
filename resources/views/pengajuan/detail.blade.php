@@ -377,7 +377,7 @@
                     dataType: 'json',
                     beforeSend: function() {
                         Swal.fire({
-                            title: 'Memprose Data...',
+                            title: 'Memproses Data...',
                             html: 'Mohon Tunggu...',
                             allowEscapeKey: false,
                             allowOutsideClick: false,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\Pengajuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -26,6 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+    
       // $url = Config::get('global.url.bkd.pegawai');
       // $response = Http::withBasicAuth('absen', 'absen2022')->acceptJson()->get($url)->collect();
       // $pegawai = Cache::forever('pegawai', $response);
