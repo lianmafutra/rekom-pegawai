@@ -70,14 +70,14 @@
                 @can('pengajuan menu')
                     <li class="nav-item">
                         @can('pengajuan verifikasi index')
-                            <a href="{{ route('pengajuan.verifikasi.index') }}"
+                            {{-- <a href="{{ route('pengajuan.verifikasi.index') }}"
                                 class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>Data Pengajuan</p>
                                 @if ($global_jumlah_notif)
-                                    <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
+                                    <span style="margin-right: 36px !important" class="badge badge-info right">{{ $global_jumlah_notif }}</span>
                                 @endif
-                            </a>
+                            </a> --}}
 
                         <li class="nav-item menu-is-opening menu-open">
                             <a href="{{ route('pengajuan.verifikasi.index') }}"
@@ -91,9 +91,9 @@
                                 <li class="nav-item">
                                     <a href="pages/charts/chartjs.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Belum Direspon</p>
+                                        <p>Belum Direspon </p>
                                         @if ($global_jumlah_notif)
-                                            <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
+                                        <span style="margin-right: 36px !important" class="badge badge-info right">{{ $global_jumlah_notif }}</span>
                                         @endif
                                     </a>
                                 </li>
