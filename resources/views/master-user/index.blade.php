@@ -98,6 +98,7 @@
                                               <th>NIP</th>
                                               <th>Username</th>
                                               <th>Nama</th>
+                                              <th>Hak Akses</th>
                                               <th>TTD</th>
                                               <th>#Aksi</th>
                                           </tr>
@@ -190,6 +191,9 @@
                       {
                           data: 'username',
                       },
+                    {
+                        data: 'name',
+                    },
                     {
                         data: 'name',
                     },
