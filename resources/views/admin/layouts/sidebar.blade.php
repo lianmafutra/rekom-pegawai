@@ -80,7 +80,7 @@
                             </a> --}}
 
                         <li class="nav-item menu-is-opening menu-open">
-                            <a href="{{ route('pengajuan.verifikasi.index') }}"
+                            <a href=""
                                 class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>Data Pengajuan</p>
@@ -89,7 +89,7 @@
 
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="pages/charts/chartjs.html" class="nav-link">
+                                    <a href="{{ route('pengajuan.verifikasi.index', 'status=belum-direspon') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Belum Direspon </p>
                                         @if ($global_jumlah_notif)
@@ -98,9 +98,9 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="pages/charts/flot.html" class="nav-link">
+                                    <a href="{{ route('pengajuan.verifikasi.index', 'status=sudah-direspon') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Sudah Direspon</p>
+                                        <p>Semua Pengajuan</p>
                                     </a>
                                 </li>
                             </ul>

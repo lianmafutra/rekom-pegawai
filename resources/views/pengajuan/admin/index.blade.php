@@ -50,11 +50,11 @@
 
                             <div class="card-body">
                                 <div class="tab-content">
-                                    @if ($data->count() == 0)
+                                    {{-- @if ($data->count() == 0)
                                         <center>
                                             <h5>Belum Ada Pengajuan Rekomendasi</h5>
                                         </center>
-                                    @else
+                                    @else --}}
                                         <div class="card-body table-responsive">
                                             <table id="tabel-pengajuan" class="table table-bordered  " style="width:100%">
                                                 <thead>
@@ -71,7 +71,7 @@
                                                 </thead>
                                             </table>
                                         </div>
-                                    @endif
+                                    {{-- @endif --}}
                                 </div>
                             </div>
                         </div>
@@ -106,7 +106,12 @@
         $("#tabel-pengajuan").dataTable({
             serverSide: true,
             processing: true,
-            ajax: `{{ route('pengajuan.verifikasi.index') }}`,
+            ajax: {
+                    url: @json(route('pengajuan.verifikasi.index')),
+                    data: function(e) {
+                        e.status = @json($status)
+                    }
+                },
             columns: [{
                     data: "DT_RowIndex",
                     orderable: false,

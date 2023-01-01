@@ -10,7 +10,7 @@ use App\Models\Keperluan;
 use App\Models\Pengajuan;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use Yajra\DataTables\Facades\DataTables;
@@ -26,32 +26,31 @@ class PengajuanAdminController extends Controller
       $this->pengajuanService = $pengajuanService;
    }
 
-   public function index()
+   public function index(Request $request)
    {
-
       abort_if(Gate::denies('pengajuan verifikasi index'), 403);
 
       $x['title'] = 'Pengajuan Verifikasi';
+      $x['status'] = $request->status;
 
-      $data    = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
-         $query->where('penerima_id', '=', auth()->user()->id);
-         $query->where('tgl_aksi', '=', NULL);
-         $query->whereNotIn('pengajuan_aksi_id', [2, 5, 6]);
-      })->latest();
-      
-     
-      // $data    = Pengajuan::with('keperluan', 'histori')
-      //    ->whereRelation(
-      //       'histori',
-      //       'penerima_id',
-      //       '=',
-      //       auth()->user()->id
-      //    )->latest();
-
-      $pegawai = Cache::get('pegawai');
+      if ($request->status == 'belum-direspon') {
+         $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
+            $query->where('penerima_id', '=', auth()->user()->id);
+            $query->where('tgl_aksi', '=', NULL);
+            $query->whereNotIn('pengajuan_aksi_id', [2, 5, 6]);
+         })->latest();
+      } else if ($request->status == 'sudah-direspon') {
+         $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
+            $query->where('penerima_id', '=', auth()->user()->id);
+            $query->where('tgl_aksi', '=', NULL);
+            $query->whereNotIn('pengajuan_aksi_id', [2, 5, 6]);
+         })->latest();
+      }else{
+         return abort(404);
+      }
 
       if (request()->ajax()) {
-         return DataTables::of($data)
+         return DataTables::eloquent($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                return view('pengajuan.admin.action', compact('data'));
@@ -63,8 +62,10 @@ class PengajuanAdminController extends Controller
             ->rawColumns(['action'])
             ->make(true);
       }
-      return view('pengajuan.admin.index', $x, compact('data'));
+      return view('pengajuan.admin.index', $x);
    }
+
+
 
 
 
@@ -95,7 +96,7 @@ class PengajuanAdminController extends Controller
          }
       }
 
-   $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
+      $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
 
       $user_kirim = $pengajuan->getUserKirim();
       $file_rekom_hasil = $pengajuan->getFileRekomHasil();
