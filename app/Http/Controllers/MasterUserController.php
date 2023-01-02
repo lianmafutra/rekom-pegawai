@@ -44,7 +44,7 @@ class MasterUserController extends Controller
 
    public function indexPenandaTangan()
    {
-      $data    = User::whereIn('id', [4, 5, 3])->with('opd');
+      $data    = User::whereIn('id', [4, 5, 3])->with('opd')->orderBy('position', 'ASC');
       if (request()->ajax()) {
          return  datatables()->of($data)
             ->addIndexColumn()
@@ -116,10 +116,6 @@ class MasterUserController extends Controller
 
    public function updateUserTTD(Request $request, $uuid, PegawaiService $pegawaiService)
    {
-
-
-     
-
       try {
          $pegawai = $pegawaiService->filterByNIP($request->nip_ttd)[0];
 

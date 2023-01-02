@@ -220,6 +220,7 @@
                     },
                     {
                         data: 'img_ttd',
+                        className: 'dt-body-center',
                     },
                     {
                         data: "action",

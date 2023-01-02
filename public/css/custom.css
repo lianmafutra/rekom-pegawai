@@ -21,7 +21,7 @@ li.nav-item {
 }
 
 [class*=sidebar-dark] .nav-legacy .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark] .nav-legacy .nav-treeview>.nav-item>.nav-link:focus, [class*=sidebar-dark] .nav-legacy .nav-treeview>.nav-item>.nav-link:hover {
-   background-color: rgba(223, 223, 223, 0.418);
+   background-color: rgb(154 99 253 / 10%);
    color: #fff;
    border-radius: 10px;
 }
