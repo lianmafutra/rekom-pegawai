@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="form-group img_ttd_layout">
-                        <x-filepond id='img_ttd' label='File TTD' required='true' max='5 MB' info='' />
+                        <x-filepond id='img_ttd' label='File TTD' required='true' max='5 MB' info='( Format File png , Maks 3 MB)' />
                     </div>
                 </div>
 

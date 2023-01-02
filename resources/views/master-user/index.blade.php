@@ -4,11 +4,21 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <link href="{{ asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
+    <link href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
 @endpush
 @section('content')
     <style>
         .filter_result {
             color: blue
+        }
+
+        .filepond--image-preview {
+            background: #fff;
+        }
+
+        .filepond--image-preview-overlay-idle {
+            mix-blend-mode: multiply;
+            color: rgb(40 40 40 / 21%);
         }
     </style>
     <div class="content-wrapper">
@@ -40,7 +50,7 @@
                                 <h3 class="card-title">
                                     <a href="#" class="btn_tambah_user btn btn-sm btn-primary" id="btn_input_data"><i
                                             class="fas fa-plus"></i> Tambah User</a>
-                                   
+
                                     <a id="filter_text" style="font-size: 12px; margin-left: 10px"> </a>
                                 </h3>
                             </div>
@@ -126,6 +136,7 @@
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
     <script>
         $(document).ready(function() {
 
@@ -136,13 +147,13 @@
             FilePond.registerPlugin(
                 FilePondPluginFileEncode,
                 FilePondPluginFileValidateType,
+
+                FilePondPluginImagePreview,
                 FilePondPluginFileValidateSize);
 
             const img_ttd = FilePond.create(document.querySelector('#img_ttd'));
 
-            img_ttd.setOptions({
-                storeAsFile: true,
-            });
+
 
             let rekom_jenis;
             let tabel_user = $("#tabel_user").DataTable({
@@ -269,10 +280,11 @@
             $('body').on('click', '.btn_edit_ttd', function(e) {
                 e.preventDefault();
                 let username = $(this).attr('data-username');
-                if(username != 'inspektur'){
-                  $('.img_ttd_layout').hide();
-                }else{
-                  $('.img_ttd_layout').show();
+
+                if (username != 'inspektur') {
+                    $('.img_ttd_layout').hide();
+                } else {
+                    $('.img_ttd_layout').show();
                 }
                 $('#modal_edit_user_ttd').modal('show')
                 let url = $(this).attr('data-url');
@@ -285,6 +297,13 @@
                         $('#user_id_edit').val(response.data.uuid)
                         $('#nip_ttd').val(response.data.nip).trigger("change");
                         $('#username_edit').val(response.data.username)
+                        img_ttd.setOptions({
+                            storeAsFile: true,
+                            files: [{
+                                source: '/storage/template/' + response.data.img_ttd
+                                   
+                            }]
+                        });
                     },
                     error: function(response) {
                         showError(response)

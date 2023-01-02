@@ -107,9 +107,9 @@ class MasterUserController extends Controller
             'opd_id' => $request->opd_id,
          ]);
 
-         return $this->success('Berhasil Merubah User Baru');
+         return $this->success('Berhasil Merubah Data User');
       } catch (\Throwable $th) {
-         return $this->error('Gagal Merubah User Baru' . $th, 400);
+         return $this->error('Gagal Merubah Data User' . $th, 400);
       }
    }
 
