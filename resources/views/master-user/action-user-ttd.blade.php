@@ -9,7 +9,7 @@
        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
        </button>
        <ul class="dropdown-menu">
-           <li><a data-url='{{ route('master-user.edit', $data->id) }}' data-update='{{ route('master-user.update', $data->id) }}'  href="#" class="btn_edit_ttd dropdown-item" >Ubah Data</a> </li>
+           <li><a data-username='{{ $data->username }}' data-url='{{ route('master-user.edit', $data->id) }}' data-update='{{ route('master-user.update', $data->uuid) }}'  href="#" class="btn_edit_ttd dropdown-item" >Ubah Data</a> </li>
        </ul>
    </div>
 </div>

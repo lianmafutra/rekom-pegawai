@@ -106,6 +106,7 @@
         $("#tabel-pengajuan").dataTable({
             serverSide: true,
             processing: true,
+            ajax: @json(route('pengajuan.verifikasi.index')),
             ajax: {
                     url: @json(route('pengajuan.verifikasi.index')),
                     data: function(e) {

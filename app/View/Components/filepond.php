@@ -10,19 +10,21 @@ class filepond extends Component
    public $label;
    public $max;
    public $required;
+   public $info;
 
    /**
     * Create a new component instance.
     *
     * @return void
     */
-   public function __construct($id, $label, $max, $required)
+   public function __construct($id, $label, $max, $required, $info='')
    {
       //
       $this->id = $id;
       $this->label = $label;
       $this->max = $max;
       $this->required = $required;
+      $this->info = $info;
    }
 
    /**

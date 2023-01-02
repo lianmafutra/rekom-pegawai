@@ -23,14 +23,13 @@
                 </button>
             </div>
 
-            <form id="form_edit_user" method="POST">
+            <form id="form_edit_user_ttd" method="POST">
                 @csrf
                 @method('PUT')
-
                 <div class="modal-body">
                     <div class="form-group">
                      <label>Nama Pegawai</label>
-                        <select id="opd_id_edit" name="opd_id" required class="select2  form-control select2bs4"
+                        <select id="nip_ttd" name="nip_ttd" required class="select2  form-control select2bs4"
                             style="width: 100%;">
                             @foreach ($user_ttd as $item)
                                 <option value={{ $item['nipbaru'] }}>{{ $item['nama'] }} ({{ $item['nipbaru'] }})
@@ -39,9 +38,8 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <x-filepond id='img_ttd' label='File TTD' required='true' max='5 MB' />
-
+                    <div class="form-group img_ttd_layout">
+                        <x-filepond id='img_ttd' label='File TTD' required='true' max='5 MB' info='' />
                     </div>
                 </div>
 

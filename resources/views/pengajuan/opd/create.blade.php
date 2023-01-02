@@ -91,11 +91,11 @@
                                             </x-select2>
                                             <x-textarea id='catatan' label='Catatan Tambahan'
                                                 hint='Tuliskan Catatan Tambahan (Opsional)' required='false' />
-                                            <x-filepond id='file_sk' label='File SK PNS' required='true' max='5 MB' />
+                                            <x-filepond id='file_sk' label='File SK PNS' required='true' max='5 MB' info='( Format File Pdf , Maks 5 MB)' />
                                             <x-filepond id='file_pengantar_opd' label='File Surat Pengantar kepala OPD'
-                                                required='true' max='5 MB' />
+                                                required='true' max='5 MB' info='( Format File Pdf , Maks 5 MB)' />
                                             <x-filepond id='file_konversi_nip' label='File Konversi NIP ( Opsional )'
-                                                required='false' max='5 MB' />
+                                                required='false' max='5 MB' info='( Format File Pdf , Maks 5 MB)' />
                                     </div>
                                     <div style="margin-left: 10px;" class="col-md-5 card ">
                                         <div class="card-header">

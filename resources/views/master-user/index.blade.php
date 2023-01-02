@@ -17,7 +17,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">- Master Data User</h1>
+                        <h1 class="m-0">- Data User OPD</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -40,10 +40,7 @@
                                 <h3 class="card-title">
                                     <a href="#" class="btn_tambah_user btn btn-sm btn-primary" id="btn_input_data"><i
                                             class="fas fa-plus"></i> Tambah User</a>
-                                    {{-- <a href="#" class="btn_tambah_user btn btn-sm btn-warning" id="btn_input_data"><i
-                                             class="fas fa-plus"></i> Atur User Penanda Tangan</a> --}}
-                                    {{-- <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
-                                            class="fas fa-filter"></i> Filter Data</a>  --}}
+                                   
                                     <a id="filter_text" style="font-size: 12px; margin-left: 10px"> </a>
                                 </h3>
                             </div>
@@ -71,14 +68,12 @@
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
-
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">- User Penanda Tangan</h1>
+                        <h1 class="m-0">- User Internal</h1>
                     </div><!-- /.col -->
-
                 </div><!-- /.row -->
             </div>
             <!-- /.container-fluid -->
@@ -88,7 +83,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="card-body table-responsive">
@@ -104,10 +98,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
                                             </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
@@ -147,10 +139,10 @@
                 FilePondPluginFileValidateSize);
 
             const img_ttd = FilePond.create(document.querySelector('#img_ttd'));
+
             img_ttd.setOptions({
                 storeAsFile: true,
             });
-
 
             let rekom_jenis;
             let tabel_user = $("#tabel_user").DataTable({
@@ -215,7 +207,6 @@
                     {
                         data: 'name',
                     },
-
                     {
                         data: 'img_ttd',
                     },
@@ -232,7 +223,6 @@
                 clearInput()
                 $('#modal_tambah_user').modal('show')
             });
-
 
             $("#show_hide_password1 a").on('click', function(event) {
                 event.preventDefault();
@@ -259,7 +249,6 @@
                 e.preventDefault();
                 clearInput()
                 $('#modal_edit_user').modal('show')
-
                 let url = $(this).attr('data-url');
                 $.ajax({
                     type: 'GET',
@@ -275,14 +264,17 @@
                         showError(response)
                     }
                 });
-
             });
 
             $('body').on('click', '.btn_edit_ttd', function(e) {
                 e.preventDefault();
-
+                let username = $(this).attr('data-username');
+                if(username != 'inspektur'){
+                  $('.img_ttd_layout').hide();
+                }else{
+                  $('.img_ttd_layout').show();
+                }
                 $('#modal_edit_user_ttd').modal('show')
-
                 let url = $(this).attr('data-url');
                 $.ajax({
                     type: 'GET',
@@ -290,15 +282,14 @@
                     dataType: 'json',
                     success: (response) => {
                         console.log(response)
-                        $('#user_id_edit').val(response.data.id)
-                        $('#opd_id_edit').val(response.data.opd_id).trigger("change");
+                        $('#user_id_edit').val(response.data.uuid)
+                        $('#nip_ttd').val(response.data.nip).trigger("change");
                         $('#username_edit').val(response.data.username)
                     },
                     error: function(response) {
                         showError(response)
                     }
                 });
-
             });
 
             $("#form_reset_password").submit(function(e) {
@@ -382,7 +373,6 @@
                 let id = $('#user_id_edit').val();
                 let url = "{{ route('master-user.update', ':id') }}";
                 let result = url.replace(':id', id);
-
                 const formData = new FormData(this);
                 $.ajax({
                     type: 'POST',
@@ -396,7 +386,6 @@
                     success: (response) => {
                         if (response) {
                             this.reset()
-
                             Swal.fire({
                                 icon: 'success',
                                 title: response.message,
@@ -418,7 +407,44 @@
                 });
             });
 
-
+            $("#form_edit_user_ttd").submit(function(e) {
+                e.preventDefault();
+                let id = $('#user_id_edit').val();
+                let url = "{{ route('master-user.ttd.update', ':id') }}";
+                let result = url.replace(':id', id);
+                const formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: result,
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        showLoading()
+                    },
+                    success: (response) => {
+                        if (response) {
+                            this.reset()
+                            Swal.fire({
+                                icon: 'success',
+                                title: response.message,
+                                showCancelButton: true,
+                                allowEscapeKey: false,
+                                showCancelButton: false,
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                swal.hideLoading()
+                                tabel_user_ttd.ajax.reload();
+                                $('#modal_edit_user_ttd').modal('hide')
+                            })
+                            swal.hideLoading()
+                        }
+                    },
+                    error: function(response) {
+                        showError(response)
+                    }
+                });
+            });
 
             $('body').on('click', '.btn_hapus', function(e) {
                 let nama = $(this).attr('data-nama');
@@ -436,9 +462,7 @@
                         $(this).find('#form-delete').submit();
                     }
                 })
-
             });
-
 
         });
     </script>

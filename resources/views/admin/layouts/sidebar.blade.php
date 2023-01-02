@@ -98,7 +98,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('pengajuan.verifikasi.index', 'status=sudah-direspon') }}" class="nav-link">
+                                    <a href="{{ route('pengajuan.verifikasi.index', 'status=semua') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Semua Pengajuan</p>
                                     </a>

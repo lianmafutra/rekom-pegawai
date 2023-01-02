@@ -38,7 +38,6 @@ class Pengajuan extends Model
    }
 
 
-
    public function getRekomJenisNamaAttribute()
    {
       if ($this->rekom_jenis == 'DISIPLIN') {
@@ -88,8 +87,6 @@ class Pengajuan extends Model
    }
 
 
-
-
    public function pengirim()
    {
       return $this->belongsTo(User::class, 'pengirim_id', 'id');
@@ -104,6 +101,8 @@ class Pengajuan extends Model
    {
       return Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi', 'file_rekom'])->where('uuid', $pengajuan_uuid)->first();
    }
+
+   
 
 
 

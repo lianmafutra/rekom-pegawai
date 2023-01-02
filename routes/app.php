@@ -41,6 +41,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
   
    Route::post('master-user/password/reset', [MasterUserController::class, 'resetPassword'])->name('master-user.password.reset');
    Route::get('master-user/penanda-tangan', [MasterUserController::class, 'indexPenandaTangan'])->name('master-user.ttd');
+   Route::put('master-user/penanda-tangan/update/{uuid}', [MasterUserController::class, 'updateUserTTD'])->name('master-user.ttd.update');
    Route::resource('master-user', MasterUserController::class);
    
    Route::get('pengajuan/revisi/{uuid}',[PengajuanOPDController::class, 'revisi'])->name('pengajuan.revisi');

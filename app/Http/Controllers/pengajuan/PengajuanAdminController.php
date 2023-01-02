@@ -37,13 +37,12 @@ class PengajuanAdminController extends Controller
          $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
             $query->where('penerima_id', '=', auth()->user()->id);
             $query->where('tgl_aksi', '=', NULL);
-            $query->whereNotIn('pengajuan_aksi_id', [2, 5, 6]);
+            $query->whereNotIn('pengajuan_aksi_id', [PengajuanAksi::VERIFIKASI_DATA, Pengajuanaksi::PROSES_SURAT, Pengajuanaksi::SELESAI]);
          })->latest();
-      } else if ($request->status == 'sudah-direspon') {
+      } else if ($request->status == 'semua') {
          $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
             $query->where('penerima_id', '=', auth()->user()->id);
             $query->where('tgl_aksi', '=', NULL);
-            $query->whereNotIn('pengajuan_aksi_id', [2, 5, 6]);
          })->latest();
       }else{
          return abort(404);
@@ -64,9 +63,6 @@ class PengajuanAdminController extends Controller
       }
       return view('pengajuan.admin.index', $x);
    }
-
-
-
 
 
    public function detail($uuid, Pengajuan $pengajuan, User $user)
@@ -100,8 +96,6 @@ class PengajuanAdminController extends Controller
 
       $user_kirim = $pengajuan->getUserKirim();
       $file_rekom_hasil = $pengajuan->getFileRekomHasil();
-
-
 
       $pengajuan = $pengajuan->getPengajuanWithData($uuid);
 
