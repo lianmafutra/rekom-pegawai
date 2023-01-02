@@ -6,6 +6,7 @@ use App\Http\Controllers\Pegawai\PegawaiSyncController;
 use App\Http\Controllers\Pengajuan\PengajuanAdminController;
 use App\Http\Controllers\Pengajuan\PengajuanAksiController;
 use App\Http\Controllers\pengajuan\PengajuanOPDController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -24,8 +25,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
       Route::delete('destroy/{uuid}', [PengajuanAdminController::class, 'destroy'])->name('destroy');
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
    });
-   Route::resource('master-rekom', MasterRekomController::class);
-
 
    Route::prefix('pengajuan/aksi')->name('pengajuan.aksi.')->middleware(['auth'])->group(function () {
       Route::post('cetak-rekom', [PengajuanAksiController::class, 'cetakRekom'])->name('cetak');
@@ -34,11 +33,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
       Route::post('selesai', [PengajuanAksiController::class, 'selesai'])->name('selesai');
    });
   
-
-   
    Route::resource('pengajuan', PengajuanOPDController::class);
-   
-  
+   Route::resource('master-rekom', MasterRekomController::class);
+
    Route::post('master-user/password/reset', [MasterUserController::class, 'resetPassword'])->name('master-user.password.reset');
    Route::get('master-user/penanda-tangan', [MasterUserController::class, 'indexPenandaTangan'])->name('master-user.ttd');
    Route::put('master-user/penanda-tangan/update/{uuid}', [MasterUserController::class, 'updateUserTTD'])->name('master-user.ttd.update');
@@ -48,6 +45,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::put('pengajuan/revisi/update',[PengajuanOPDController::class, 'updateRevisi'])->name('pengajuan.revisi.update');
 
    Route::get('pengajuan/histori/{uuid}', [PengajuanOPDController::class, 'histori'])->name('pengajuan.histori');
+   
+   Route::put('profile', [UserController::class, 'profileUpdate'])->name('profile.update');
 
 });
 

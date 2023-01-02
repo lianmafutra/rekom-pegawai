@@ -62,6 +62,8 @@ class uploadFile implements uploadFileBuilder
             $custom_path = $this->getPath($this->path);
             Log::info('Path file = ' .$custom_path);
 
+
+
             $file = File::create([
                'file_id'        => $this->uuid,
                'parent_file_id' => $this->parent_id,
@@ -70,6 +72,10 @@ class uploadFile implements uploadFileBuilder
                'path'           => $custom_path,
                'size'           => $this->file->getSize(),
             ]);
+
+          
+
+            
             Log::info($file);
             $this->file->storeAs('public/'.$custom_path, $name_uniqe);
           

@@ -10,6 +10,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
+
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -27,8 +29,24 @@ class UserController extends Controller
    {
       $x['title']     = 'Profile';
       $user = User::find(auth()->user()->id);
-  
+
+    
       return view('admin.profile.index', $x, compact('user'));
+   }
+
+   public function profileUpdate(Request $request)
+   {
+      try {
+         $user = User::find(auth()->user()->id);
+         $user->kontak = $request->kontak;
+         $user->save();
+         DB::commit();
+         return redirect()->back()->with('success', 'Berhasil Merubah Data User');
+      } catch (\Throwable $th) {
+         DB::rollback();
+         return redirect()->back()->with('error', 'Gagal Merubah Data User');
+      }
+      return back();
    }
 
    public function ubah_foto(Request $request, uploadFile $uploadFile)
@@ -36,95 +54,102 @@ class UserController extends Controller
       try {
          $user = User::find(auth()->user()->id);
          $files = $request->file('foto');
-   
-         $foto =  $uploadFile->save($files, 'profile');
-       
-         User::where('id', auth()->user()->id)->update([
-            'foto' =>   $foto->get('nama'),
-            'foto_path' =>   $foto->get('path')
-         ]);
-       
+
+         $data = User::where('id',auth()->user()->id)->firstOrFail();
+
+         if ($data->foto == null) {
+            $data->foto = $files  ? Str::uuid()->toString() : NULL;
+         }
+         $data->save();
+
+         $uploadFile
+            ->file($files)
+            ->path('profile')
+            ->uuid($data->uuid)
+            ->parent_id($data->id)
+            ->update($data->foto);
+
          DB::commit();
-         Alert::success('Pemberitahuan', 'Data <b>' . $user->name . '</b> berhasil disimpan')->toToast()->toHtml();
+         return redirect()->back()->with('success', 'Berhasil Merubah Foto User');
       } catch (\Throwable $th) {
          DB::rollback();
-         Alert::error('Pemberitahuan', 'Data <b>' . $user->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
+         return redirect()->back()->with('error', 'Gagal Merubah Foto User' . $th);
       }
       return back();
    }
 
    public function store(Request $request)
    {
-       $validator = Validator::make($request->all(), [
-           'username'     => ['required', 'string', 'max:255', 'unique:users'],
-           'password'  => ['required', 'string'],
-           'role'      => ['required']
-       ]);
-       if ($validator->fails()) {
-           return back()->withErrors($validator)
-               ->withInput();
-       }
-       DB::beginTransaction();
-       try {
-           $user = User::create([
-               'username'      => $request->username,
-               'password'  => bcrypt($request->password)
-           ]);
-           $user->assignRole($request->role);
-           DB::commit();
-           Alert::success('Pemberitahuan', 'Data <b>' . $user->username . '</b> berhasil dibuat')->toToast()->toHtml();
-       } catch (\Throwable $th) {
-           DB::rollback();
-           dd($th);
-           Alert::error('Pemberitahuan', 'Data <b>' . $request->username . '</b> gagal dibuat : ' )->toToast()->toHtml();
-       }
-       return back();
+      $validator = Validator::make($request->all(), [
+         'username'     => ['required', 'string', 'max:255', 'unique:users'],
+         'password'  => ['required', 'string'],
+         'role'      => ['required']
+      ]);
+      if ($validator->fails()) {
+         return back()->withErrors($validator)
+            ->withInput();
+      }
+      DB::beginTransaction();
+      try {
+         $user = User::create([
+            'username'      => $request->username,
+            'password'  => bcrypt($request->password)
+         ]);
+         $user->assignRole($request->role);
+         DB::commit();
+         Alert::success('Pemberitahuan', 'Data <b>' . $user->username . '</b> berhasil dibuat')->toToast()->toHtml();
+      } catch (\Throwable $th) {
+         DB::rollback();
+
+         Alert::error('Pemberitahuan', 'Data <b>' . $request->username . '</b> gagal dibuat : ')->toToast()->toHtml();
+      }
+      return back();
    }
 
-    public function update(Request $request)
-    {
-        $rules = [
-            'username'      => ['required', 'string', 'max:255'],
-            'password'  => ['nullable', 'string'],
-            'role'      => ['required']
-        ];
-        $validator = Validator::make($request->all(), $rules);
+   public function update(Request $request)
+   {
+      $rules = [
+         'username'      => ['required', 'string', 'max:255'],
+         'password'  => ['nullable', 'string'],
+         'role'      => ['required']
+      ];
+      $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)
-                ->withInput();
-        }
-        $data = [
-            'username'      => $request->username,
-          
-        ];
-        if (!empty($request->password)) {
-            $data['password']   = bcrypt($request->password);
-        }
+      if ($validator->fails()) {
+         return back()->withErrors($validator)
+            ->withInput();
+      }
+      $data = [
+         'username'      => $request->username,
 
-        DB::beginTransaction();
-        try {
-            $user = User::find($request->id);
-            $user->update($data);
-            $user->syncRoles($request->role);
-            DB::commit();
-            Alert::success('Pemberitahuan', 'Data <b>' . $user->username . '</b> berhasil disimpan')->toToast()->toHtml();
-        } catch (\Throwable $th) {
-            DB::rollback();
-            Alert::error('Pemberitahuan', 'Data <b>' . $user->username . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
-        }
-        return back();
-    }
+      ];
+      if (!empty($request->password)) {
+         $data['password']   = bcrypt($request->password);
+      }
 
-    public function show(Request $request)
-    {
-        $user = UserResource::collection(User::where(['id' => $request->id])->get());
-        return response()->json([
-            'status'    => Response::HTTP_OK,
-            'message'   => 'Data user by id',
-            'data'      => $user[0]
-        ], Response::HTTP_OK);
-    }
+      DB::beginTransaction();
+      try {
+         $user = User::find($request->id);
+         $user->update($data);
+         $user->syncRoles($request->role);
+         DB::commit();
+         Alert::success('Pemberitahuan', 'Data <b>' . $user->username . '</b> berhasil disimpan')->toToast()->toHtml();
+      } catch (\Throwable $th) {
+         DB::rollback();
+         Alert::error('Pemberitahuan', 'Data <b>' . $user->username . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
+      }
+      return back();
+   }
+
+   public function show(Request $request)
+   {
+      $user = UserResource::collection(User::where(['id' => $request->id])->get());
+      return response()->json([
+         'status'    => Response::HTTP_OK,
+         'message'   => 'Data user by id',
+         'data'      => $user[0]
+      ], Response::HTTP_OK);
+   }
 
    public function destroy(Request $request)
    {

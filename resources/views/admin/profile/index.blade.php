@@ -41,7 +41,7 @@
                         <div class="card card-primary card-outline">
                             <div class="card-body box-profile">
                                 <div class="text-center">
-                                    <img class="profile-user-img img-fluid img-circle" src="{{ $user->foto_url }}"
+                                    <img class="profile-user-img img-fluid img-circle" src="{{ $user->getUrlFoto() }}"
                                         alt="User profile picture">
                                 </div>
                                 <h3 class="profile-username text-center">{{ $user->username }}</h3>
@@ -83,11 +83,13 @@
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="active tab-pane" id="tab_profile">
-                                        <form class="form-horizontal">
+                                        <form method="POST" action="{{ route('profile.update') }}" class="form-horizontal">
+                                          @csrf
+                                          @method('PUT')
                                             <div class="form-group row">
-                                                <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
+                                                <label  for="inputName" class="col-sm-2 col-form-label">Nama</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="nama"
+                                                    <input disabled type="text" class="form-control" id="nama"
                                                         value="{{ $user->name }}" placeholder="Nama">
                                                 </div>
                                             </div>

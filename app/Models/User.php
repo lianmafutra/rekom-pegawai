@@ -19,7 +19,6 @@ class User extends Authenticatable
     use AutoUUID;
     use ApiResponse;
 
-    protected $appends = ['foto_url'];
 
     protected $fillable = [
         'username',
@@ -45,15 +44,26 @@ class User extends Authenticatable
       return auth()->user()->getRoleNames()[0];
     }
 
-   public function getFotoUrlAttribute()
-   {
-      if($this->foto){
-         return "http://".request()->getHttpHost(). "/storage/". $this->foto_path."/".$this->foto;
-       
-      }else{
-            return "http://".request()->getHttpHost()."/img/avatar.png";
-      }
-   }
+    public function file_foto()
+    {
+       return $this->hasOne(File::class, 'file_id', 'foto');
+    }
+
+    public function getUrlFoto()
+    {
+ 
+      $file = User::where('id', auth()->user()->id)->with('file_foto')->first()->file_foto;
+    
+       if ($file) {
+          return  'http://' . request()->getHttpHost() .
+             '/storage/' .
+             $file->path .
+             '/' .
+             $file->name_random;
+       }
+
+       return "http://".request()->getHttpHost()."/img/avatar.png";
+    }
 
    public function checkPassword($password){
       if(Hash::check($password, auth()->user()->password)) {
