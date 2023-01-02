@@ -12,6 +12,20 @@ li.nav-item {
    width: 214px;
 }
 
+[class*=sidebar-dark]  li.nav-item:hover {
+   border-radius: 10px;
+   background: none !important;
+   border: none;
+   margin-right: 30px;
+   width: 214px !important;
+}
+
+[class*=sidebar-dark] .nav-legacy .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark] .nav-legacy .nav-treeview>.nav-item>.nav-link:focus, [class*=sidebar-dark] .nav-legacy .nav-treeview>.nav-item>.nav-link:hover {
+   background-color: rgba(223, 223, 223, 0.418);
+   color: #fff;
+   border-radius: 10px;
+}
+
 .sidebar-dark-primary .nav-sidebar.nav-legacy>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar.nav-legacy>.nav-item>.nav-link.active {
    border-radius: 10px;
    background: blueviolet;
