@@ -7,6 +7,7 @@ use App\Config\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Services\Pegawai\PengajuanService;
 use App\Models\Keperluan;
+use App\Models\OPD;
 use App\Models\Pengajuan;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -32,19 +33,29 @@ class PengajuanAdminController extends Controller
 
       $x['title'] = 'Pengajuan Verifikasi';
       $x['status'] = $request->status;
+      $x['opd'] = OPD::get();
 
       if ($request->status == 'belum-direspon') {
          $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
             $query->where('penerima_id', '=', auth()->user()->id);
             $query->where('tgl_aksi', '=', NULL);
             $query->whereNotIn('pengajuan_aksi_id', [PengajuanAksi::VERIFIKASI_DATA, Pengajuanaksi::PROSES_SURAT, Pengajuanaksi::SELESAI]);
-         });   
+         });
       } else if ($request->status == 'semua') {
          $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
             $query->where('penerima_id', '=', auth()->user()->id);
             $query->where('tgl_aksi', '=', NULL);
          });
-      }else{
+
+         if ($request->opd_id) {
+            $data->where('nunker', 'LIKE', '%' . $request->opd_id . '%');
+         }
+
+         if ($request->rekom_jenis) {
+            $data->where('rekom_jenis', 'LIKE', '%' . $request->rekom_jenis . '%');
+         }
+
+      } else {
          return abort(404);
       }
 
@@ -63,7 +74,6 @@ class PengajuanAdminController extends Controller
             })
             ->rawColumns(['action'])
             ->make(true);
-            
       }
       return view('pengajuan.admin.index', $x);
    }
@@ -74,7 +84,9 @@ class PengajuanAdminController extends Controller
 
       $x['title'] = 'Buat Pengajuan';
 
+
       $status = $this->pengajuanService->cekPengajuanStatus($uuid);
+
 
       // $this->pengajuanService->cekHistoriProsesAdminOpd($uuid);
 

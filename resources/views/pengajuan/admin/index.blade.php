@@ -14,7 +14,7 @@
                         @if ($status == 'semua')
                             <h6 class="m-0">Semua Pengajuan Masuk</h6>
                         @else
-                           <h6 class="m-0">Pengajuan Belum Direspon  </h6>
+                            <h6 class="m-0">Pengajuan Belum Direspon </h6>
                         @endif
                     </div><!-- /.col -->
                     <div class="col-sm-6">
@@ -45,6 +45,8 @@
                                         @if ($status == 'semua')
                                             <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
                                                     class="fas fa-filter"></i> Filter Pengajuan</a>
+                                            <a href="#" style="display:none" class="btn btn-sm btn-warning"
+                                                id="reset_filter"><i class="fas fa-sync-alt"></i> Reset Filter</a>
                                         @endif
                                     @endcan
                                     @can('pengajuan cetak laporan')
@@ -89,8 +91,8 @@
         </section>
         <!-- /.content -->
     </div>
-    @include('pengajuan.modal-histori')
-    @include('pengajuan.modal-filter')
+
+
 @endsection
 
 @push('js')
@@ -98,7 +100,16 @@
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
+    @include('pengajuan.modal-filter')
+    @include('pengajuan.modal-histori')
+
     <script>
+        let filter_pengajuan = {
+            rekom_jenis: '',
+            nunker: '',
+            status: '',
+        };
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -110,15 +121,19 @@
             //  allowClear: true
         })
 
-        $("#tabel-pengajuan").dataTable({
+        let tabel_pengajuan = $("#tabel-pengajuan").DataTable({
             serverSide: true,
             processing: true,
-            ordering: true,  
-            order: [[ 6, 'desc' ]],
+            ordering: true,
+            order: [
+                [6, 'desc']
+            ],
             ajax: {
                 url: @json(route('pengajuan.verifikasi.index')),
                 data: function(e) {
-                    e.status = @json($status)
+                    e.status = @json($status),
+                        e.opd_id = filter_pengajuan.nunker,
+                        e.rekom_jenis = filter_pengajuan.rekom_jenis
                 }
             },
             columns: [{
@@ -146,7 +161,7 @@
                 {
                     data: 'keperluan.nama',
                     name: 'keperluan.nama',
-                    orderable: true, 
+                    orderable: true,
                 },
                 {
                     data: 'created_at',
@@ -166,6 +181,32 @@
             ]
         });
 
+
+
+
+        $('.btn_terapkan_filter').click(function(e) {
+            e.preventDefault();
+            filter_pengajuan.nunker = $('.select2-opd').val()
+            filter_pengajuan.rekom_jenis = $('.select2-rekom-jenis').val()
+
+            // filter_pengajuan.status = $('.select2-status').val()
+            $('#modal_filter').modal('hide')
+            tabel_pengajuan.draw()
+            $('#reset_filter').show()
+        });
+
+        $("#btn_filter").click(function() {
+            $('#modal_filter').modal('show')
+
+        });
+
+        $("#reset_filter").click(function() {
+         filter_pengajuan.nunker =''
+            filter_pengajuan.rekom_jenis = ''
+            tabel_pengajuan.draw()
+            $('#reset_filter').hide()
+        });
+
         function openCenteredWindow(url) {
             const width = 800
             const height = 700
@@ -177,9 +218,7 @@
             return window.open(url, '_blank', features).focus();
         }
 
-        $("#btn_filter").click(function() {
-            $('#modal_filter').modal('show')
-        });
+
 
         $('body').on('click', '.btn_hapus', function(e) {
             let nama = $(this).attr('data-nama');
