@@ -278,6 +278,7 @@
                 });
             });
 
+           
             $('body').on('click', '.btn_edit_ttd', function(e) {
                 e.preventDefault();
                 let username = $(this).attr('data-username');
@@ -466,10 +467,10 @@
                 });
             });
 
-            $('body').on('click', '.btn_hapus', function(e) {
+            $('body').on('click', '.btn_hapus_user', function(e) {
                 let nama = $(this).attr('data-nama');
                 Swal.fire({
-                    title: 'Apakah anda yakin ingin menghapus data ?',
+                    title: 'Apakah anda yakin ingin menghapus user ?',
                     text: nama,
                     icon: 'warning',
                     showCancelButton: true,

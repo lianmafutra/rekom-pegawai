@@ -139,9 +139,14 @@ class MasterUserController extends Controller
    }
 
 
-   public function destroy($id)
+   public function destroy($uuid)
    {
-      //
+      try {
+         User::where('uuid', $uuid)->delete();
+         return redirect()->back()->with('success', 'Berhasil Hapus Data', 200)->send();
+      } catch (\Throwable $th) {
+         return redirect()->back()->with('error', 'Gagal Hapus Data', 400)->send();
+      }
    }
 
    public function resetPassword(Request $request)
