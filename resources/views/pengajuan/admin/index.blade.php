@@ -11,7 +11,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Pengajuan Masuk</h1>
+                        @if ($status == 'semua')
+                            <h6 class="m-0">Semua Pengajuan Masuk</h6>
+                        @else
+                           <h6 class="m-0">Pengajuan Belum Direspon  </h6>
+                        @endif
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -38,8 +42,10 @@
                                             id="btn-tambah"><i class="fas fa-plus"></i> Buat Pengajuan</a>
                                     @endcan
                                     @can('pengajuan filter')
-                                        <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
-                                                class="fas fa-filter"></i> Filter Pengajuan</a>
+                                        @if ($status == 'semua')
+                                            <a href="#" class="btn btn-sm btn-default" id="btn_filter"><i
+                                                    class="fas fa-filter"></i> Filter Pengajuan</a>
+                                        @endif
                                     @endcan
                                     @can('pengajuan cetak laporan')
                                         <a href="{{ route('pengajuan.create') }}" class="btn btn-sm btn-default"
@@ -55,22 +61,23 @@
                                             <h5>Belum Ada Pengajuan Rekomendasi</h5>
                                         </center>
                                     @else --}}
-                                        <div class="card-body table-responsive">
-                                            <table id="tabel-pengajuan" class="table table-bordered  " style="width:100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>NIP</th>
-                                                        <th>Nama</th>
-                                                        <th>Jenis Rekom</th>
-                                                        <th>Keperluan</th>
-                                                        <th>Tgl Kirim</th>
-                                                        <th>Status</th>
-                                                        <th>#Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
+                                    <div class="card-body table-responsive">
+                                        <table id="tabel-pengajuan" class="table table-bordered  " style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>NIP</th>
+                                                    <th>Nama</th>
+                                                    <th>OPD</th>
+                                                    <th>Jenis Rekom</th>
+                                                    <th>Keperluan</th>
+                                                    <th>Tgl Kirim</th>
+                                                    <th>Status</th>
+                                                    <th>#Aksi</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
                                     {{-- @endif --}}
                                 </div>
                             </div>
@@ -99,20 +106,21 @@
         });
 
         $('.select2bs4').select2({
-                theme: 'bootstrap4',
-                //  allowClear: true
-            })
-            
+            theme: 'bootstrap4',
+            //  allowClear: true
+        })
+
         $("#tabel-pengajuan").dataTable({
             serverSide: true,
             processing: true,
-            ajax: @json(route('pengajuan.verifikasi.index')),
+            ordering: true,  
+            order: [[ 6, 'desc' ]],
             ajax: {
-                    url: @json(route('pengajuan.verifikasi.index')),
-                    data: function(e) {
-                        e.status = @json($status)
-                    }
-                },
+                url: @json(route('pengajuan.verifikasi.index')),
+                data: function(e) {
+                    e.status = @json($status)
+                }
+            },
             columns: [{
                     data: "DT_RowIndex",
                     orderable: false,
@@ -120,21 +128,35 @@
                 },
                 {
                     data: 'nip',
+                    orderable: false,
                 },
                 {
                     data: 'nama',
+                    orderable: false,
+                    searchable: false,
+                },
+                {
+                    data: 'nunker',
                 },
                 {
                     data: 'rekom_jenis_nama',
+                    searchable: false,
+                    orderable: false,
                 },
                 {
                     data: 'keperluan.nama',
+                    name: 'keperluan.nama',
+                    orderable: true, 
                 },
                 {
-                    data: 'tgl_kirim',
+                    data: 'created_at',
+                    orderable: true,
+                    searchable: false,
                 },
                 {
                     data: 'status',
+                    orderable: false,
+                    searchable: false,
                 },
                 {
                     data: "action",
@@ -160,26 +182,26 @@
         });
 
         $('body').on('click', '.btn_hapus', function(e) {
-                let nama = $(this).attr('data-nama');
-                let url = $(this).attr('data-url');
-                Swal.fire({
-                    title: 'Apakah anda yakin ingin menghapus data Permohonan ?',
-                    text: nama,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, Hapus',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $(this).find('#form-delete').submit();
-                    }
-                })
-            });
+            let nama = $(this).attr('data-nama');
+            let url = $(this).attr('data-url');
+            Swal.fire({
+                title: 'Apakah anda yakin ingin menghapus data Permohonan ?',
+                text: nama,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).find('#form-delete').submit();
+                }
+            })
+        });
 
         $("#btn_laporan").click(function() {
-           
+
         });
     </script>
     @include('pengajuan.get-data-histori')

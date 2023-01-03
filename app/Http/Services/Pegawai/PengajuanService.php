@@ -50,6 +50,7 @@ class PengajuanService
             'ngolru'              => $pegawai_cache['ngolru'],
             'pangkat'             => $pegawai_cache['pangkat'],
             'photo'               => $pegawai_cache['photo'],
+           
             'nomor_pengantar'     => $request->nomor_pengantar,
             'tgl_surat_pengantar' => $request->tgl_pengantar,
             'rekom_jenis'         => $request->rekom_jenis,
@@ -57,6 +58,7 @@ class PengajuanService
             'pengirim_id'         => auth()->user()->id,
             'penerima_id'         => 3, //admin inspektorat
             'penerima_opd_id'     => $this->getPenerimaOpdId(),
+            'pengirim_opd_id'     => auth()->user()->opd_id,
             'file_sk_terakhir'    => Str::uuid()->toString(),
             'file_pengantar_opd'  => Str::uuid()->toString(),
             'file_konversi_nip'   => $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL,

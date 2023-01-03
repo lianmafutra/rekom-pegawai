@@ -27,7 +27,7 @@
                 <div class="modal-body">
                      <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
                     <div class="embed_box">
-                        <p>Selesaikan Berkas, dan Kirim Surat Rekomendasi ke OPD Pengirim</p>
+                        <p>Selesaikan Berkas, dan Kirim Hasil Surat Rekomendasi ke OPD Pengirim</p>
                     </div>
                 </div>
                 <div class="modal-footer ">

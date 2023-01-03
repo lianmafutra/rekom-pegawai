@@ -38,21 +38,24 @@ class PengajuanAdminController extends Controller
             $query->where('penerima_id', '=', auth()->user()->id);
             $query->where('tgl_aksi', '=', NULL);
             $query->whereNotIn('pengajuan_aksi_id', [PengajuanAksi::VERIFIKASI_DATA, Pengajuanaksi::PROSES_SURAT, Pengajuanaksi::SELESAI]);
-         })->latest();
+         });   
       } else if ($request->status == 'semua') {
          $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) {
             $query->where('penerima_id', '=', auth()->user()->id);
             $query->where('tgl_aksi', '=', NULL);
-         })->latest();
+         });
       }else{
          return abort(404);
       }
 
       if (request()->ajax()) {
-         return DataTables::eloquent($data)
+         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                return view('pengajuan.admin.action', compact('data'));
+            })
+            ->editColumn('created_at', function ($data) {
+               return $data->tgl_kirim;
             })
             ->editColumn('status', function ($data) {
                $status = $this->pengajuanService->cekPengajuanStatus($data->uuid);
@@ -60,6 +63,7 @@ class PengajuanAdminController extends Controller
             })
             ->rawColumns(['action'])
             ->make(true);
+            
       }
       return view('pengajuan.admin.index', $x);
    }
