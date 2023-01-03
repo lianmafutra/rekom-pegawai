@@ -5,7 +5,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('dashboard') }}" class="nav-link"> Selamat Datang,  {{ auth()->user()->name }}</a>
+            <a href="{{ route('dashboard') }}" class="nav-link"> <b>Selamat Datang, </b> {{ auth()->user()->name }} ( {{ auth()->user()->username }} )</a>
         </li>
     </ul>
 
@@ -40,12 +40,12 @@
                 <div class="dropdown-divider"></div>
 
                 {{-- <span class="dropdown-item dropdown-header">15 Notifications</span> --}}
-                <a href="#" class="dropdown-item">
+                <a href="{{ route('profile.index') }}" class="dropdown-item">
                     <i class="fas fa-envelope mr-2"></i>Profile
 
                 </a>
 
-                <a  data-toggle="modal" data-target="#modal-password" data-backdrop="static" data-keyboard="false" href="#" class="dropdown-item">
+                <a  data-toggle="modal" data-target="#modal-password" data-backdrop="static" data-keyboard="false"  class="dropdown-item" href="#">
                     <i class="fas fa-users mr-2"></i>Ubah Password
                 </a>
 

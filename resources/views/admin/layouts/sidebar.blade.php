@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
         <img src="{{ asset('img/logo_kota.png') }}" alt="{{ Setting::getName('app_name') }}"
             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">{{ Setting::getValue('app_short_name') }}</span>

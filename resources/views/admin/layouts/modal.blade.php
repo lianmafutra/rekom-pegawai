@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>APakah anda yakin akan keluar dari sistem?</p>
+                <p>Apakah Anda Yakin Akan Keluar Dari Sistem?</p>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
             </div>

@@ -3,7 +3,7 @@
 @endpush
 @section('content')
     <div style="padding: 50px" class="col-md-12">
-        <div class="card">
+        <div class="">
             <div class="card card-default">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -60,16 +60,17 @@
                                 </table>
                             </div>
                         </div>
+                        <p  style="padding: 30px; text-align: center; font-size: 19px">
+                           Adalah benar dan tercatat dalam database Kami.
+                           Untuk memastikan bahwa surat tersebut benar, pastikan bahwa URL pada browser Anda adalah<br>
+                           <b>{{  'https://sitere.jambikota.go.id' }}</b>
+                       </p>
                     @else
                         <div class="callout callout-danger">
                             <h5> Maaf Berkas tidak ditemukan dalam database kami !</h5>
                         </div>
                     @endif
-                    <p  style="padding: 30px; text-align: center; font-size: 19px">
-                        Adalah benar dan tercatat dalam database Kami.
-                        Untuk memastikan bahwa surat tersebut benar, pastikan bahwa URL pada browser Anda adalah<br>
-                        <b>{{  'https://sitere.jambikota.go.id' }}</b>
-                    </p>
+                   
                 </div>
             </div>
         </div>
