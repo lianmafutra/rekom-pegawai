@@ -24,8 +24,8 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Status Pengajuan</label>
-                                    <select name="status" required type=""
-                                        class="select2 select2-status form-control select2bs4" style="width: 100%;">
+                                    <select name="status_pengajuan" required type=""
+                                        class="select2 select2-status-pengajuan form-control select2bs4" style="width: 100%;">
                                         <option value=""> Semua </option>
                                         <option value="proses">Proses</option>
                                         <option value="tolak">Tolak</option>

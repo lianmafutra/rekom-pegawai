@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pengajuan;
 
 use App\Config\PengajuanAksi;
+use App\Config\RekomJenis;
 use App\Config\SuratTtd;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CetakRekomRequest;
@@ -36,7 +37,7 @@ class PengajuanAksiController extends Controller
 
          (new SuratCetak())
             ->setPengajuan($pengajuan->getPengajuanWithData($request->pengajuan_uuid))
-            ->setRekomJenis('')
+            ->setRekomJenis(RekomJenis::DISIPLIN)
             ->setTTD(SuratTtd::TTD_MANUAL)
             ->cetaksurat()
             ->updatefileRekom();

@@ -23,7 +23,7 @@ class PengajuanService
 
    use ApiResponse;
 
-  
+
 
    public function getPenerimaOpdId()
    {
@@ -50,7 +50,7 @@ class PengajuanService
             'ngolru'              => $pegawai_cache['ngolru'],
             'pangkat'             => $pegawai_cache['pangkat'],
             'photo'               => $pegawai_cache['photo'],
-           
+
             'nomor_pengantar'     => $request->nomor_pengantar,
             'tgl_surat_pengantar' => $request->tgl_pengantar,
             'rekom_jenis'         => $request->rekom_jenis,
@@ -63,11 +63,11 @@ class PengajuanService
             'file_pengantar_opd'  => Str::uuid()->toString(),
             'file_konversi_nip'   => $request->hasFile('file_konversi_nip') ? Str::uuid()->toString() : NULL,
             'catatan'             => $request->catatan,
-            
+
          ]);
          return $pengajuan;
       } catch (\Throwable $th) {
-         throw new CustomException("Terjadi Kesalahan saat Menginput Data Pengajuan");
+         throw new CustomException("Terjadi Kesalahan saat Menginput Data Pengajuan".$th);
       }
    }
 
@@ -102,7 +102,7 @@ class PengajuanService
             $data->file_konversi_nip = $request->has('file_konversi_nip') ? Str::uuid()->toString() : NULL;
          }
          if (!$request->has('file_konversi_nip')) {
-            File:: where('file_id',  $data->file_konversi_nip)->delete();
+            File::where('file_id',  $data->file_konversi_nip)->delete();
             $data->file_konversi_nip = NULL;
          }
          $data->save();
@@ -163,41 +163,41 @@ class PengajuanService
       $old_file_name = '';
       $pengajuan_cek = Pengajuan::with(['file_sk', 'file_pengantar', 'file_konversi'])
          ->where('uuid', '=', $pengajuan_uuid)->first();
-   
+
       switch ($jenis_file) {
          case 'file_sk':
             $old_file_name = File::where('file_id', '=', $pengajuan_cek->file_sk_terakhir)->first();
-            if (  $old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
-               (new uploadFile())
-                   ->file($new_file_name)
-                   ->path('pengajuan')
-                   ->uuid( $pengajuan_uuid)
-                   ->parent_id($pengajuan_cek->id)
-                   ->update($pengajuan_cek->file_sk_terakhir);
-             }
-            break;
-         case 'file_pengantar':
-            $old_file_name = File::where('file_id', '=', $pengajuan_cek->file_pengantar_opd)->first();
-            if (  $old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
+            if ($old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
                (new uploadFile())
                   ->file($new_file_name)
                   ->path('pengajuan')
-                  ->uuid( $pengajuan_uuid)
+                  ->uuid($pengajuan_uuid)
+                  ->parent_id($pengajuan_cek->id)
+                  ->update($pengajuan_cek->file_sk_terakhir);
+            }
+            break;
+         case 'file_pengantar':
+            $old_file_name = File::where('file_id', '=', $pengajuan_cek->file_pengantar_opd)->first();
+            if ($old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
+               (new uploadFile())
+                  ->file($new_file_name)
+                  ->path('pengajuan')
+                  ->uuid($pengajuan_uuid)
                   ->parent_id($pengajuan_cek->id)
                   ->update($pengajuan_cek->file_pengantar_opd);
             }
             break;
          case 'file_konversi':
             $old_file_name = File::where('file_id', '=', $pengajuan_cek->file_konversi_nip)->first();
-            
-      if (  $old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
-         (new uploadFile())
-            ->file($new_file_name)
-            ->path('pengajuan')
-            ->uuid( $pengajuan_uuid)
-            ->parent_id($pengajuan_cek->id)
-            ->update($pengajuan_cek->file_konversi_nip);
-      }
+
+            if ($old_file_name != null ? $old_file_name->rame_random : null != $new_file_name) {
+               (new uploadFile())
+                  ->file($new_file_name)
+                  ->path('pengajuan')
+                  ->uuid($pengajuan_uuid)
+                  ->parent_id($pengajuan_cek->id)
+                  ->update($pengajuan_cek->file_konversi_nip);
+            }
             break;
          default:
             break;
@@ -227,7 +227,7 @@ class PengajuanService
    /**
     *@desc cek button aksi tiap role dan berdasarkan kondisi pengajuan
     *return pengajuan aksi id
-    */ 
+    */
    function cekPengajuanStatus($pengajuan_uuid)
    {
       $status =  Pengajuan::with('histori')->whereHas('histori', function ($q) {
@@ -236,26 +236,37 @@ class PengajuanService
       return $status->first()->histori->last()->pengajuan_aksi_id;
    }
 
-     /**
+   /**
     *@desc cek button aksi tiap role dan berdasarkan kondisi pengajuan
     */
-    function getLastPengajuanHIstori($pengajuan_uuid)
-    {
-       $status =  Pengajuan::with('histori')->where('uuid', $pengajuan_uuid);
-       return $status->first()->histori->where('pengajuan_aksi_id', '!=', 2)->where('pengajuan_aksi_id', '!=', 5)->last();
-    }
+   function getLastPengajuanHIstori($pengajuan_uuid)
+   {
+      $status =  Pengajuan::with('histori')->where('uuid', $pengajuan_uuid);
+      return $status->first()->histori->where('pengajuan_aksi_id', '!=', 2)->where('pengajuan_aksi_id', '!=', 5)->last();
+   }
 
-       /**
+   /**
     *@desc update tgl_aksi pengajuan histori untuk hitung notif per user 
     */
-    function updateTglAksiPengajuanHistori($pengajuan_uuid)
-    {
-     $lastPengajuanHistori = $this->getLastPengajuanHIstori($pengajuan_uuid);
-     
+   function updateTglAksiPengajuanHistori($pengajuan_uuid)
+   {
+      $lastPengajuanHistori = $this->getLastPengajuanHIstori($pengajuan_uuid);
+
       PengajuanHistori::where('id', $lastPengajuanHistori->id)->update([
          'tgl_aksi' => Carbon::now()
       ]);
-    }
+   }
+
+    /**
+    *@desc update status pengajuan proses/selesai/tolak , 
+    */
+    
+    function updateStatusPengajuan($pengajuan_uuid, $status)
+   {
+      Pengajuan::where('uuid', $pengajuan_uuid)->update([
+         'status' => $status
+      ]);
+   }
 
 
    /**
@@ -319,6 +330,4 @@ class PengajuanService
       } catch (\Throwable $th) {
       }
    }
-
-   
 }

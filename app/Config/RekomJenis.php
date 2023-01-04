@@ -7,13 +7,13 @@ use Illuminate\Validation\Rules\Enum;
 Enum RekomJenis 
 {
     /**
-     *@desc jenis rekom pengajuan pelanggaran Hukuman
+     *@desc Rekomendasi Hukuman Disiplin
      */
-    const HUKUMAN      = 'Rekomendasi Hukuman Disiplin';
+    const DISIPLIN      = 'Rekomendasi Hukuman Disiplin';
 
     /**
-    *@desc jenis rekom pengajuan pelanggaran Disiplin
+    *@desc Rekomendasi Bebas Temuan
     */
-  const DISIPLIN     = 'Rekomendasi Bebas Temuan';
+    const TEMUAN     = 'Rekomendasi Bebas Temuan';
   
 }

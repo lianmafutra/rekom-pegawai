@@ -108,6 +108,7 @@
             rekom_jenis: '',
             nunker: '',
             status: '',
+            status_pengajuan:''
         };
 
         $.ajaxSetup({
@@ -131,9 +132,10 @@
             ajax: {
                 url: @json(route('pengajuan.verifikasi.index')),
                 data: function(e) {
-                    e.status = @json($status),
+                        e.status = @json($status),
                         e.opd_id = filter_pengajuan.nunker,
-                        e.rekom_jenis = filter_pengajuan.rekom_jenis
+                        e.rekom_jenis = filter_pengajuan.rekom_jenis,
+                        e.status_pengajuan = filter_pengajuan.status_pengajuan
                 }
             },
             columns: [{
@@ -188,6 +190,10 @@
             e.preventDefault();
             filter_pengajuan.nunker = $('.select2-opd').val()
             filter_pengajuan.rekom_jenis = $('.select2-rekom-jenis').val()
+            filter_pengajuan.status_pengajuan = $('.select2-status-pengajuan').val()
+
+            
+        
 
             // filter_pengajuan.status = $('.select2-status').val()
             $('#modal_filter').modal('hide')
@@ -201,8 +207,9 @@
         });
 
         $("#reset_filter").click(function() {
-         filter_pengajuan.nunker =''
+            filter_pengajuan.nunker =''
             filter_pengajuan.rekom_jenis = ''
+            filter_pengajuan.status_pengajuan = ''
             tabel_pengajuan.draw()
             $('#reset_filter').hide()
         });

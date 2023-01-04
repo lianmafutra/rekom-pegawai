@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Surat;
 
+use App\Config\RekomJenis;
 use App\Config\SuratTtd;
 use App\Exceptions\CustomException;
 use App\Http\Services\Pegawai\PegawaiService;
@@ -69,19 +70,18 @@ class SuratCetak
 
          $pengajuan = Pengajuan::where('uuid', $this->pengajuan->uuid);
          $pengajuan->update([
-               'short_url' =>(new ShortUrl())->generate($pengajuan->first()->id),
+            'short_url' => (new ShortUrl())->generate($pengajuan->first()->id),
          ]);
-   
 
          $user_ttd = (new PegawaiService())->filterByNIP(auth()->user()->nip)[0];
 
-         // --------- get path template docx sesuai jenis TTD surat rekom  --------- //
-         switch ($this->ttd) {
-            case SuratTtd::TTD_MANUAL:
-               $path_surat = Storage::path('public/template/surat_rekom_manual.docx');
+         // --------- get path template docx sesuai jenis surat rekom  --------- //
+         switch ($this->rekomJenis) {
+            case RekomJenis::DISIPLIN:
+               $path_surat = Storage::path('public/template/surat_rekom_hukuman_disiplin.docx');
                break;
-            case SuratTtd::TTD_DIGITAL:
-               $path_surat = Storage::path('public/template/surat_rekom_digital.docx');
+            case RekomJenis::TEMUAN:
+               $path_surat = Storage::path('public/template/surat_rekom_bebas_temuan.docx');
                break;
          }
 
@@ -113,11 +113,11 @@ class SuratCetak
 
          $file = new TempFile($file);
 
-         $templateProcessor->setImageValue('qrcode', array('path' =>  $file->getFileName(), 'width' => 150, 'height' => 150, 'ratio' => false));
-         $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd_inspektur.png'), 'width' => 100, 'height' => 100, 'ratio' => false));
+         $templateProcessor->setImageValue('qrcode', array('path' =>  $file->getFileName(), 'width' => 150, 'height' => 150, 'ratio' => false, ));
+         $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd-1672647418.png'), 'width' => 100, 'height' => 100, 'ratio' => false,  'wrappingStyle' => 'behind'));
 
          $file_path_temp = $templateProcessor->save("php://output");
-         
+
          $filename_temp = pathinfo($file_path_temp)['filename'];
 
          if ($filename_temp == null || $filename_temp == '' || $filename_temp == []) {
