@@ -13,6 +13,9 @@
 @if (in_array('file_rekom', $aksi))
     <a id="btn_file_rekom" class="mt-1 btn btn-secondary"> <i class="fas fa-file-alt"></i> File Rekomendasi</a>
 @endisset
+@if (in_array('preview_file', $aksi))
+    <a id="btn_preview_file" class="mt-1 btn btn-secondary"> <i class="fas fa-file-alt"></i> Preview Surat</a>
+@endisset
 
 @can('rekom cetak')
     @if (in_array('setujui', $aksi))
@@ -20,8 +23,6 @@
             Berkas</a>
     @endif
 @endcan
-
-
 
 @if (in_array('tolak', $aksi))
     <a id="btn_tolak" class="mt-1 btn btn-danger"><i class="fas fa-ban"></i> Tolak Berkas</a>

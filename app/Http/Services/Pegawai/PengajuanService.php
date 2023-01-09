@@ -295,7 +295,7 @@ class PengajuanService
             elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             break;
          case  Role::isInspektur:
-            if ($status == PengajuanAksi::VERIFIKASI_DATA) $aksi = ['setujui'];
+            if ($status == PengajuanAksi::VERIFIKASI_DATA) $aksi = ['setujui','preview_file'];
             elseif ($status == PengajuanAksi::PROSES_SURAT) $aksi = ['file_rekom'];
             elseif ($status == PengajuanAksi::SELESAI) $aksi = ['file_rekom'];
             break;

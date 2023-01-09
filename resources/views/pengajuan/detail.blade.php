@@ -345,6 +345,9 @@
             $("#btn_file_rekom").click(function() {
                viewFile(@json($file_rekom_hasil));
             })
+            $("#btn_preview_file").click(function() {
+               viewFile(@json($file_rekom_hasil));
+            })
             
             $("#btn_submit_setujui").click(function(e) {
                 e.preventDefault();

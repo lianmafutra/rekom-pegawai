@@ -114,7 +114,7 @@ class SuratCetak
          $file = new TempFile($file);
 
          $templateProcessor->setImageValue('qrcode', array('path' =>  $file->getFileName(), 'width' => 150, 'height' => 150, 'ratio' => false, ));
-         $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd-1672647418.png'), 'width' => 100, 'height' => 100, 'ratio' => false,  'wrappingStyle' => 'behind'));
+         $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd.png'), 'width' => 100, 'height' => 100, 'ratio' => false,  'wrappingStyle' => 'behind'));
 
          $file_path_temp = $templateProcessor->save("php://output");
 
