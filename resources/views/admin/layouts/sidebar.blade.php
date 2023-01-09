@@ -81,7 +81,7 @@
 
                         <li class="nav-item menu-is-opening menu-open">
                             <a href=""
-                                class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
+                                class="nav-link {{ request()->routeIs('pengajuan.verifikasi*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>Data Pengajuan</p>
                                 <i class="right fas fa-angle-left"></i>
@@ -108,6 +108,7 @@
                         </li>
                     @endcan
                     @can('pengajuan index')
+                    <li class="nav-item">
                         <a href="{{ route('pengajuan.index') }}"
                             class="nav-link {{ request()->routeIs('pengajuan*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-folder"></i>
@@ -116,9 +117,21 @@
                                 <span class="badge badge-info right">{{ $global_jumlah_notif }}</span>
                             @endif
                         </a>
+                     </li>
                     @endcan
-                    </li>
+                   
                 @endcan
+                @can('pengajuan create')
+                @role('admin_inspektorat')
+                <li class="nav-item">
+                    <a href="{{ route('pengajuan.create') }}"
+                        class="nav-link {{ request()->routeIs('pengajuan.create') ? 'active' : '' }}">
+                        <i class="fas fa-file-import nav-icon"></i>
+                        <p>Buat Rekom</p>
+                    </a>
+                </li>
+                @endrole
+            @endcan
                 @can('master rekom pegawai')
                     <li class="nav-item">
                         <a href="{{ route('master-rekom.index') }}"

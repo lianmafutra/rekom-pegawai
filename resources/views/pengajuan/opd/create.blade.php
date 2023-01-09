@@ -61,7 +61,7 @@
                                             enctype="multipart/form-data">
                                             @csrf
                                             @method('POST')
-                                            <x-select2 id="pegawai" label='Pilih Pegawai' required="true">
+                                            <x-select2 id="pegawai" label='Nama Pegawai' required="true" placeholder="-- Pilih Pegawai --">
                                                 @foreach ($pegawai as $key => $item)
                                                     <option value="{{ $item['nipbaru'] }}"> {{ $item['nama'] }}
                                                         ({{ $item['nipbaru'] }})

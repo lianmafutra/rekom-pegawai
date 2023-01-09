@@ -19,6 +19,12 @@ class MasterRekom extends Model
        return Carbon::parse($this->attributes['created_at'])->format('d-m-Y H:m');
     }
 
+
+    public function opd()
+    {
+        return $this->hasOne(OPD::class, 'kunker', 'kunker');
+    }
+
     public function getRekomJenisNamaAttribute()
     {
        if ($this->rekom_jenis == 'DISIPLIN') {

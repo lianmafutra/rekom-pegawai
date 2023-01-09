@@ -22,7 +22,7 @@ class MasterRekomController extends Controller
    {
 
       $x['title'] = 'Master Rekom Pegawai';
-      $data = MasterRekom::latest('id');
+      $data = MasterRekom::with('opd')->latest('id');
 
       if ($request->rekom_jenis == 'DISIPLIN') {
          $data->where('rekom_jenis', 'DISIPLIN');
@@ -66,6 +66,7 @@ class MasterRekomController extends Controller
          $input = $request->except(['opd']);
          $pegawai = $this->pegawaiService->filterByNIP($request->nip)[0];
          $input['nama'] = $pegawai['nama'];
+         $input['kunker'] = $pegawai['kunker'];
          MasterRekom::create($input);
          return redirect()->route('master-rekom.index')->with('success', 'Berhasil ', 200)->send();
       } catch (\Throwable $th) {
@@ -102,6 +103,7 @@ class MasterRekomController extends Controller
          $input = $request->except(['opd']);
          $pegawai = $this->pegawaiService->filterByNIP($request->nip)[0];
          $input['nama'] = $pegawai['nama'];
+         $input['kunker'] = $pegawai['kunker'];
          $masterRekom->fill($input)->save();
          return redirect()->route('master-rekom.index')->with('success', 'Berhasil ', 200)->send();
       } catch (\Throwable $th) {

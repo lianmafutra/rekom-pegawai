@@ -7,8 +7,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use PhpOffice\PhpWord\TemplateProcessor;
+
+use Illuminate\Support\Str;
+
 use Throwable;
 
 class uploadFile implements uploadFileBuilder
@@ -100,7 +101,7 @@ class uploadFile implements uploadFileBuilder
             if ($old_file != $this->file->getClientOriginalName()) {
                DB::beginTransaction();
                $name_ori = $this->file->getClientOriginalName();
-               $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension());
+               $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . Str::uuid()->toString().'-'.Str::random(50));
      
                
               $custom_path = $this->getPath($this->path);

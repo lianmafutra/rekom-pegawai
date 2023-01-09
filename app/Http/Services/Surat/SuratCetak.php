@@ -47,7 +47,6 @@ class SuratCetak
    }
 
 
-
    public function setTTD(string $ttd)
    {
       $this->ttd = $ttd;

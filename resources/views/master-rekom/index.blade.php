@@ -53,6 +53,7 @@
                                                     <th>#</th>
                                                     <th>NIP</th>
                                                     <th>Nama</th>
+                                                    <th>OPD</th>
                                                     <th>Jenis Rekom</th>
                                                     <th>Ketentuan</th>
                                                     <th>Alasan</th>
@@ -116,6 +117,9 @@
                     },
                     {
                         data: 'nama',
+                    },
+                    {
+                        data: 'opd.nunker',
                     },
                     {
                         data: 'rekom_jenis_nama',

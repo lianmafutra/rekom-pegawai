@@ -27,16 +27,16 @@ class AppServiceProvider extends ServiceProvider
    public function boot()
    {
       view()->composer('*', function ($view) {
-        
-        
+         
          if (Auth::check()) {
             $view->with('user_data', Auth::user());
 
             $global_jumlah_notif = PengajuanHistori::where('penerima_id', auth()->user()->id)
             ->where('tgl_aksi', NULL)
-            ->whereNotIn('pengajuan_aksi_id', [2,5,6]);
-            // if(auth()->user()->id == Role::isAdminOpd){
-            // }
+            ->whereNotIn('pengajuan_aksi_id', [PengajuanAksi::VERIFIKASI_DATA, PengajuanAksi::PROSES_SURAT, PengajuanAksi::SELESAI]);
+            if(auth()->user()->id != Role::isAdminOpd){
+               
+            }
             $view->with('global_jumlah_notif',  $global_jumlah_notif->count());
 
          } else {
