@@ -370,7 +370,7 @@
                         'pengajuan_uuid': @json($pengajuan->uuid)
                     },
                     beforeSend: function() {
-                        showLoading()
+                        showLoading('Mohon Tungu','Menyiapkan Preview Surat')
                     },
                     success: (response) => {
                        viewFile(response.data);
@@ -413,15 +413,7 @@
                     processData: false,
                     dataType: 'json',
                     beforeSend: function() {
-                        Swal.fire({
-                            title: 'Memproses Data...',
-                            html: 'Mohon Tunggu...',
-                            allowEscapeKey: false,
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading()
-                            }
-                        });
+                        showLoading()
                     },
                     success: (response) => {
                         if (response) {

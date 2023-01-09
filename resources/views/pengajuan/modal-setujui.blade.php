@@ -6,7 +6,6 @@
         justify-content: center;
         overflow: auto;
     }
-
     @media(max-width: 768px) {
         .modal-dialog {
             min-height: calc(100vh - 20px);
@@ -27,7 +26,6 @@
                 <div class="modal-body">
                     <h6 id="nama_file"></h6>
                     <div class="embed_box">
-
                         <label>Jenis Tanda Tangan :</label>
                         <div style="padding: 20px" class="border rounded form-group">
                             <div style="margin-bottom:0px" class="form-group ">
@@ -47,15 +45,11 @@
                         </div>
                         <label>Password</label>
                         <div class="input-group mb-3" id="show_hide_password">
-
-
                             <input name="password" type="password" class="form-control">
-
                             <div class="input-group-append">
                                 <span class="input-group-text"> <a href="" style="color: inherit"><i
                                             class="fa fa-eye-slash" aria-hidden="true"></i></a></span>
                             </div>
-
                             <span style="font-size: 12px"
                                 class="text-danger error-text password_err error invalid-feedback"></span>
                         </div>
