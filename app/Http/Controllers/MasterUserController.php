@@ -44,6 +44,7 @@ class MasterUserController extends Controller
 
    public function indexPenandaTangan()
    {
+      // user internal inspektorat
       $data    = User::whereIn('id', [4, 5, 3])->with('opd')->orderBy('position', 'ASC');
       if (request()->ajax()) {
          return  datatables()->of($data)
@@ -55,7 +56,7 @@ class MasterUserController extends Controller
                if($data->img_ttd == ""){
                   return '-';
                }
-               return '<img src="'.url('storage/template/'.$data->img_ttd).'" width=100px; height="100px">';
+               return '<img src="'.url('storage/template/ttd/'.$data->img_ttd).'" width=100px; height="100px">';
             })
             ->rawColumns(['action','img_ttd'])
             ->make(true);
@@ -126,15 +127,15 @@ class MasterUserController extends Controller
          if ($request->hasFile('img_ttd')) {
             $file_ttd   = $request->file('img_ttd');
             $name_uniqe = RemoveSpace::removeDoubleSpace('ttd-' . now()->timestamp . '.' . $file_ttd->getClientOriginalExtension());
-            $file_ttd->storeAs('public/template/', $name_uniqe);
+            $file_ttd->storeAs('public/template/ttd/', $name_uniqe);
             $user->img_ttd = $name_uniqe;
          }
 
          $user->save();
          
-         return $this->success('Berhasil Merubah User Baru');
+         return $this->success('Berhasil Merubah Data User');
       } catch (\Throwable $th) {
-         return $this->error('Gagal Merubah User Baru' . $th, 400);
+         return $this->error('Gagal Merubah Data User' . $th, 400);
       }
    }
 

@@ -302,7 +302,7 @@
                         img_ttd.setOptions({
                             storeAsFile: true,
                             files: [{
-                                source: '/storage/template/' + response.data.img_ttd
+                                source: '/storage/template/ttd/' + response.data.img_ttd
                                    
                             }]
                         });
@@ -393,11 +393,10 @@
                 e.preventDefault();
                 let id = $('#user_id_edit').val();
                 let url = "{{ route('master-user.update', ':id') }}";
-                let result = url.replace(':id', id);
                 const formData = new FormData(this);
                 $.ajax({
                     type: 'POST',
-                    url: result,
+                    url: url.replace(':id', id),
                     data: formData,
                     contentType: false,
                     processData: false,
