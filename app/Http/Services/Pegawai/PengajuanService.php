@@ -2,8 +2,6 @@
 
 namespace App\Http\Services\Pegawai;
 
-use App\Config\Pengajuan as ConfigPengajuan;
-use Carbon\Carbon;
 use App\Config\Role;
 use App\Models\User;
 use App\Models\Pengajuan;
@@ -13,10 +11,7 @@ use App\Models\PengajuanHistori;
 use App\Exceptions\CustomException;
 use App\Models\File;
 use App\Utils\ApiResponse;
-use App\Utils\ShortUrl;
 use App\Utils\uploadFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class PengajuanService
 {

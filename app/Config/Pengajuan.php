@@ -11,6 +11,5 @@ class Pengajuan extends Enum
    const isKasubag          = 'admin_kasubag';
    const isInspektur        = 'inspektur';
    const isSuperadmin       = 'inspektur';
-  
 }
 
