@@ -329,11 +329,7 @@
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+           
             $('.btn_view_file').click(function(e) {
                 e.preventDefault();
                 let url = $(this).attr('data-url');
@@ -350,6 +346,7 @@
                 const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
                 return window.open(url, '_blank', features).focus();
             }
+            
             $("#btn_teruskan").click(function() {
                 $('#modal_teruskan').modal('show')
             })

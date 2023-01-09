@@ -108,6 +108,11 @@ class SuratCetak
             'nama_ttd'    => htmlspecialchars($user_ttd['nama'] . ', ' . $user_ttd['glblk']),
             'jabatan_ttd' => $user_ttd['pangkat'] . '/' . $user_ttd['ngolru'],
             'nip_ttd'     => $this->clean_word($user_ttd['nipbaru']),
+            
+            // 
+            'tahun'       => Carbon::now()->year,
+            'tanggal_ttd' => Carbon::now()->translatedFormat('F Y'),
+            
          ]);
 
          $url    = urlencode(route('pengajuan.aksi.link',  $pengajuan->first()->short_url));
