@@ -83,11 +83,7 @@
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/bootbox/bootbox.min.js') }}"></script>
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        
         $("#tabel-pengajuan").dataTable({
             serverSide: true,
             processing: true,
@@ -172,6 +168,7 @@
                 }
             })
         })
+        
         $('body').on('click', '.btn_detail_pengajuan', function(e) {
             let url = $(this).attr('data-url');
             let host = $(this).attr('data-host');

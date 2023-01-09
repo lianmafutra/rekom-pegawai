@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pengajuan;
 
 use App\Config\PengajuanAksi;
+use App\Config\PengajuanStatus;
 use App\Config\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Services\Pegawai\PengajuanService;
@@ -43,10 +44,12 @@ class PengajuanAdminController extends Controller
          });
       } else if ($request->status == 'semua') {
          $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) use ($request) {
-            // // $query->where('penerima_id', '=', auth()->user()->id);
-            // // $query->where('tgl_aksi', '=', NULL);
-            // $query->where('pengajuan_aksi_id',  6);
+            $query->where('penerima_id', '=', auth()->user()->id);
          });
+
+         if ($request->status_pengajuan) {
+            $data->where('status', $request->status_pengajuan);
+         }
 
          if ($request->opd_id) {
             $data->where('nunker', 'LIKE', '%' . $request->opd_id . '%');
@@ -55,29 +58,6 @@ class PengajuanAdminController extends Controller
          if ($request->rekom_jenis) {
             $data->where('rekom_jenis', $request->rekom_jenis);
          }
-
-         // if ($request->status_pengajuan == 'proses') {
-         //    $query->whereIn('pengajuan_aksi_id', [1, 2, 3, 4, 5, 7]);
-         // }
-         
-         // else if ($request->status_pengajuan == 'selesai') {
-         //    $data->whereHas(
-         //       'histori',
-         //       fn ($q) => $q->whereIn('pengajuan_aksi_id',[6])
-         //    );
-         // }
-         // else if  ($request->status_pengajuan == 'tolak') {
-         //    $data->whereHas(
-         //       'histori',
-         //       fn ($q) => $q->whereIn('pengajuan_aksi_id',[8])
-         //    );
-         // }
-         // if ($request->status_pengajuan == 'tolak') {
-         //    $query->whereIn('pengajuan_aksi_id', [8]);
-         // }
-
-
-
       } else {
          return abort(404);
       }

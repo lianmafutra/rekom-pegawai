@@ -6,5 +6,5 @@ enum PengajuanStatus
 {
    const PROSES = 'PROSES';
    const TOLAK  = 'TOLAK';
-   const SUKSES = 'SUKSES';
+   const SELESAI = 'SELESAI';
 }

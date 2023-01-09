@@ -221,7 +221,7 @@
                     processData: false,
                     dataType: 'json',
                     beforeSend: function() {
-                       
+                        showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -239,7 +239,7 @@
                                     window.location.href = @json(route('pengajuan.index'))
                                 }
                             })
-                            swal.hideLoading()
+                           
                         }
                     },
                     error: function(response) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pengajuan;
 
 use App\Config\PengajuanAksi;
+use App\Config\PengajuanStatus;
 use App\Config\RekomJenis;
 use App\Config\SuratTtd;
 use App\Http\Controllers\Controller;
@@ -111,6 +112,8 @@ class PengajuanAksiController extends Controller
             $request->pesan
          );
 
+         $this->pengajuanService->updateStatusPengajuan($request->pengajuan_uuid, PengajuanStatus::TOLAK);
+
          DB::commit();
          return redirect()->back()->with('success-modal', ['title' => 'Berhasil', 'message' => 'Berhasil Menolak Berkas'], 200)->send();
       } catch (\Throwable $th) {
@@ -123,23 +126,26 @@ class PengajuanAksiController extends Controller
    public function selesai(Request $request)
    {
       try {
+       
          // OPD asal Pengirim
          $penerima  = Pengajuan::with('pengirim')
             ->where('uuid', '=', $request->pengajuan_uuid)
             ->first();
 
          $user_pengirim_opd_uuid  = User::find($penerima->pengirim_id)->uuid;
-
-         $this->pengajuanService->updateTglAksiPengajuanHistori($request->pengajuan_uuid);
+       
+        $this->pengajuanService->updateTglAksiPengajuanHistori($request->pengajuan_uuid);
+     
          $this->pengajuanService->storeHistori(
             $request->pengajuan_uuid,
             PengajuanAksi::SELESAI,
             $user_pengirim_opd_uuid
          );
-
+         $this->pengajuanService->updateStatusPengajuan($request->pengajuan_uuid, PengajuanStatus::SELESAI);
          DB::commit();
          return redirect()->back()->with('success-modal', ['title' => 'Berhasil', 'message' => 'Pengajuan Berkas berhasil diselesaikan'], 200)->send();
       } catch (\Throwable $th) {
+       
          DB::rollback();
          return redirect()->back()->with('error-modal', 'Gagal : Menolak Berkas', 400)->send();
       }

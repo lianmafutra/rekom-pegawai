@@ -27,9 +27,9 @@
                                     <select name="status_pengajuan" required type=""
                                         class="select2 select2-status-pengajuan form-control select2bs4" style="width: 100%;">
                                         <option value=""> Semua </option>
-                                        <option value="proses">Proses</option>
-                                        <option value="tolak">Tolak</option>
-                                        <option value="selesai">Selesai</option>
+                                        <option value="PROSES">Proses</option>
+                                        <option value="TOLAK">Tolak</option>
+                                        <option value="SELESAI">Selesai</option>
                                     </select>
                                 </div>
                                 <div class="form-group">

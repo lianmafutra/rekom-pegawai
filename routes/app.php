@@ -51,7 +51,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::put('profile', [UserController::class, 'profileUpdate'])->name('profile.update');
 
 
-
 });
 
 
