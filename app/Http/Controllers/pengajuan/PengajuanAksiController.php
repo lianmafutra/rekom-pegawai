@@ -23,12 +23,31 @@ class PengajuanAksiController extends Controller
 
    use ApiResponse;
    private $pengajuanService;
+
    public function __construct(PengajuanService $pengajuanService)
    {
       $this->pengajuanService = $pengajuanService;
    }
 
-   public function cetakRekom(CetakRekomRequest $request, User $user, Pengajuan $pengajuan)
+
+   public function previewRekom( Request $request,User $user, Pengajuan $pengajuan){
+      try {
+         DB::beginTransaction();
+
+        $data= (new SuratCetak())
+            ->setPengajuan($pengajuan->getPengajuanWithData($request->pengajuan_uuid))
+            ->setRekomJenis(RekomJenis::DISIPLIN)
+            ->cetaksurat('preview');
+
+         DB::commit();
+         return $this->success('Sukses', $data);
+      } catch (\Throwable $th) {
+         DB::rollBack();
+         return $this->error('gagal' . $th, 400);
+      }
+   }
+
+   public function cetakRekom(CetakRekomRequest $request, Pengajuan $pengajuan)
    {
 
       abort_if(Gate::denies('rekom cetak'), 403);
@@ -39,7 +58,7 @@ class PengajuanAksiController extends Controller
             ->setPengajuan($pengajuan->getPengajuanWithData($request->pengajuan_uuid))
             ->setRekomJenis(RekomJenis::DISIPLIN)
             ->setTTD(SuratTtd::TTD_MANUAL)
-            ->cetaksurat()
+            ->cetaksurat('cetak')
             ->updatefileRekom();
 
          $this->pengajuanService->updateTglAksiPengajuanHistori($request->pengajuan_uuid);

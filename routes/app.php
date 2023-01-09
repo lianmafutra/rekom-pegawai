@@ -26,11 +26,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
       Route::get('/{uuid}/detail', [PengajuanAdminController::class, 'detail'])->name('detail');
    });
 
-   Route::prefix('pengajuan/aksi')->name('pengajuan.aksi.')->middleware(['auth'])->group(function () {
-      Route::post('cetak-rekom', [PengajuanAksiController::class, 'cetakRekom'])->name('cetak');
-      Route::post('meneruskan', [PengajuanAksiController::class, 'meneruskan'])->name('meneruskan');
-      Route::post('tolak', [PengajuanAksiController::class, 'tolak'])->name('tolak');
-      Route::post('selesai', [PengajuanAksiController::class, 'selesai'])->name('selesai');
+
+   Route::controller(PengajuanAksiController::class)->name('pengajuan.aksi.')->prefix('pengajuan/aksi')->middleware(['auth'])->group(function () {
+      Route::post('cetak-rekom',  'cetakRekom')->name('cetak');
+      Route::post('preview-rekom',  'previewRekom')->name('preview');
+      Route::post('meneruskan',  'meneruskan')->name('meneruskan');
+      Route::post('tolak',  'tolak')->name('tolak');
+      Route::post('selesai',  'selesai')->name('selesai');
    });
   
    Route::resource('pengajuan', PengajuanOPDController::class);
@@ -47,6 +49,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::get('pengajuan/histori/{uuid}', [PengajuanOPDController::class, 'histori'])->name('pengajuan.histori');
    
    Route::put('profile', [UserController::class, 'profileUpdate'])->name('profile.update');
+
+
 
 });
 

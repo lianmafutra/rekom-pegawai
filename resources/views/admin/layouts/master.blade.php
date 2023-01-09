@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
     @stack('style')
     @stack('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
@@ -59,6 +60,11 @@
     <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -139,17 +145,14 @@
     </script>
     @stack('script')
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
         window.clearInput = function() {
             $('.input').val('');
             // $('.select2').val(null).trigger("change");
             $('.error').hide();
-          
+
         }
+
+
         window.showError = function(response) {
             $('.error').hide();
             swal.hideLoading()
@@ -192,16 +195,21 @@
                 return !b.includes(element);
             });
         }
-        window.showLoading = function() {
+        window.showLoading = function(title = 'Mengirim Data...', message = 'Mohon Tunggu...') {
             Swal.fire({
-                title: 'Mengirim Data...',
-                html: 'Mohon Tunggu...',
+                title: title,
+                html: message,
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading()
                 }
             });
+        }
+
+        window.hideLoading = function(title = 'Mengirim Data...', message = 'Mohon Tunggu...') {
+            Swal.hideLoading()
+            Swal.close()
         }
     </script>
 </body>

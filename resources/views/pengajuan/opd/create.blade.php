@@ -176,6 +176,7 @@
             const file_sk = FilePond.create(document.querySelector('#file_sk'));
             const file_pengantar = FilePond.create(document.querySelector('#file_pengantar_opd'));
             const file_konversi_nip = FilePond.create(document.querySelector('#file_konversi_nip'));
+
             file_sk.setOptions({
                 storeAsFile: true,
             });

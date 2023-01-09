@@ -13,27 +13,33 @@
             padding: 0;
             position: relative;
         }
+
         .timeline::-webkit-scrollbar-track {
             border: 1px solid rgb(184, 184, 184);
             padding: 2px 0;
             background-color: #e4e4e4;
         }
+
         .timeline::-webkit-scrollbar {
             width: 10px;
         }
+
         .timeline::-webkit-scrollbar-thumb {
             border-radius: 10px;
             box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
             background-color: rgba(175, 175, 175, 0.747);
             /* border: 1px solid #000; */
         }
+
         tr td:first-child {
             color: #313131;
             font-weight: bold;
         }
+
         .column {
             width: 100%;
         }
+
         .ico {
             color: orange;
             display: inline-block;
@@ -45,10 +51,12 @@
             background-position: 0 0;
             background-repeat: no-repeat;
         }
+
         .title {
             display: block;
             overflow: hidden;
         }
+
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -60,13 +68,16 @@
             height: 196px;
             margin-bottom: 20px;
         }
+
         .filepond--drop-label.filepond--drop-label label {
             font-weight: 200 !important;
         }
+
         .info-data-api {
             font-size: 11px;
             color: #9459fd;
         }
+
         .loading-custom {
             display: none;
             z-index: 9999999;
@@ -78,6 +89,7 @@
             margin-right: auto;
             position: absolute
         }
+
         .profile-custom {
             border: 1px solid #adb5bd !important;
             margin: 0 auto;
@@ -88,9 +100,11 @@
             object-fit: cover;
             height: 300px;
         }
+
         .form-control {
             font-size: 14px !important;
         }
+
         div# {
             position: relative;
             margin-top: -10px;
@@ -315,11 +329,17 @@
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $('.btn_view_file').click(function(e) {
                 e.preventDefault();
                 let url = $(this).attr('data-url');
                 viewFile(url);
             });
+
             function viewFile(url) {
                 const width = 800
                 const height = 700
@@ -343,12 +363,29 @@
                 $('#modal_setujui').modal('show')
             })
             $("#btn_file_rekom").click(function() {
-               viewFile(@json($file_rekom_hasil));
+                viewFile(@json($pengajuan->file_rekom_hasil));
             })
             $("#btn_preview_file").click(function() {
-               viewFile(@json($file_rekom_hasil));
+                $.ajax({
+                    type: 'POST',
+                    url: @json(route('pengajuan.aksi.preview')),
+                    data: {
+                        'pengajuan_uuid': @json($pengajuan->uuid)
+                    },
+                    beforeSend: function() {
+                        showLoading()
+                    },
+                    success: (response) => {
+                       viewFile(response.data);
+                       hideLoading()
+                    },
+                    error: function(response) {
+                        showError(response)
+                    }
+                });
+
             })
-            
+
             $("#btn_submit_setujui").click(function(e) {
                 e.preventDefault();
                 Swal.fire({

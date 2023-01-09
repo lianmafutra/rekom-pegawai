@@ -31,6 +31,7 @@ class SuratCetak
    protected $name_uniq;
 
 
+
    public function __construct()
    {
       $this->uploadFile = new uploadFile();
@@ -62,7 +63,9 @@ class SuratCetak
       return htmlspecialchars(ucwords(strtolower($string)));
    }
 
-   public function cetaksurat()
+
+
+   public function cetaksurat($type)
    {
 
       try {
@@ -113,6 +116,7 @@ class SuratCetak
 
          $file = new TempFile($file);
 
+      
          $templateProcessor->setImageValue('qrcode', array('path' =>  $file->getFileName(), 'width' => 150, 'height' => 150, 'ratio' => false, ));
          $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd.png'), 'width' => 100, 'height' => 100, 'ratio' => false,  'wrappingStyle' => 'behind'));
 
@@ -137,7 +141,12 @@ class SuratCetak
          } else {
             throw new CustomException('Gagal Convert ke PDF', 400);
          }
-         return $this;
+         if($type == 'preview'){
+            return 'http://' . request()->getHttpHost().Storage::url($this->path_rekom . $this->name_uniq . '.pdf');
+         }else{
+            return $this;
+         }
+        
       } catch (\Throwable $th) {
          throw $th;
       }

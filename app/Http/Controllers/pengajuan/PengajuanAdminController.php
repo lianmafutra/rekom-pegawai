@@ -43,9 +43,9 @@ class PengajuanAdminController extends Controller
          });
       } else if ($request->status == 'semua') {
          $data = Pengajuan::with('keperluan', 'histori')->whereHas('histori', function (Builder $query) use ($request) {
-            // $query->where('penerima_id', '=', auth()->user()->id);
-            // $query->where('tgl_aksi', '=', NULL);
-            $query->where('pengajuan_aksi_id',  6);
+            // // $query->where('penerima_id', '=', auth()->user()->id);
+            // // $query->where('tgl_aksi', '=', NULL);
+            // $query->where('pengajuan_aksi_id',  6);
          });
 
          if ($request->opd_id) {
@@ -134,17 +134,12 @@ class PengajuanAdminController extends Controller
       $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);
 
       $user_kirim = $pengajuan->getUserKirim();
-      $file_rekom_hasil = $pengajuan->getFileRekomHasil();
-
-      $pengajuan = $pengajuan->getPengajuanWithData($uuid);
-
+   
+      $pengajuan = $pengajuan->getPengajuanWithData($uuid); 
+    
       $keperluan = Keperluan::get();
 
-      return view(
-         'pengajuan.detail',
-         $x,
-         compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi', 'file_rekom_hasil'])
-      );
+      return view('pengajuan.detail',$x,compact(['status', 'keperluan', 'pengajuan', 'user_kirim', 'user', 'view_aksi']));
    }
 
    public function destroy($uuid)

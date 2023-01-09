@@ -101,10 +101,20 @@ class Pengajuan extends Model
 
    public function getPengajuanWithData($pengajuan_uuid)
    {
-      return Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi', 'file_rekom'])->where('uuid', $pengajuan_uuid)->first();
+      $data = Pengajuan::with(['keperluan', 'file_sk', 'file_pengantar', 'file_konversi', 'file_rekom'])->where('uuid', $pengajuan_uuid)->first();
+
+      if ($data->file_rekom != null) {
+         $data->setAttribute("file_rekom_hasil", 'http://' . request()->getHttpHost() .
+            '/storage/' .
+            $data->file_rekom->path .
+            '/' .
+            $data->file_rekom->name_random);
+      }
+
+      return $data;
    }
 
-   
+
 
 
 
