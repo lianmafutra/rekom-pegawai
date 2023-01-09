@@ -37,7 +37,6 @@ class PengajuanAksiController extends Controller
 
         $data= (new SuratCetak())
             ->setPengajuan($pengajuan->getPengajuanWithData($request->pengajuan_uuid))
-            ->setRekomJenis(RekomJenis::DISIPLIN)
             ->cetaksurat('preview');
 
          DB::commit();
@@ -57,8 +56,6 @@ class PengajuanAksiController extends Controller
 
          (new SuratCetak())
             ->setPengajuan($pengajuan->getPengajuanWithData($request->pengajuan_uuid))
-            ->setRekomJenis(RekomJenis::DISIPLIN)
-            ->setTTD(SuratTtd::TTD_MANUAL)
             ->cetaksurat('cetak')
             ->updatefileRekom();
 

@@ -3,11 +3,12 @@
 namespace App\Http\Services\Surat;
 
 use App\Config\RekomJenis;
-use App\Config\SuratTtd;
 use App\Exceptions\CustomException;
 use App\Http\Services\Pegawai\PegawaiService;
 use App\Models\File;
+use App\Models\OPD;
 use App\Models\Pengajuan;
+use App\Models\User;
 use App\Utils\RemoveSpace;
 use App\Utils\ShortUrl;
 use App\Utils\TempFile;
@@ -21,7 +22,6 @@ class SuratCetak
 {
 
 
-   protected $rekomJenis;
    protected $pengajuan;
    protected $ttd;
    protected $surat;
@@ -46,11 +46,7 @@ class SuratCetak
       return $this;
    }
 
-   public function setRekomJenis(string $rekomJenis)
-   {
-      $this->rekomJenis = $rekomJenis;
-      return $this;
-   }
+
 
    public function setTTD(string $ttd)
    {
@@ -72,14 +68,16 @@ class SuratCetak
          $path_surat = '';
 
          $pengajuan = Pengajuan::where('uuid', $this->pengajuan->uuid);
+      
          $pengajuan->update([
             'short_url' => (new ShortUrl())->generate($pengajuan->first()->id),
          ]);
-
+     
          $user_ttd = (new PegawaiService())->filterByNIP(auth()->user()->nip)[0];
 
+
          // --------- get path template docx sesuai jenis surat rekom  --------- //
-         switch ($this->rekomJenis) {
+         switch ($this->pengajuan->rekom_jenis) {
             case RekomJenis::DISIPLIN:
                $path_surat = Storage::path('public/template/surat_rekom_hukuman_disiplin.docx');
                break;
@@ -87,6 +85,7 @@ class SuratCetak
                $path_surat = Storage::path('public/template/surat_rekom_bebas_temuan.docx');
                break;
          }
+    
 
          // -- generate file word dan parsing data -- //
          $templateProcessor = new TemplateProcessor($path_surat);
@@ -97,6 +96,7 @@ class SuratCetak
             'pangkat' => $this->pengajuan->pangkat . ' (' . $this->pengajuan->ngolru . ')',
             'jabatan' => $this->clean_word($this->pengajuan->njab),
             'opd'     => $this->clean_word($this->pengajuan->nunker),
+            'opd_sebutan'     => $this->getSebutanNamaDinas($this->clean_word($this->pengajuan->nunker)),
             // Data Surat
             'tgl_cetak'     => Carbon::now()->translatedFormat('F Y'),
             'tgl_pengantar' => $this->clean_word($this->pengajuan->tgl_surat_pengantar),
@@ -106,12 +106,14 @@ class SuratCetak
             'perihal'       => $this->clean_word($this->pengajuan->keperluan->nama),
             // pegawai ttd
             'nama_ttd'    => htmlspecialchars($user_ttd['nama'] . ', ' . $user_ttd['glblk']),
-            'jabatan_ttd' => $user_ttd['pangkat'] . '/' . $user_ttd['ngolru'],
+            'jabatan_ttd' => $user_ttd['pangkat'] . ' (' . $user_ttd['ngolru']. ')',
+            'nip_ttd'     => $this->clean_word($user_ttd['nipbaru']),
+        
             'nip_ttd'     => $this->clean_word($user_ttd['nipbaru']),
             
             // 
             'tahun'       => Carbon::now()->year,
-            'tanggal_ttd' => Carbon::now()->translatedFormat('F Y'),
+            'tgl_ttd' => Carbon::now()->translatedFormat('F Y'),
             
          ]);
 
@@ -122,7 +124,8 @@ class SuratCetak
          $file = new TempFile($file);
 
          $templateProcessor->setImageValue('qrcode', array('path' =>  $file->getFileName(), 'width' => 150, 'height' => 150, 'ratio' => false, ));
-         $templateProcessor->setImageValue('img_ttd', array('path' => Storage::path('public/template/ttd.png'), 'width' => 100, 'height' => 100, 'ratio' => false,  'wrappingStyle' => 'behind'));
+
+         $templateProcessor->setImageValue('img_ttd', array('path' => User::getPathTtd(), 'width' => 100, 'height' => 100, 'ratio' => false,  'wrappingStyle' => 'behind'));
 
          $file_path_temp = $templateProcessor->save("php://output");
 
@@ -189,5 +192,14 @@ class SuratCetak
       }
 
       return $this;
+   }
+
+   public function getSebutanNamaDinas($dinas){
+      $first_word = strtolower(strtok($dinas, " "));
+  
+      if (in_array($first_word, ['dinas', 'badan'])){
+         return 'Kepala Dinas '.$dinas;
+      }
+      return $dinas;
    }
 }

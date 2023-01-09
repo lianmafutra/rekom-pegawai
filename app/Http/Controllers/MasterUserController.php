@@ -19,13 +19,13 @@ class MasterUserController extends Controller
 
    public function index(PegawaiService $pegawaiService)
    {
-
+ 
       abort_if(Gate::denies('master user'), 403);
       $x['title']    = 'Master Data User';
       $x['opd']      = OPD::get();
       $x['user_ttd'] = $pegawaiService->filterByOPD('4002000000');
       $data       = User::whereNotIn('id', [1])->with('opd');
-
+    
 
       if (request()->ajax()) {
          return  datatables()->of($data)
@@ -45,6 +45,7 @@ class MasterUserController extends Controller
    public function indexPenandaTangan()
    {
       // user internal inspektorat
+    
       $data    = User::whereIn('id', [4, 5, 3])->with('opd')->orderBy('position', 'ASC');
       if (request()->ajax()) {
          return  datatables()->of($data)
@@ -56,7 +57,7 @@ class MasterUserController extends Controller
                if($data->img_ttd == ""){
                   return '-';
                }
-               return '<img src="'.url('storage/template/ttd/'.$data->img_ttd).'" width=100px; height="100px">';
+               return '<img src="'.User::getpathttd().'" width=100px; height="100px">';
             })
             ->rawColumns(['action','img_ttd'])
             ->make(true);

@@ -9,11 +9,11 @@ Enum RekomJenis
     /**
      *@desc Rekomendasi Hukuman Disiplin
      */
-    const DISIPLIN      = 'Rekomendasi Hukuman Disiplin';
+    const DISIPLIN      = 'DISIPLIN';
 
     /**
     *@desc Rekomendasi Bebas Temuan
     */
-    const TEMUAN     = 'Rekomendasi Bebas Temuan';
+    const TEMUAN     = 'TEMUAN';
   
 }

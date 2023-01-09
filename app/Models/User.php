@@ -6,9 +6,9 @@ use App\Utils\ApiResponse;
 use App\Utils\AutoUUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Http\ResponseTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -56,18 +56,16 @@ class User extends Authenticatable
 
    public function getUrlFoto()
    {
-
       $file = User::where('id', auth()->user()->id)->with('file_foto')->first()->file_foto;
+      if ($file) return Storage::url( $file->path.'/'.$file->name_random);
+      return url("/img/avatar.png");
+   }
 
-      if ($file) {
-         return  'http://' . request()->getHttpHost() .
-            '/storage/' .
-            $file->path .
-            '/' .
-            $file->name_random;
-      }
-
-      return "http://" . request()->getHttpHost() . "/img/avatar.png";
+   public static function getPathTtd()
+   {
+      $file_ttd = User::where('username', 'inspektur')->first()->img_ttd;
+      
+      return url(Storage::url('template/ttd/'.$file_ttd));
    }
 
    public function checkPassword($password)
