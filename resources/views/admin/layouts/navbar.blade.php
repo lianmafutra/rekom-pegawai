@@ -24,7 +24,7 @@
      
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ $user_data->getUrlFoto() }}" class="user-image img-circle elevation-2" alt="User Image">
+                <img src="{{ $user_data->getUrlFoto() }}" class="user-image img-circle elevation-2" alt="User Image" style="object-fit: cover">
                 {{-- <span class="d-none d-md-inline">{{ Auth::user()->name }}</span> --}}
             </a>
 
