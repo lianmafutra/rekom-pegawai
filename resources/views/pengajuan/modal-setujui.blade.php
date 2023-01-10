@@ -53,10 +53,10 @@
                             <span style="font-size: 12px"
                                 class="text-danger error-text password_err error invalid-feedback"></span>
                         </div>
-                        <div  style="margin-top: 20px" class="form-group">
+                        <div hidden style="margin-top: 20px" class="form-group">
                             <label>Diteruskan Kepada :</label>
                             <input hidden name="pengajuan_uuid" value="{{ $pengajuan->uuid }}">
-                            <select name="penerima_uuid" class="select2 select2-pegawai form-control select2bs4"
+                            <select  name="penerima_uuid" class="select2 select2-pegawai form-control select2bs4"
                                 style="width: 100%;">
                                 @foreach ($user_kirim as $item)
                                     <option value="{{ $item->uuid }}">{{ $item->name }}</option>

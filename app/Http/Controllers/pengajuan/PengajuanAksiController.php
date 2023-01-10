@@ -37,7 +37,7 @@ class PengajuanAksiController extends Controller
 
         $data= (new SuratCetak())
             ->setPengajuan($pengajuan->getPengajuanWithData($request->pengajuan_uuid))
-            ->cetaksurat('preview');
+            ->aksi('preview');
 
          DB::commit();
          return $this->success('Sukses', $data);
@@ -56,7 +56,7 @@ class PengajuanAksiController extends Controller
 
          (new SuratCetak())
             ->setPengajuan($pengajuan->getPengajuanWithData($request->pengajuan_uuid))
-            ->cetaksurat('cetak')
+            ->aksi('cetak')
             ->updatefileRekom();
 
          $this->pengajuanService->updateTglAksiPengajuanHistori($request->pengajuan_uuid);

@@ -6,6 +6,10 @@
 @endpush
 @section('content')
     <style>
+
+      .detail-histori{
+         display: none;
+      }
         .timeline {
          width: 100%;
             max-height: 962px;
@@ -540,7 +544,7 @@
                                     break;
                                 case 'tolak':
                                     data_tracking =
-                                        `<a href="#"> ${$item.pengirim_nama} <span class="detail-histori">(${$item.pengirim_name}/${$item.pengirim_nip})</span></a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
+                                        `<a href="#"> ${$item.pengirim_nama} <span hidden class="detail-histori">(${$item.pengirim_name}/${$item.pengirim_nip})</span></a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
                                     ${$item.pesan}
                                     </div>`
                                     break;
@@ -553,7 +557,7 @@
                                     //       `<a href="#"> ${$item.pengirim_nama}  ( ${$item.pengirim_name} )</a> ${$item.aksi.pesan}`
                             }
 
-                            $('.detail-histori').hide()
+                      
 
                             $(".modal_content_histori").append(
                                 `<div>
@@ -643,6 +647,8 @@
             })
           
         });
+
+       
         $('.select2bs4').select2({
             theme: 'bootstrap4',
         })

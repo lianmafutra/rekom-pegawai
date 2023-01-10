@@ -76,8 +76,8 @@
                                             data-toggle="tab">Profile</a></li>
                                     <li class="nav-item"><a class="nav-link " href="#tab_password"
                                             data-toggle="tab">Password</a></li>
-                                    <li class="nav-item"><a class="nav-link " href="#settings"
-                                            data-toggle="tab">Activity</a></li>
+                                    {{-- <li class="nav-item"><a class="nav-link " href="#settings"
+                                            data-toggle="tab">Activity</a></li> --}}
                                 </ul>
                             </div>
                             <div class="card-body">

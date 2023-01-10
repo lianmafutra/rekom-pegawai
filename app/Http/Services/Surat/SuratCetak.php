@@ -60,7 +60,7 @@ class SuratCetak
 
 
 
-   public function cetaksurat($type)
+   public function aksi($type)
    {
 
       try {

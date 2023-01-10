@@ -58,7 +58,7 @@ class uploadFile implements uploadFileBuilder
          if ($this->file) {
             DB::beginTransaction();
             $name_ori = $this->file->getClientOriginalName();
-            $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . now()->timestamp . '.' . $this->file->getClientOriginalExtension());
+            $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . Str::uuid()->toString().'-'.Str::random(50));
             
             $custom_path = $this->getPath($this->path);
             Log::info('Path file = ' .$custom_path);
