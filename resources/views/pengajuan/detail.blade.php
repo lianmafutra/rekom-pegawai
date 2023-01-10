@@ -7,6 +7,7 @@
 @section('content')
     <style>
         .timeline {
+         width: 100%;
             max-height: 962px;
             overflow-y: scroll;
             margin: 0 0 45px;
@@ -294,8 +295,18 @@
                     <div class="col-md-5">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="card-title font-weight-bold">Histori Pengajuan Berkas</h5>
+                              <div class="row">
+                                 <div class="col-10">
+                                    <h5 class="card-title font-weight-bold">Histori Pengajuan Berkas</h5>
+                                 </div>
+                                 <div class="col-2">
+                                   <button class="btn_histori_detail btn btn-default btn-sm">Detail</button>
+   
+                                 </div>
+                              </div>
+                             
                             </div>
+                           
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="row">
@@ -329,7 +340,7 @@
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-           
+
             $('.btn_view_file').click(function(e) {
                 e.preventDefault();
                 let url = $(this).attr('data-url');
@@ -346,7 +357,7 @@
                 const features = `width=${width} height=${height} left=${pos.x} top=${pos.y}`;
                 return window.open(url, '_blank', features).focus();
             }
-            
+
             $("#btn_teruskan").click(function() {
                 $('#modal_teruskan').modal('show')
             })
@@ -370,11 +381,11 @@
                         'pengajuan_uuid': @json($pengajuan->uuid)
                     },
                     beforeSend: function() {
-                        showLoading('Mohon Tungu','Menyiapkan Preview Surat')
+                        showLoading('Mohon Tungu', 'Menyiapkan Preview Surat')
                     },
                     success: (response) => {
-                       viewFile(response.data);
-                       hideLoading()
+                        viewFile(response.data);
+                        hideLoading()
                     },
                     error: function(response) {
                         showError(response)
@@ -453,7 +464,7 @@
                     $('#show_hide_password i').addClass("fa-eye");
                 }
             });
-            
+
             $("#btn_verifikasi").click(function() {
                 $('#modal_verifikasi').modal('show')
                 let nip = $('#nip').text()
@@ -497,38 +508,55 @@
                     }
                 })
             });
-            $.ajax({
-                url: @json(route('pengajuan.histori', $pengajuan->uuid)),
-                type: 'GET',
-                success: function(json) {
-                    $('.loading_histori').hide()
-                    json.data.histori.forEach($item => {
-                        let data_tracking = '';
-                        switch ($item.aksi.status) {
-                            case 'meneruskan':
-                                data_tracking =
-                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
-                                break;
-                            case 'proses_surat':
-                                data_tracking =
-                                    `<a href="#"> ${$item.penerima_nama}</a> ${$item.aksi.pesan}`
-                                break;
-                            case 'selesai':
-                                data_tracking =
-                                    `${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
-                                break;
-                            case 'tolak':
-                                data_tracking =
-                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
+
+            @hasanyrole(['admin_inspektorat', 'inspektur', 'admin_kasubag'])
+                $.ajax({
+                    url: @json(route('pengajuan.histori', $pengajuan->uuid)),
+                    type: 'GET',
+                    success: function(json) {
+                        $('.loading_histori').hide()
+                        json.data.histori.forEach($item => {
+                            let data_tracking = '';
+                            switch ($item.aksi.status) {
+                                case 'kirim_berkas':
+                                    data_tracking =
+                                        `<a href="#"> ${$item.pengirim_nama} <span class="detail-histori">(${$item.pengirim_name})</span></a> ${$item.aksi.pesan}`
+                                    break;
+                                case 'verifikasi_data':
+                                    data_tracking =
+                                        `<a href="#"> ${$item.penerima_nama} <span class="detail-histori">(${$item.penerima_name}/${$item.penerima_nip})</span></a> ${$item.aksi.pesan}`
+                                    break;
+                                case 'meneruskan':
+                                    data_tracking =
+                                        `<a href="#"> ${$item.pengirim_nama} <span class="detail-histori">(${$item.pengirim_name}/${$item.pengirim_nip})</span></a>${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}   <span class="detail-histori">(${$item.penerima_name}/${$item.penerima_nip})</span> </a>`
+                                    break;
+                                case 'proses_surat':
+                                    data_tracking =
+                                        `<a href="#"> ${$item.penerima_nama}  <span class="detail-histori">(${$item.penerima_name}/${$item.penerima_nip})</span></a> ${$item.aksi.pesan}`
+                                    break;
+                                case 'selesai':
+                                    data_tracking =
+                                        `${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama} )</a>`
+                                    break;
+                                case 'tolak':
+                                    data_tracking =
+                                        `<a href="#"> ${$item.pengirim_nama} <span class="detail-histori">(${$item.pengirim_name}/${$item.pengirim_nip})</span></a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
                                     ${$item.pesan}
                                     </div>`
-                                break;
-                            default:
-                                data_tracking =
-                                    `<a href="#"> ${$item.pengirim_nama}</a> ${$item.aksi.pesan}`
-                        }
-                        $(".modal_content_histori").append(
-                            `<div>
+                                    break;
+                                case 'revisi':
+                                    data_tracking =
+                                          `<a href="#"> ${$item.pengirim_nama}  ( ${$item.pengirim_name} )</a> ${$item.aksi.pesan}`
+                                    break;
+                                default:
+                                    //   data_tracking =
+                                    //       `<a href="#"> ${$item.pengirim_nama}  ( ${$item.pengirim_name} )</a> ${$item.aksi.pesan}`
+                            }
+
+                            $('.detail-histori').hide()
+
+                            $(".modal_content_histori").append(
+                                `<div>
                            <i style="color: white !important" class="${$item.aksi.icon}"></i>
                            <div class="timeline-item">
                               <div class="timeline-body">
@@ -540,12 +568,80 @@
                               </div>
                            </div>
                         </div>`);
-                    });
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    alert("Gagal Mengambil data histori, silahkan coba lagi ...")
-                }
+                        });
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        alert("Gagal Mengambil data histori, silahkan coba lagi ...")
+                    }
+                })
+            @endrole
+
+            @hasrole('admin_opd')
+                $.ajax({
+                    url: @json(route('pengajuan.histori', $pengajuan->uuid)),
+                    type: 'GET',
+                    success: function(json) {
+                        $('.loading_histori').hide()
+                        json.data.histori.forEach($item => {
+                            let data_tracking = '';
+                            switch ($item.aksi.status) {
+                                case 'meneruskan':
+                                    data_tracking =
+                                        `<a href="#"> ${$item.pengirim_nama} </a> ${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}</a>`
+                                    break;
+                                case 'proses_surat':
+                                    data_tracking =
+                                        `<a href="#"> ${$item.penerima_nama}</a> ${$item.aksi.pesan}`
+                                    break;
+                                case 'selesai':
+                                    data_tracking =
+                                        `${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama} </a>`
+                                    break;
+                                case 'tolak':
+                                    data_tracking =
+                                        `<a href="#"> ${$item.pengirim_nama}  </a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
+                                    ${$item.pesan}
+                                    </div>`
+                                    break;
+                                default:
+                                    data_tracking =
+                                        `<a href="#"> ${$item.pengirim_nama} </a> ${$item.aksi.pesan}`
+                            }
+
+                            $(".modal_content_histori").append(
+                                `<div>
+                           <i style="color: white !important" class="${$item.aksi.icon}"></i>
+                           <div class="timeline-item">
+                              <div class="timeline-body">
+                                    ${data_tracking} 
+                              </div>
+                              <div class="dropdown-divider"></div>
+                              <div class="timeline-footer">
+                                 <span class="time"><i class="fas fa-clock"></i> ${$item.tgl_kirim} </span>
+                              </div>
+                           </div>
+                        </div>`);
+                        });
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        alert("Gagal Mengambil data histori, silahkan coba lagi ...")
+                    }
+                })
+            @endrole
+
+            $(".btn_histori_detail").click(function() {
+            
+          
+               if($(this).text() == 'Detail'){
+                  $(".btn_histori_detail").text('Ringkas')
+                  $('.detail-histori').show()
+               }else{
+                  $(".btn_histori_detail").text('Detail')
+                  $('.detail-histori').hide()
+               }
+             
             })
+          
         });
         $('.select2bs4').select2({
             theme: 'bootstrap4',
