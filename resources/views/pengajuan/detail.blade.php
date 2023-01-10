@@ -6,12 +6,17 @@
 @endpush
 @section('content')
     <style>
+        .detail-histori {
+            display: none;
 
-      .detail-histori{
-         display: none;
-      }
+        }
+
+        span.detail-histori {
+            color: #838383;
+        }
+
         .timeline {
-         width: 100%;
+            width: 100%;
             max-height: 962px;
             overflow-y: scroll;
             margin: 0 0 45px;
@@ -138,7 +143,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title font-weight-bold">Data Pengajuan</h5>
@@ -296,21 +301,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
-                              <div class="row">
-                                 <div class="col-10">
-                                    <h5 class="card-title font-weight-bold">Histori Pengajuan Berkas</h5>
-                                 </div>
-                                 <div class="col-2">
-                                   <button class="btn_histori_detail btn btn-default btn-sm">Detail</button>
-   
-                                 </div>
-                              </div>
-                             
+                                <div class="row">
+                                    <div class="col-10">
+                                        <h5 class="card-title font-weight-bold">Histori Pengajuan Berkas</h5>
+                                    </div>
+                                    <div class="col-2">
+                                        <button class="btn_histori_detail btn btn-default btn-sm">Detail</button>
+
+                                    </div>
+                                </div>
+
                             </div>
-                           
+
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="row">
@@ -528,15 +533,15 @@
                                     break;
                                 case 'verifikasi_data':
                                     data_tracking =
-                                        `<a href="#"> ${$item.penerima_nama} <span class="detail-histori">(${$item.penerima_name}/${$item.penerima_nip})</span></a> ${$item.aksi.pesan}`
+                                        `<a href="#"> ${$item.penerima_nama} <span class="detail-histori">(${$item.penerima_name}-${$item.penerima_nip})</span></a> ${$item.aksi.pesan}`
                                     break;
                                 case 'meneruskan':
                                     data_tracking =
-                                        `<a href="#"> ${$item.pengirim_nama} <span class="detail-histori">(${$item.pengirim_name}/${$item.pengirim_nip})</span></a>${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}   <span class="detail-histori">(${$item.penerima_name}/${$item.penerima_nip})</span> </a>`
+                                        `<a href="#"> ${$item.pengirim_nama} <span class="detail-histori">(${$item.pengirim_name}-${$item.pengirim_nip})</span></a>${$item.aksi.pesan}  <a href="#"> ${$item.penerima_nama}   <span class="detail-histori">(${$item.penerima_name}-${$item.penerima_nip})</span> </a>`
                                     break;
                                 case 'proses_surat':
                                     data_tracking =
-                                        `<a href="#"> ${$item.penerima_nama}  <span class="detail-histori">(${$item.penerima_name}/${$item.penerima_nip})</span></a> ${$item.aksi.pesan}`
+                                        `<a href="#"> ${$item.penerima_nama}  <span class="detail-histori">(${$item.penerima_name}/-${$item.penerima_nip})</span></a> ${$item.aksi.pesan}`
                                     break;
                                 case 'selesai':
                                     data_tracking =
@@ -544,20 +549,20 @@
                                     break;
                                 case 'tolak':
                                     data_tracking =
-                                        `<a href="#"> ${$item.pengirim_nama} <span hidden class="detail-histori">(${$item.pengirim_name}/${$item.pengirim_nip})</span></a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
+                                        `<a href="#"> ${$item.pengirim_nama} <span hidden class="detail-histori">(${$item.pengirim_name}-${$item.pengirim_nip})</span></a> ${$item.aksi.pesan} <div style="margin-top:10px; background:#F0F2F5" class="alert alert-dismissible">
                                     ${$item.pesan}
                                     </div>`
                                     break;
                                 case 'revisi':
                                     data_tracking =
-                                          `<a href="#"> ${$item.pengirim_nama}  ( ${$item.pengirim_name} )</a> ${$item.aksi.pesan}`
+                                        `<a href="#"> ${$item.pengirim_nama}  ( ${$item.pengirim_name} )</a> ${$item.aksi.pesan}`
                                     break;
                                 default:
                                     //   data_tracking =
                                     //       `<a href="#"> ${$item.pengirim_nama}  ( ${$item.pengirim_name} )</a> ${$item.aksi.pesan}`
                             }
 
-                      
+
 
                             $(".modal_content_histori").append(
                                 `<div>
@@ -634,21 +639,21 @@
             @endrole
 
             $(".btn_histori_detail").click(function() {
-            
-          
-               if($(this).text() == 'Detail'){
-                  $(".btn_histori_detail").text('Ringkas')
-                  $('.detail-histori').show()
-               }else{
-                  $(".btn_histori_detail").text('Detail')
-                  $('.detail-histori').hide()
-               }
-             
+
+
+                if ($(this).text() == 'Detail') {
+                    $(".btn_histori_detail").text('Ringkas')
+                    $('.detail-histori').show()
+                } else {
+                    $(".btn_histori_detail").text('Detail')
+                    $('.detail-histori').hide()
+                }
+
             })
-          
+
         });
 
-       
+
         $('.select2bs4').select2({
             theme: 'bootstrap4',
         })

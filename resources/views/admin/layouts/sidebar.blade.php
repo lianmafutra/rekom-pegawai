@@ -48,6 +48,15 @@
                         </a>
                     </li>
                 @endcan
+                @can('sync data pegawai')
+                <li class="nav-item">
+                    <a href="{{ route('permission.index') }}"
+                        class="nav-link {{ request()->routeIs('permission.index') ? 'active' : '' }}">
+                        <i class="fas fa-sync-alt nav-icon"></i>
+                        <p>Sync Data</p>
+                    </a>
+                </li>
+            @endcan
                 @can('read setting')
                     <li class="nav-header ml-2">SETTINGS</li>
                     <li class="nav-item">

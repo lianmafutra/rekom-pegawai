@@ -9,6 +9,10 @@ use App\Models\MasterRekom;
 class PegawaiSyncController extends Controller
 {
 
+   public function index(){
+      return view('sync-data.index');
+   }
+
    public function getPegawaiByNip($nip, PegawaiService $pegawaiService)
    {
       return response()->json($pegawaiService->filterByNIP($nip)[0]);

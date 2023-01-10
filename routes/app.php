@@ -18,6 +18,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::get('pegawai', [PegawaiSyncController::class, 'getAll'])->name('pegawai.all');
    Route::get('pegawai/opd/{kunker}', [PegawaiSyncController::class, 'getByOPD'])->name('pegawai.opd');
    Route::get('pegawai/sync', [PegawaiSyncController::class, 'sync']);
+
+   // Route::controller(PengajuanAksiController::class)->name('pengajuan.aksi.')->prefix('pengajuan/aksi')->group(function () {
+   //    Route::get('pegawai/sync', [PegawaiSyncController::class, 'sync']);
+      
+   // });
+
+  
    Route::get('pegawai/verifikasi/pelanggaran/{nip}', [PegawaiSyncController::class, 'verifikasiPelanggaran'])->name('pegawai.verifikasi.pelanggaran');
 
    Route::prefix('pengajuan/verifikasi')->name('pengajuan.verifikasi.')->middleware(['auth'])->group(function () {

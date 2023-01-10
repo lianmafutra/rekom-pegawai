@@ -101,14 +101,17 @@ class PengajuanAdminController extends Controller
          ->whereHas('histori', function (Builder $query) {
             $query->where('pengajuan_aksi_id', '=', PengajuanAksi::VERIFIKASI_DATA);
             $query->where('penerima_id', '=', auth()->user()->id);
-         })
-         ->first();
+         })->first();
 
       if ($status != PengajuanAksi::TOLAK) {
          // jika belum ada maka insert histori pengajuan dengan status proses
          if ($histori == null && $user->getRoleName() != Role::isAdminOpd) {
             $pengajuanService->storeHistori($uuid, PengajuanAksi::VERIFIKASI_DATA, auth()->user()->uuid);
          }
+      }
+
+      if($user->getRoleName() == Role::isAdminOpd && in_array($status , [ PengajuanAksi::SELESAI, PengajuanAksi::TOLAK])){
+         $pengajuanService->updateTglAksiPengajuanHistori($uuid);
       }
 
       $view_aksi = $this->pengajuanService->getViewAksiDetail($uuid);

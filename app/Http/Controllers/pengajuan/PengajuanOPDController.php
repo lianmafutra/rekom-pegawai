@@ -44,7 +44,6 @@ class PengajuanOPDController extends Controller
       $data    = Pengajuan::with('keperluan')->where('pengirim_id', auth()->user()->id)->latest();
       $pegawai = Cache::get('pegawai');
 
-
       if (request()->ajax()) {
          return DataTables::of($data)
             ->addIndexColumn()
