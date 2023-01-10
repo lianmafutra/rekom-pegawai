@@ -155,6 +155,11 @@ class PengajuanOPDController extends Controller
       $x['rekom_jenis'] = Config::get('global.rekom_jenis');
       $pengajuan = $pengajuan->getPengajuanWithData($pengajuan_uuid);
 
+      $status = $this->pengajuanService->cekPengajuanStatus($pengajuan_uuid);
+      if($user->getRoleName() == Role::isAdminOpd && in_array($status , [ PengajuanAksi::SELESAI, PengajuanAksi::TOLAK])){
+         $this->pengajuanService->updateTglAksiPengajuanHistori($pengajuan_uuid);
+      }
+
       $pegawai = $this->pegawaiService->filterByOPD($user->getWithOpd()->kunker);
       $keperluan = Keperluan::get();
       return view('pengajuan.opd.revisi', $x, compact('pegawai', 'pengajuan', 'keperluan'));
